@@ -15,25 +15,25 @@ html {
 }
 
 ::-webkit-scrollbar-track {
-  background: #0a0e1a;
+  background: #070412;
 }
 
 ::-webkit-scrollbar-thumb {
-  background: #1f2937;
+  background: #35205a; /* muted purple */
   border-radius: 5px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: #374151;
+  background: #5b3bd8; /* brighter purple on hover */
 }
 
 /* Custom animations */
 @keyframes pulse-glow {
   0%, 100% {
-    box-shadow: 0 0 20px rgba(0, 255, 136, 0.2);
+    box-shadow: 0 0 20px rgba(124, 58, 237, 0.18);
   }
   50% {
-    box-shadow: 0 0 30px rgba(0, 255, 136, 0.4);
+    box-shadow: 0 0 34px rgba(124, 58, 237, 0.36);
   }
 }
 

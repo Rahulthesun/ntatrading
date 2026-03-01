@@ -38,7 +38,19 @@ export function Header() {
           >
             Programs
           </Link>
-          <button className="px-5 py-2 bg-[#00ff88] text-[#0a0e1a] font-medium rounded hover:bg-[#00d4ff] transition-colors">
+          <Link 
+            to="/about" 
+            className="text-gray-300 hover:text-[#00ff88] transition-colors"
+          >
+            About
+          </Link>
+          <Link 
+            to="/testimonials" 
+            className="text-gray-300 hover:text-[#00ff88] transition-colors"
+          >
+            Testimonials
+          </Link>
+          <button className="px-5 py-2 bg-[#8100D1] text-[#0a0e1a] font-medium rounded hover:bg-[#00d4ff] transition-colors">
             Book Free Demo
           </button>
         </nav>
@@ -74,6 +86,13 @@ export function Header() {
               onClick={() => setIsMenuOpen(false)}
             >
               Programs
+            </Link>
+            <Link 
+              to="/about" 
+              className="block text-gray-300 hover:text-[#00ff88] transition-colors"
+              onClick={() => setIsMenuOpen(false)}
+            >
+              About Us
             </Link>
             <button className="w-full px-5 py-2 bg-[#00ff88] text-[#0a0e1a] font-medium rounded hover:bg-[#00d4ff] transition-colors">
               Book Free Demo
