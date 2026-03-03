@@ -266,7 +266,7 @@ export function Programs() {
             className="text-center mb-16"
           >
             <h2 className="text-4xl md:text-5xl font-bold mb-4">
-              Why Choose <span className="text-[#00ff88]">Excelsior</span>
+              Why Choose <span className="text-[#00ff88]">NTA</span>
             </h2>
             <p className="text-gray-400 text-lg">What sets our programs apart</p>
           </motion.div>

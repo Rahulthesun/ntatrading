@@ -19,8 +19,8 @@ export function Header() {
             <TrendingUp className="w-6 h-6 text-[#0a0e1a]" />
           </div>
           <div>
-            <div className="text-white font-semibold tracking-tight">Excelsior</div>
-            <div className="text-xs text-gray-400 tracking-wide">TRAINING INSTITUTE</div>
+            <div className="text-white font-semibold tracking-tight" style={{ fontFamily: "'Unica One', serif" }}>Excelsior</div>
+            <div className="text-xs text-gray-400 tracking-wide" style={{ fontFamily: "'Unica One', serif" }}>TRAINING INSTITUTE</div>
           </div>
         </Link>
 
@@ -29,28 +29,25 @@ export function Header() {
           <Link 
             to="/" 
             className="text-gray-300 hover:text-[#00ff88] transition-colors"
+            style={{ fontFamily: "'Unica One', serif" }}
           >
             Home
           </Link>
           <Link 
             to="/programs" 
             className="text-gray-300 hover:text-[#00ff88] transition-colors"
+            style={{ fontFamily: "'Unica One', serif" }}
           >
             Programs
           </Link>
           <Link 
             to="/about" 
             className="text-gray-300 hover:text-[#00ff88] transition-colors"
+            style={{ fontFamily: "'Unica One', serif" }}
           >
             About
           </Link>
-          <Link 
-            to="/testimonials" 
-            className="text-gray-300 hover:text-[#00ff88] transition-colors"
-          >
-            Testimonials
-          </Link>
-          <button className="px-5 py-2 bg-[#8100D1] text-[#0a0e1a] font-medium rounded hover:bg-[#00d4ff] transition-colors">
+          <button className="px-5 py-2 bg-[#8100D1] text-[#0a0e1a] font-medium rounded hover:bg-[#00d4ff] transition-colors" style={{ fontFamily: "'Unica One', serif" }}>
             Book Free Demo
           </button>
         </nav>

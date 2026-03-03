@@ -2,8 +2,8 @@
 
 import { useRef, useState } from "react";
 import { motion, useScroll, useTransform, useInView, AnimatePresence } from "framer-motion";
-import { Header } from "../components/Header";
-import { Footer } from "../components/Footer";
+import { Header } from "./Header";
+import { Footer } from "./Footer";
 import { Link } from "react-router";
 import { ArrowRight, Star, Quote } from "lucide-react";
 
@@ -792,8 +792,7 @@ export function Testimonials() {
 
       {/* ── 8. CTA ── */}
       <CTASection />
-
-      <Footer />
+ 
 
       <style>{`
         * { box-sizing: border-box; }
