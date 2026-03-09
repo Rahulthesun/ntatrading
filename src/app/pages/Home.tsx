@@ -8,6 +8,9 @@ import { Testimonials } from "../components/testimonials";
 import { ArrowRight, TrendingUp } from "lucide-react";
 import { SocialProof } from "../components/SocialProof";
 import { Services } from "../components/Services";
+import StarCourseSection from "../components/StarCourseSection";
+import Hero from "../components/Hero";
+import { CTASection } from "../components/CTASection";
 
 
 /* ── Types ── */
@@ -459,106 +462,7 @@ export function Home() {
       <Header />
 
       {/* ─── HERO ─── */}
-      <section className="relative h-screen min-h-[750px] overflow-hidden">
-        <TradingCanvas />
-
-        {/* overlays */}
-        <div className="absolute inset-0 z-10 pointer-events-none bg-gradient-to-b from-[#0B0B12]/50 via-[#0B0B12]/20 to-[#0B0B12]" />
-        <div className="absolute inset-0 z-10 pointer-events-none bg-gradient-to-r from-[#0B0B12]/60 via-transparent to-[#0B0B12]/60" />
-
-        {/* centred content */}
-        <motion.div
-          style={{ opacity: heroOpacity, scale: heroScale }}
-          className="relative z-20 h-full flex flex-col items-center justify-center px-6 text-center pt-28 pb-56"
-        >
-          {/* market status dot */}
-          <motion.div
-            initial={{ opacity: 0, y: -10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.15 }}
-            className="flex items-center gap-2 mb-10"
-          >
-            <motion.div
-              animate={{ opacity: [1, 0.3, 1] }} transition={{ duration: 1.5, repeat: Infinity }}
-              className="w-1.5 h-1.5 rounded-full"
-              style={{ background: isMarketOpen ? "#00ff88" : "#ff4466" }}
-            />
-            <span className="text-[11px] font-semibold tracking-[0.12em] uppercase"
-              style={{ color: isMarketOpen ? "#00ff88" : "#ff4466" }}>
-              {isMarketOpen ? "NSE Live · Markets Open" : "Markets Closed"}
-            </span>
-          </motion.div>
-
-          {/* headline */}
-          <motion.h1
-            initial={{ opacity: 0, y: 32 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.75, delay: 0.25 }}
-            className="font-bold text-white leading-[1.1] tracking-tight mb-6 max-w-4xl"
-            style={{ fontSize: "clamp(2.6rem, 6.5vw, 4rem)" }}
-          >
-            The Best Community to Learn{" "}
-            <span style={{
-              background: "linear-gradient(90deg, #00ff88 0%, #00d4ff 50%, #8100D1 100%)",
-              WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent", backgroundClip: "text",
-            }}>
-              Stock Market Trading
-            </span>
-          </motion.h1>
-
-          {/* tagline */}
-          <motion.p
-            initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.45 }}
-            className="text-white/40 leading-relaxed mb-11 max-w-md"
-            style={{ fontSize: "clamp(0.95rem, 1.6vw, 1.1rem)" }}
-          >
-            Namma Trading Academy —{" "}
-            <span className="text-white/60">United in learning, united in growth.</span>
-          </motion.p>
-
-          {/* CTAs */}
-          <motion.div
-            initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.6 }}
-            className="flex flex-col sm:flex-row gap-4 items-center"
-          >
-            <motion.div whileHover={{ scale: 1.04 }} whileTap={{ scale: 0.97 }}>
-              <Link
-                to="/programs"
-                className="group flex items-center gap-2.5 px-8 py-3.5 rounded-xl font-semibold text-white text-[15px] tracking-tight"
-                style={{ background: "linear-gradient(135deg, #8100D1, #5500b5)", boxShadow: "0 4px 28px rgba(129,0,209,0.45)" }}
-              >
-                Get Started Now
-                <ArrowRight className="w-4 h-4 group-hover:translate-x-0.5 transition-transform" />
-              </Link>
-            </motion.div>
-
-            <motion.button
-              whileHover={{ scale: 1.04 }} whileTap={{ scale: 0.97 }}
-              className="flex items-center gap-2.5 px-8 py-3.5 rounded-xl font-semibold text-white/75 text-[15px] tracking-tight bg-white/5 border border-white/10 transition-all duration-200 hover:border-white/20"
-            >
-              Book a Demo
-              <TrendingUp className="w-4 h-4" />
-            </motion.button>
-          </motion.div>
-        </motion.div>
-
-        {/* index cards pinned to bottom */}
-        <motion.div
-          initial={{ opacity: 0, y: 24 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.85 }}
-          className="absolute bottom-8 left-1/2 -translate-x-1/2 w-full max-w-2xl px-6 z-20"
-        >
-          <div className="grid grid-cols-3 gap-3">
-            <IndexCard name="NIFTY 50"  value={24348.85} change={1.24}  color="#00ff88" seed={1} />
-            <IndexCard name="BANKNIFTY" value={52429.15} change={0.83}  color="#00d4ff" seed={2} />
-            <IndexCard name="SENSEX"    value={80116.49} change={-0.31} color="#ffc857" seed={3} />
-          </div>
-        </motion.div>
-
-        {/* scroll hint */}
-        <motion.div
-          animate={{ y: [0, 8, 0] }} transition={{ duration: 2, repeat: Infinity }}
-          className="absolute bottom-10 right-8 z-20 flex flex-col items-center gap-1.5"
-        >
-          <div className="w-px h-8 bg-gradient-to-b from-transparent to-white/20" />
-          <span className="text-[9px] tracking-[0.14em] text-white/20 uppercase">Scroll</span>
-        </motion.div>
-      </section>
+      <Hero/>
 
       {/* ─── TICKER ─── 
       <MarketTicker />
@@ -566,100 +470,19 @@ export function Home() {
       */}
 
       <SocialProof />
+
+
+      <StarCourseSection />
       
-      {/* ─── WHY US ─── */}
-      <section className="py-24 px-6 bg-[#0B0B12]">
-        <div className="max-w-6xl mx-auto">
-          <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} className="mb-16">
-            <p className="text-xs font-bold tracking-[0.2em] uppercase text-emerald-400 mb-3">— Why Choose Us</p>
-            <h2 className="font-bold leading-tight tracking-tight" style={{ fontSize: "clamp(2rem, 5vw, 3.5rem)" }}>
-              Built on Real <span className="text-emerald-400">Market Experience</span>
-            </h2>
-          </motion.div>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
-            {WHY_CARDS.map((item, i) => (
-              <motion.div
-                key={i}
-                initial={{ opacity: 0, x: i % 2 === 0 ? -20 : 20 }}
-                whileInView={{ opacity: 1, x: 0 }}
-                transition={{ duration: 0.5, delay: i * 0.08 }}
-                viewport={{ once: true }}
-                whileHover={{ borderColor: item.color + "40", backgroundColor: item.color + "08" }}
-                className="flex gap-5 p-6 rounded-xl transition-all duration-300"
-                style={{ background: "rgba(26,19,37,0.5)", border: `1px solid ${item.color}14` }}
-              >
-                <div className="w-12 h-12 rounded-xl flex items-center justify-center shrink-0 text-2xl"
-                  style={{ background: `${item.color}10` }}>
-                  {item.icon}
-                </div>
-                <div>
-                  <h3 className="font-bold text-white text-lg mb-1">{item.title}</h3>
-                  <p className="text-gray-500 text-sm leading-relaxed">{item.desc}</p>
-                </div>
-              </motion.div>
-            ))}
-          </div>
-        </div>
-      </section>
+   
 
       {/* ─── SERVICES ─── */}
       <Services />
-      {/* ─── METHODOLOGY ─── */}
-      <section className="py-24 px-6 bg-[#0B0B12]">
-        <div className="max-w-6xl mx-auto">
-          <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} className="mb-14">
-            <p className="text-xs font-bold tracking-[0.2em] uppercase text-yellow-400 mb-3">— How It Works</p>
-            <h2 className="font-bold tracking-tight" style={{ fontSize: "clamp(2rem, 5vw, 3.5rem)" }}>
-              Our <span className="text-yellow-400">Methodology</span>
-            </h2>
-          </motion.div>
-          <div className="relative">
-            <div className="hidden md:block absolute top-10 left-0 right-0 h-px bg-gradient-to-r from-transparent via-yellow-400/20 to-transparent" />
-            <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
-              {STEPS.map((s, i) => (
-                <motion.div key={i} initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.5, delay: i * 0.1 }} viewport={{ once: true }}>
-                  <div className="w-10 h-10 rounded-full flex items-center justify-center font-mono text-xs font-black mb-4 relative z-10 text-[#0B0B12]"
-                    style={{ background: s.color }}>
-                    {s.num}
-                  </div>
-                  <h3 className="text-2xl font-bold mb-2" style={{ color: s.color }}>{s.title}</h3>
-                  <p className="text-gray-500 text-sm leading-relaxed">{s.desc}</p>
-                </motion.div>
-              ))}
-            </div>
-          </div>
-        </div>
-      </section>
 
       {/* ─── STATS ─── */}
       
 
-      {/* ─── CTA ─── */}
-      <section className="py-24 px-6 bg-[#0B0B12]">
-        <div className="max-w-3xl mx-auto text-center">
-          <motion.div initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }}>
-            <p className="text-xs font-bold tracking-[0.2em] uppercase text-emerald-400 mb-5">— Start Today</p>
-            <h2 className="font-bold leading-tight tracking-tight mb-5" style={{ fontSize: "clamp(2rem, 5vw, 3.5rem)" }}>
-              Ready to Trade <span className="text-emerald-400">Like a Pro?</span>
-            </h2>
-            <p className="text-gray-500 mb-10 leading-relaxed max-w-md mx-auto text-base">
-              Join 2,000+ traders who've transformed their approach to markets. Your first demo session is on us.
-            </p>
-            <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <button
-                className="px-10 py-4 font-bold text-sm tracking-widest uppercase rounded-lg text-white"
-                style={{ background: "linear-gradient(135deg, #8100D1, #5500b5)", boxShadow: "0 4px 24px rgba(129,0,209,0.4)" }}>
-                Book Free Demo
-              </button>
-              <Link to="/programs"
-                className="px-10 py-4 font-bold text-sm tracking-widest uppercase rounded-lg text-white/60 border border-white/15 hover:border-white/30 transition-colors duration-200">
-                View All Programs
-              </Link>
-            </div>
-          </motion.div>
-        </div>
-      </section>
+      <CTASection/>
 
       <Footer />
     </div>
