@@ -2,7 +2,7 @@
 
 import { useRef, useState } from "react";
 import { motion, useScroll, useTransform, useInView, AnimatePresence } from "framer-motion";
-import { Header } from "./Header";
+import { Navbar } from "./Navbar";
 import { Footer } from "./Footer";
 import { Link } from "react-router";
 import { ArrowRight, Star, Quote } from "lucide-react";
@@ -735,7 +735,7 @@ export function Testimonials() {
         }}
       />
 
-      <Header />
+      <Navbar />
 
       {/* ── 1. Editorial masthead hero ── */}
       <Hero />

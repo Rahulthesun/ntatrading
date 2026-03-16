@@ -1,803 +1,472 @@
-'use client';
-
-import { useRef, useEffect } from "react";
-import { motion, useScroll, useTransform, useSpring, useInView } from "framer-motion";
-import { Header } from "../components/Header";
+import { useEffect, useRef, useState } from "react";
+import { motion, useInView } from "motion/react";
+import {
+  MapPin, Phone, Mail, ArrowRight, ChevronDown,
+  MonitorPlay, Users, ShieldCheck, TrendingUp,
+  CheckCircle2, Quote,
+} from "lucide-react";
+import { Navbar } from "../components/Navbar";
+import LightRays from "../../components/LightRays";
+import { FounderMessage } from "../components/FounderMessage";
+import Reviews from "../components/Reviews";
 import { Footer } from "../components/Footer";
 
-/* ═══════════════════════════════════════════════════════════════════════════
-   CONSTANTS
-   ═══════════════════════════════════════════════════════════════════════════ */
-
-// Candle definitions — matches the loader exactly
-// Each: { color, wickTopY, bodyY, bodyH, wickBotY, finalBodyY, finalBodyH, finalColor? }
-const CANDLES = [
-  { id:"c1", color:"#ef4444", wickTopY:14, bodyY:28,  bodyH:72, wickBotY:118, finalBodyY:51, finalBodyH:38 },
-  { id:"c2", color:"#ef4444", wickTopY:50, bodyY:63,  bodyH:32, wickBotY:108, finalBodyY:67, finalBodyH:5,  finalColor:"#94a3b8" },
-  { id:"c3", color:"#10b981", wickTopY:60, bodyY:72,  bodyH:28, wickBotY:112, finalBodyY:35, finalBodyH:60 },
-  { id:"c4", color:"#10b981", wickTopY:40, bodyY:56,  bodyH:50, wickBotY:118, finalBodyY:10, finalBodyH:100 },
-];
-
-const TIMELINE = [
-  {
-    year: "2008",
-    label: "The Beginning",
-    color: "#ef4444",
-    icon: "📉",
-    heading: "Born from the Crash",
-    body:
-      "Founded in the aftermath of the global financial crisis, Namma Trading Academy was born out of a single conviction — that ordinary people deserved the same market knowledge as institutional traders. Our founder stepped away from a decade-long career on the trading floor to build something different.",
-  },
-  {
-    year: "2013",
-    label: "Growth",
-    color: "#ffc857",
-    icon: "🌱",
-    heading: "From Classroom to Community",
-    body:
-      "What started as weekend workshops in Chennai grew into a structured curriculum reaching thousands of students across South India. We built our first live trading room, letting students observe real decisions in real markets — not theory, but practice under pressure.",
-  },
-  {
-    year: "2019",
-    label: "Mission",
-    color: "#00d4ff",
-    icon: "🎯",
-    heading: "Democratise Market Education",
-    body:
-      "Our mission crystallised: make institutional-grade trading education accessible to every Indian who wants financial independence. We launched online cohorts, mentorship programmes, and a community of 2,000+ traders who hold each other accountable to the same standards.",
-  },
-  {
-    year: "2023",
-    label: "Vision",
-    color: "#00ff88",
-    icon: "🔭",
-    heading: "India's Most Trusted Trading Academy",
-    body:
-      "We envision a future where every retail trader in India has access to the tools, knowledge, and mentorship that were once reserved for professionals. Our next chapter: NSE-certified programmes, prop-firm partnerships, and a global alumni network.",
-  },
-  {
-    year: "Today",
-    label: "Core Values",
-    color: "#bf80ff",
-    icon: "🏆",
-    heading: "What We Stand For",
-    body:
-      "Discipline over luck. Risk management over recklessness. Transparency over hype. Community over competition. These aren't slogans — they are the filters through which every curriculum decision, mentorship conversation, and trade review is made at Namma Trading Academy.",
-  },
-];
-
-/* ═══════════════════════════════════════════════════════════════════════════
-   SCROLL-DRIVEN CANDLESTICK ANIMATION
-   Section 1: pin the hero, drive candle animation via scroll
-   ═══════════════════════════════════════════════════════════════════════════ */
-
-// Lerp helper
-const lerp = (a, b, t) => a + (b - a) * t;
-const eio  = (p) => p < 0.5 ? 2*p*p : -1+(4-2*p)*p;
-
-function ScrollCandleHero() {
-  const sectionRef  = useRef(null);
-  const canvasRef   = useRef(null);          // we draw candles on SVG via direct DOM for perf
-  const trendRef    = useRef(null);
-  const dotRef      = useRef(null);
-  const textRef     = useRef(null);
-
-  const { scrollYProgress } = useScroll({
-    target: sectionRef,
-    offset: ["start start", "end end"],
-  });
-
-  // ── Text opacity: shows once candles are done (~60% scroll) ──
-  const textOpacity = useTransform(scrollYProgress, [0.55, 0.75], [0, 1]);
-  const textY       = useTransform(scrollYProgress, [0.55, 0.75], [30, 0]);
-
-  // ── Animate candles frame-by-frame via scroll ──────────────────────────
-  useEffect(() => {
-    const svg = document.getElementById("about-candle-svg");
-    if (!svg) return;
-
-    const unsub = scrollYProgress.on("change", (raw) => {
-      const p = Math.max(0, Math.min(1, raw));
-
-      // Phase 1 (0–0.25): candles appear one by one (enter from below)
-      // Phase 2 (0.25–0.55): candles transform (red→doji, green grows)
-      // Phase 3 (0.55–0.75): trend line draws
-      // Phase 4 (0.75–1): all settled, text visible
-
-      CANDLES.forEach((c, i) => {
-        const bodyEl  = svg.querySelector(`#body-${c.id}`);
-        const wtEl    = svg.querySelector(`#wt-${c.id}`);
-        const wbEl    = svg.querySelector(`#wb-${c.id}`);
-        const wrapEl  = svg.querySelector(`#wrap-${c.id}`);
-        if (!bodyEl || !wtEl || !wbEl || !wrapEl) return;
-
-        // — Enter phase: each candle enters at staggered scroll window —
-        const enterStart = i * 0.06;
-        const enterEnd   = enterStart + 0.12;
-        const enterP = eio(Math.max(0, Math.min(1, (p - enterStart) / (enterEnd - enterStart))));
-
-        // Slide up from 40px below, fade in
-        const ty = (1 - enterP) * 40;
-        const op = enterP;
-        wrapEl.setAttribute("transform", `translate(0, ${ty})`);
-        wrapEl.setAttribute("opacity", op);
-
-        // — Transform phase: body geometry morphs —
-        const tStart = 0.28 + i * 0.05;
-        const tEnd   = tStart + 0.1;
-        const tP = eio(Math.max(0, Math.min(1, (p - tStart) / (tEnd - tStart))));
-
-        const curBodyY = lerp(c.bodyY, c.finalBodyY, tP);
-        const curBodyH = lerp(c.bodyH, c.finalBodyH, tP);
-        const finalCol = c.finalColor ?? c.color;
-        // Interpolate colour for c2 (red → grey)
-        const col = i === 1
-          ? tP > 0.5 ? finalCol : c.color
-          : c.color;
-
-        bodyEl.setAttribute("y",      String(curBodyY));
-        bodyEl.setAttribute("height", String(Math.max(curBodyH, 2)));
-        bodyEl.setAttribute("fill",   col);
-
-        // Update lower wick y1 to match body bottom
-        wbEl.setAttribute("y1", String(curBodyY + curBodyH));
-
-        // C4 glow
-        if (i === 3 && tP > 0.7) {
-          const glow = (tP - 0.7) / 0.3;
-          bodyEl.style.filter = `drop-shadow(0 0 ${glow * 14}px rgba(16,185,129,0.7))`;
-        }
-      });
-
-      // — Trend line draw (scroll 0.55 → 0.72) —
-      const tlStart = 0.56, tlEnd = 0.72;
-      const tlP = Math.max(0, Math.min(1, (p - tlStart) / (tlEnd - tlStart)));
-      const path = svg.querySelector("#trend-path");
-      if (path) {
-        const total = path.getTotalLength();
-        path.setAttribute("stroke-dashoffset", String(total * (1 - eio(tlP))));
-        path.setAttribute("opacity", String(tlP > 0.05 ? 1 : 0));
-
-        // Move glowing dot along path
-        const dot = svg.querySelector("#trend-dot");
-        if (dot && tlP > 0.01) {
-          const pt = path.getPointAtLength(eio(tlP) * total);
-          dot.setAttribute("cx", String(pt.x));
-          dot.setAttribute("cy", String(pt.y));
-          dot.setAttribute("opacity", String(Math.min(1, tlP * 4)));
-        }
-      }
-    });
-
-    return () => unsub();
-  }, [scrollYProgress]);
-
-  // SVG layout
-  const CW = 28, GAP = 18;
-  const totalW = CANDLES.length * CW + (CANDLES.length - 1) * GAP; // 28*4+18*3 = 166
-
+/* ══════════════════════════════════════════════════════════════
+   SHARED PRIMITIVES
+══════════════════════════════════════════════════════════════ */
+function FadeUp({ children, delay = 0, className = "" }: {
+  children: React.ReactNode; delay?: number; className?: string;
+}) {
+  const ref = useRef(null);
+  const inView = useInView(ref, { once: true, margin: "-60px" });
   return (
-    <section
-      ref={sectionRef}
-      style={{ height: "260vh", position: "relative" }}
+    <motion.div ref={ref}
+      initial={{ opacity: 0, y: 28 }}
+      animate={inView ? { opacity: 1, y: 0 } : {}}
+      transition={{ duration: 0.72, delay, ease: [0.22, 1, 0.36, 1] }}
+      className={className}
+    >{children}</motion.div>
+  );
+}
+
+function FadeIn({ children, delay = 0, className = "" }: {
+  children: React.ReactNode; delay?: number; className?: string;
+}) {
+  const ref = useRef(null);
+  const inView = useInView(ref, { once: true, margin: "-40px" });
+  return (
+    <motion.div ref={ref}
+      initial={{ opacity: 0, x: -20 }}
+      animate={inView ? { opacity: 1, x: 0 } : {}}
+      transition={{ duration: 0.65, delay, ease: [0.22, 1, 0.36, 1] }}
+      className={className}
+    >{children}</motion.div>
+  );
+}
+
+function Eyebrow({ children }: { children: React.ReactNode }) {
+  return (
+    <div className="inline-flex items-center gap-2.5 mb-5">
+      <div className="h-px w-6 bg-purple-500/40" />
+      <span className="font-sans text-[10px] tracking-[0.22em] uppercase text-purple-400/60">{children}</span>
+    </div>
+  );
+}
+
+function H2({ children, className = "" }: { children: React.ReactNode; className?: string }) {
+  return (
+    <h2 className={`font-serif font-normal leading-[1.08] tracking-[-0.02em] text-purple-50 ${className}`}
+      style={{ fontSize: "clamp(28px,3.6vw,48px)" }}>
+      {children}
+    </h2>
+  );
+}
+
+function Italic({ children }: { children: React.ReactNode }) {
+  return (
+    <span
+      className="font-serif italic text-transparent bg-clip-text inline-block pr-1.5"
+      style={{ backgroundImage: "linear-gradient(135deg,#d8b4fe 0%,#a855f7 55%,#c084fc 100%)" }}
     >
-      {/* Sticky viewport */}
-      <div
-        style={{
-          position: "sticky",
-          top: 0,
-          height: "100vh",
-          display: "flex",
-          flexDirection: "column",
-          alignItems: "center",
-          justifyContent: "center",
-          overflow: "hidden",
-        }}
-      >
-        {/* Background radial glow */}
-        <div style={{
-          position: "absolute", inset: 0, pointerEvents: "none",
-          background: "radial-gradient(ellipse 60% 50% at 50% 50%, rgba(0,255,136,0.06) 0%, transparent 70%)",
-        }} />
+      {children}
+    </span>
+  );
+}
 
-        <motion.div
-            animate={{ y: [0, 8, 0] }}
-            transition={{ repeat: Infinity, duration: 1.6 }}
-            style={{
-              marginTop: 32,
-              display: "flex", flexDirection: "column", alignItems: "center", gap: 6,
-              color: "#374151", fontSize: 10, letterSpacing: "0.15em", textTransform: "uppercase",
-            }}
-          >
-            <div style={{ width: 1, height: 28, background: "linear-gradient(to bottom, transparent, #374151)" }} />
-            Scroll to continue
-          </motion.div>
+function Rule() {
+  return <div className="w-full h-px bg-gradient-to-r from-transparent via-purple-500/[0.11] to-transparent" />;
+}
 
-        {/* Grid lines */}
-        <div style={{
-          position: "absolute", inset: 0, pointerEvents: "none", opacity: 0.12,
-          backgroundImage:
-            "linear-gradient(rgba(0,212,255,0.4) 1px,transparent 1px)," +
-            "linear-gradient(90deg,rgba(0,212,255,0.4) 1px,transparent 1px)",
-          backgroundSize: "60px 60px",
-        }} />
+/* ══════════════════════════════════════════════════════════════
+   1 · HERO — rewritten
+══════════════════════════════════════════════════════════════ */
+function Hero() {
+  return (
+    <section className="relative min-h-[88vh] flex flex-col items-center justify-center text-center px-6 pt-32 pb-20 overflow-hidden">
+      <div className="absolute inset-0 z-0 pointer-events-none">
+        <LightRays raysOrigin="top-center" raysColor="#cb70f5" raysSpeed={0.7}
+          lightSpread={1} rayLength={1.5} pulsating={false} fadeDistance={1}
+          saturation={1} followMouse mouseInfluence={0.07} noiseAmount={0} distortion={0} />
+      </div>
+      <div className="absolute inset-0 z-[1] pointer-events-none [background:radial-gradient(ellipse_100%_55%_at_50%_0%,transparent_28%,#06010F_100%)]" />
 
-        {/* Corner brackets */}
-        {[
-          { top:24, left:24, borderTop:"1px solid rgba(0,255,136,0.3)", borderLeft:"1px solid rgba(0,255,136,0.3)" },
-          { top:24, right:24, borderTop:"1px solid rgba(0,255,136,0.3)", borderRight:"1px solid rgba(0,255,136,0.3)" },
-          { bottom:24, left:24, borderBottom:"1px solid rgba(0,255,136,0.3)", borderLeft:"1px solid rgba(0,255,136,0.3)" },
-          { bottom:24, right:24, borderBottom:"1px solid rgba(0,255,136,0.3)", borderRight:"1px solid rgba(0,255,136,0.3)" },
-        ].map((s, i) => (
-          <div key={i} style={{ position:"absolute", width:52, height:52, ...s }} />
-        ))}
+      <div className="relative z-[5] max-w-[760px] mx-auto">
 
-        {/* ── The animated candle SVG ── */}
-        <svg
-          id="about-candle-svg"
-          width={totalW + 60}
-          height={200}
-          viewBox={`-30 -20 ${totalW + 60} 200`}
-          style={{ overflow: "visible", marginBottom: 48 }}
-        >
-          <defs>
-            <filter id="glow-green" x="-50%" y="-50%" width="200%" height="200%">
-              <feGaussianBlur stdDeviation="4" result="b"/>
-              <feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge>
-            </filter>
-            <filter id="glow-gold" x="-50%" y="-50%" width="200%" height="200%">
-              <feGaussianBlur stdDeviation="3" result="b"/>
-              <feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge>
-            </filter>
-          </defs>
-
-          {CANDLES.map((c, i) => {
-            const x = i * (CW + GAP);
-            const cx = x + CW / 2;
-            return (
-              <g key={c.id} id={`wrap-${c.id}`} opacity="0">
-                {/* Upper wick */}
-                <line
-                  id={`wt-${c.id}`}
-                  x1={cx} y1={c.wickTopY} x2={cx} y2={c.bodyY}
-                  stroke={c.color} strokeWidth="2" strokeLinecap="round"
-                />
-                {/* Body */}
-                <rect
-                  id={`body-${c.id}`}
-                  x={x + 4} y={c.bodyY} width={CW - 8} height={c.bodyH}
-                  rx="3" fill={c.color}
-                />
-                {/* Lower wick */}
-                <line
-                  id={`wb-${c.id}`}
-                  x1={cx} y1={c.bodyY + c.bodyH} x2={cx} y2={c.wickBotY}
-                  stroke={c.color} strokeWidth="2" strokeLinecap="round"
-                />
-              </g>
-            );
-          })}
-
-          {/* Trend line */}
-          <path
-            id="trend-path"
-            d="M 14,95 C 42,82 68,76 95,76 C 118,76 138,52 158,46 C 178,40 196,20 214,16"
-            fill="none"
-            stroke="#c9a227"
-            strokeWidth="1.8"
-            strokeLinecap="round"
-            filter="url(#glow-gold)"
-            style={{ strokeDasharray: 280, strokeDashoffset: 280 }}
-            opacity="0"
-          />
-
-          {/* Glowing dot on trend tip */}
-          <circle
-            id="trend-dot"
-            cx="14" cy="95" r="5"
-            fill="#f0c040"
-            filter="url(#glow-green)"
-            opacity="0"
-          />
-        </svg>
-
-        {/* ── Text reveal after animation completes ── */}
-        <motion.div
-          style={{ opacity: textOpacity, y: textY, textAlign: "center", maxWidth: 560, padding: "0 24px" }}
-        >
-          <p
-            style={{
-              fontFamily: "monospace",
-              fontSize: 11,
-              letterSpacing: "0.2em",
-              textTransform: "uppercase",
-              color: "#00ff88",
-              marginBottom: 12,
-            }}
-          >
-            Our Story
-          </p>
-          <h2
-            style={{
-              fontFamily: "'Georgia', serif",
-              fontSize: "clamp(2rem, 4vw, 3rem)",
-              fontWeight: 700,
-              color: "#f0f4ff",
-              lineHeight: 1.15,
-              marginBottom: 16,
-            }}
-          >
-            Four Candles.{" "}
-            <span style={{ color: "#00ff88" }}>One Direction.</span>
-          </h2>
-          <p style={{ color: "#6b7280", fontSize: 15, lineHeight: 1.75 }}>
-            Just like a market reversal — every great story begins with a loss,
-            steadies in uncertainty, and breaks through into something bigger.
-            <br />Scroll to walk our timeline.
-          </p>
-
-          {/* animated down arrow */}
-          <motion.div
-            animate={{ y: [0, 8, 0] }}
-            transition={{ repeat: Infinity, duration: 1.6 }}
-            style={{
-              marginTop: 32,
-              display: "flex", flexDirection: "column", alignItems: "center", gap: 6,
-              color: "#374151", fontSize: 10, letterSpacing: "0.15em", textTransform: "uppercase",
-            }}
-          >
-            <div style={{ width: 1, height: 28, background: "linear-gradient(to bottom, transparent, #374151)" }} />
-            Scroll to continue
-          </motion.div>
+        {/* badge */}
+        <motion.div initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6, delay: 0.1, ease: [0.22,1,0.36,1] }}
+          className="inline-flex items-center gap-2 bg-violet-700/[0.12] border border-violet-500/[0.18] px-5 py-1.5 rounded-full mb-8">
+          <span className="w-1.5 h-1.5 rounded-full bg-purple-400 animate-pulse" />
+          <span className="font-sans text-[10px] tracking-[0.18em] uppercase text-purple-300/70">
+            Namma Trading Academy · Chennai
+          </span>
         </motion.div>
+
+        {/* headline */}
+        <motion.h1 initial={{ opacity: 0, y: 28 }} animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.85, delay: 0.22, ease: [0.22,1,0.36,1] }}
+          className="font-serif font-normal text-purple-50 leading-[1.06] tracking-[-0.02em] mb-6"
+          style={{ fontSize: "clamp(38px,5.2vw,70px)" }}>
+          South India's most<br />
+          <Italic className="pr-1">live</Italic> trading academy.
+        </motion.h1>
+
+        {/* sub */}
+        <motion.p initial={{ opacity: 0, y: 18 }} animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.7, delay: 0.36, ease: [0.22,1,0.36,1] }}
+          className="font-sans text-[15px] font-light text-purple-200/45 max-w-[520px] mx-auto leading-[1.78] mb-5">
+          At NTA, every session begins with a real terminal open, real capital at stake
+          and a mentor who actually trades. Not slides. Not recordings.
+          <span className="text-purple-200/65 font-normal"> Live markets, every day.</span>
+        </motion.p>
+
+        {/* proof strip */}
+        <motion.div initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6, delay: 0.5, ease: [0.22,1,0.36,1] }}
+          className="flex items-center justify-center gap-6 mb-10">
+          {[
+            { v: "500+", l: "Students" },
+            { v: "4.9★", l: "Rating"   },
+            { v: "100%", l: "Live Demo" },
+          ].map(({ v, l }) => (
+            <div key={l} className="text-center">
+              <p className="font-serif text-[18px] text-purple-50/85 leading-none">{v}</p>
+              <p className="font-sans text-[9px] tracking-[0.14em] uppercase text-purple-400/40 mt-0.5">{l}</p>
+            </div>
+          ))}
+        </motion.div>
+
+        {/* CTAs */}
+        <motion.div initial={{ opacity: 0, y: 14 }} animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6, delay: 0.62, ease: [0.22,1,0.36,1] }}
+          className="flex justify-center gap-3">
+          <button className="bg-gradient-to-r from-violet-700 to-purple-500 text-white font-sans text-[13px] font-medium tracking-[0.04em] px-8 py-3 rounded-full border-0 cursor-pointer shadow-[0_4px_24px_rgba(139,92,246,0.35)] hover:brightness-110 hover:-translate-y-px transition-all duration-200">
+            Explore Programs
+          </button>
+          <button className="font-sans text-[13px] font-normal tracking-[0.04em] text-purple-200/50 px-8 py-3 rounded-full border border-purple-400/[0.14] hover:border-purple-400/32 hover:text-purple-100/75 transition-all duration-200 bg-transparent cursor-pointer">
+            Book Free Demo
+          </button>
+        </motion.div>
+      </div>
+
+      {/* scroll cue */}
+      <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 1.3 }}
+        className="absolute bottom-8 left-1/2 -translate-x-1/2 z-[5] flex flex-col items-center gap-1">
+        <span className="font-sans text-[9px] tracking-[0.18em] uppercase text-purple-400/22">Scroll</span>
+        <motion.div animate={{ y: [0, 5, 0] }} transition={{ duration: 1.6, repeat: Infinity, ease: "easeInOut" }}>
+          <ChevronDown className="w-4 h-4 text-purple-400/22" />
+        </motion.div>
+      </motion.div>
+    </section>
+  );
+}
+
+/* ══════════════════════════════════════════════════════════════
+   2 · STATS
+══════════════════════════════════════════════════════════════ */
+const STATS = [
+  { end: 500,  suffix: "+",  label: "Active Students",  note: "& growing"          },
+  { end: 60,   suffix: "+",  label: "Live Sessions",    note: "since launch"        },
+  { end: 4.9,  suffix: "★", label: "Average Rating",   note: "from real students"  },
+  { end: 30,   suffix: "d",  label: "To Consistency",   note: "avg student journey" },
+];
+
+function Num({ end, suffix }: { end: number; suffix: string }) {
+  const [v, setV] = useState(0);
+  const ref = useRef(null);
+  const inView = useInView(ref, { once: true });
+  useEffect(() => {
+    if (!inView) return;
+    let c = 0;
+    const dec = end % 1 !== 0;
+    const inc = end / 60;
+    const id = setInterval(() => {
+      c += inc;
+      if (c >= end) { setV(end); clearInterval(id); }
+      else setV(dec ? Math.round(c * 10) / 10 : Math.floor(c));
+    }, 16);
+    return () => clearInterval(id);
+  }, [inView, end]);
+  return <span ref={ref}>{v}{suffix}</span>;
+}
+
+function Stats() {
+  return (
+    <section className="relative z-[5] pb-6 px-6">
+      <div className="max-w-5xl mx-auto grid grid-cols-2 md:grid-cols-4 gap-3">
+        {STATS.map((s, i) => (
+          <FadeUp key={s.label} delay={i * 0.07}>
+            <div className="bg-[#0C0420]/65 border border-purple-500/[0.09] backdrop-blur-xl rounded-2xl px-5 py-6 text-center">
+              <p className="font-serif text-purple-50 leading-none mb-1.5"
+                style={{ fontSize: "clamp(26px,3.2vw,38px)" }}>
+                <Num end={s.end} suffix={s.suffix} />
+              </p>
+              <p className="font-sans text-[11.5px] font-medium text-purple-100/72 mb-0.5">{s.label}</p>
+              <p className="font-sans text-[9.5px] text-purple-400/32 tracking-[0.06em]">{s.note}</p>
+            </div>
+          </FadeUp>
+        ))}
       </div>
     </section>
   );
 }
 
-/* ═══════════════════════════════════════════════════════════════════════════
-   HORIZONTAL TIMELINE
-   Horizontal scroll driven by vertical page scroll — locked viewport
-   ═══════════════════════════════════════════════════════════════════════════ */
+/* ══════════════════════════════════════════════════════════════
+   3 · WHY NTA — replaces HowItWorks + Pillars
+   Four honest differentiators, two-column layout
+══════════════════════════════════════════════════════════════ */
+const DIFF = [
+  {
+    Icon: MonitorPlay,
+    title: "Every session is live.",
+    desc: "We open a real trading terminal in front of every student, every day the market is open. Not recordings. Not re-runs. Real money, real decisions, real time.",
+  },
+  {
+    Icon: TrendingUp,
+    title: "Mentors who actually trade.",
+    desc: "Our instructors trade their own capital daily. When they teach a setup, they've taken that trade. When they warn you about a risk, they've felt that loss.",
+  },
+  {
+    Icon: Users,
+    title: "A room, not a course.",
+    desc: "You're joining an active community of traders — not buying a product. Students support each other, share setups and call out each other's mistakes in real time.",
+  },
+  {
+    Icon: ShieldCheck,
+    title: "Honest about timelines.",
+    desc: "We tell every student upfront: 3–6 months to consistent profitability. No overnight promises. No guarantee gimmicks. Just honest, structured skill-building.",
+  },
+];
 
-function HorizontalTimeline() {
-  const sectionRef  = useRef(null);
-  const trackRef    = useRef(null);
-
-  const { scrollYProgress } = useScroll({
-    target: sectionRef,
-    offset: ["start start", "end end"],
-  });
-
-  // Map vertical scroll → horizontal translateX
-  // Track width: each card 480px + gap 60px, minus one gap
-  const CARD_W      = 480;
-  const GAP         = 60;
-  const CARDS       = TIMELINE.length;
-  const trackWidth  = CARD_W * CARDS + GAP * (CARDS - 1);
-  // We shift from 0 to -(trackWidth - viewport), viewport ≈ 100vw
-  // Use a big negative number; clip is handled by overflow:hidden
-  const x = useTransform(
-    scrollYProgress,
-    [0, 1],
-    ["0px", `-${trackWidth - 200}px`]
-  );
-
-  // Smooth the horizontal motion
-  const smoothX = useSpring(x, { stiffness: 60, damping: 20, mass: 0.8 });
-
-  // Progress line width
-  const lineWidth = useTransform(scrollYProgress, [0, 1], ["0%", "100%"]);
-
+function WhyNTA() {
   return (
-    <section
-      ref={sectionRef}
-      style={{ height: `${CARDS * 100}vh`, position: "relative", background: "#0a0e1a" }}
-    >
-      {/* ── Sticky viewport ── */}
-      <div
-        style={{
-          position: "sticky",
-          top: 0,
-          height: "100vh",
-          overflow: "hidden",
-          display: "flex",
-          flexDirection: "column",
-          justifyContent: "center",
-        }}
-      >
-        {/* Section label */}
-        <div style={{ padding: "0 10vw", marginBottom: 40 }}>
-          <p style={{
-            fontFamily: "monospace", fontSize: 10, letterSpacing: "0.2em",
-            textTransform: "uppercase", color: "#6b7280", marginBottom: 6,
-          }}>
-            Timeline
-          </p>
-          <h3 style={{
-            fontFamily: "'Georgia', serif", fontSize: "clamp(1.4rem,2.5vw,2rem)",
-            fontWeight: 700, color: "#f0f4ff",
-          }}>
-            The Namma Trading Journey
-          </h3>
-        </div>
+    <section className="relative z-[5] py-24 px-6">
+      <Rule />
+      <div className="max-w-5xl mx-auto py-24">
 
-        {/* Progress rail */}
-        <div style={{ padding: "0 10vw", marginBottom: 36 }}>
-          <div style={{
-            width: "100%", height: 1,
-            background: "rgba(255,255,255,0.07)",
-            position: "relative",
-          }}>
-            <motion.div style={{
-              position: "absolute", top: 0, left: 0,
-              height: "100%", width: lineWidth,
-              background: "linear-gradient(90deg, #ef4444, #ffc857, #00d4ff, #00ff88, #bf80ff)",
-            }} />
-            {/* Year dots on rail */}
-            {TIMELINE.map((t, i) => (
-              <div key={i} style={{
-                position: "absolute",
-                left: `${(i / (CARDS - 1)) * 100}%`,
-                top: "50%",
-                transform: "translate(-50%, -50%)",
-                width: 8, height: 8,
-                borderRadius: "50%",
-                background: t.color,
-                boxShadow: `0 0 10px ${t.color}`,
-              }} />
+        <div className="grid md:grid-cols-2 gap-16 items-start">
+
+          {/* left — heading */}
+          <FadeUp className="md:sticky md:top-32">
+            <Eyebrow>Why NTA</Eyebrow>
+            <H2 className="mb-6">
+              What makes us<br />
+              <Italic>actually</Italic> different.
+            </H2>
+            <p className="font-sans text-[13.5px] font-light text-purple-200/40 leading-[1.82] max-w-[360px]">
+              There are hundreds of trading courses in India. Most teach theory.
+              NTA was built around one idea: the only way to learn trading is
+              to do it — with someone who does it too.
+            </p>
+          </FadeUp>
+
+          {/* right — differentiators */}
+          <div className="flex flex-col gap-5">
+            {DIFF.map(({ Icon, title, desc }, i) => (
+              <FadeUp key={title} delay={i * 0.09}>
+                <motion.div
+                  whileHover={{ x: 4 }}
+                  transition={{ type: "spring", stiffness: 300, damping: 24 }}
+                  className="flex gap-5 p-5 bg-[#0C0420]/55 border border-purple-500/[0.08] backdrop-blur-xl rounded-2xl hover:border-purple-400/18 transition-colors duration-300 cursor-default"
+                >
+                  <div className="w-10 h-10 rounded-xl bg-purple-500/[0.09] border border-purple-400/[0.11] flex items-center justify-center shrink-0 mt-0.5">
+                    <Icon className="text-purple-400" size={17} />
+                  </div>
+                  <div>
+                    <p className="font-serif text-[17px] text-purple-50 mb-1.5">{title}</p>
+                    <p className="font-sans text-[12.5px] font-light text-purple-200/40 leading-[1.75]">{desc}</p>
+                  </div>
+                </motion.div>
+              </FadeUp>
             ))}
           </div>
         </div>
-
-        {/* Scrolling track */}
-        <div style={{ paddingLeft: "10vw", overflow: "visible" }}>
-          <motion.div
-            ref={trackRef}
-            style={{
-              x: smoothX,
-              display: "flex",
-              gap: GAP,
-              width: "max-content",
-              alignItems: "stretch",
-            }}
-          >
-            {TIMELINE.map((t, i) => (
-              <TimelineCard key={i} t={t} index={i} scrollYProgress={scrollYProgress} total={CARDS} />
-            ))}
-          </motion.div>
-        </div>
-
-        {/* Bottom left scroll label */}
-        <div style={{
-          position: "absolute", bottom: 32, left: "10vw",
-          display: "flex", alignItems: "center", gap: 10,
-        }}>
-          <motion.div
-            animate={{ x: [0, 8, 0] }}
-            transition={{ repeat: Infinity, duration: 1.6 }}
-            style={{
-              display: "flex", alignItems: "center", gap: 8,
-              color: "#374151", fontSize: 10, letterSpacing: "0.15em", textTransform: "uppercase",
-            }}
-          >
-            Scroll to navigate
-            <div style={{ width: 28, height: 1, background: "linear-gradient(to right, #374151, transparent)" }} />
-            →
-          </motion.div>
-        </div>
       </div>
+      <Rule />
     </section>
   );
 }
 
-/* ── Individual timeline card ────────────────────────────────────────────── */
-function TimelineCard({ t, index, scrollYProgress, total }) {
-  // Each card's "active window" in the scroll range
-  const start = index / total;
-  const end   = (index + 0.8) / total;
+/* ══════════════════════════════════════════════════════════════
+   4 · PROGRAMS
+══════════════════════════════════════════════════════════════ */
+const PROGRAMS = [
+  { name: "Stock Market Basics",     tag: "Beginner",     dur: "4 weeks",  desc: "Charts, order types, fundamental & technical basics. Zero experience needed." },
+  { name: "30-Day Trading Program",  tag: "Flagship",     dur: "30 days",  desc: "Live sessions every market day. Our most popular and most transformative program." },
+  { name: "NFI Certification Prep",  tag: "Advanced",     dur: "3 weeks",  desc: "Structured NISM/NCFM prep with mock exams and 1-on-1 doubt-clearing." },
+  { name: "Commodity Trading",       tag: "Intermediate", dur: "2 weeks",  desc: "Gold, Silver, Crude Oil & agricultural commodities on MCX." },
+  { name: "Options Strategies",      tag: "Advanced",     dur: "3 weeks",  desc: "Delta-neutral, spreads, Iron Condors — for students who already know the basics." },
+  { name: "Live Trading Workshops",  tag: "Events",       dur: "1–2 days", desc: "Intensive weekend workshops around key market events and earnings seasons." },
+];
 
-  const opacity = useTransform(scrollYProgress, [start, end], [0.35, 1], { clamp: true });
-  const y       = useTransform(scrollYProgress, [start, end], [30, 0], { clamp: true });
-  const borderOpacity = useTransform(scrollYProgress, [start, end], [0.1, 0.6], { clamp: true });
+const TAG_CLR: Record<string, string> = {
+  Beginner:     "bg-emerald-400/10 text-emerald-400  border-emerald-400/20",
+  Flagship:     "bg-purple-400/12  text-purple-300   border-purple-400/25",
+  Advanced:     "bg-rose-400/10    text-rose-400     border-rose-400/20",
+  Intermediate: "bg-amber-400/10   text-amber-400    border-amber-400/20",
+  Events:       "bg-sky-400/10     text-sky-400      border-sky-400/20",
+};
 
+function Programs() {
   return (
-    <motion.div
-      style={{
-        width: 480,
-        flexShrink: 0,
-        opacity,
-        y,
-      }}
-    >
-      <motion.div
-        style={{
-          height: "100%",
-          background: "#0b0f1c",
-          borderRadius: 20,
-          border: `1px solid ${t.color}`,
-          borderColor: t.color,
-          borderOpacity,
-          boxShadow: `0 0 0 1px rgba(255,255,255,0.03), 0 20px 60px rgba(0,0,0,0.6)`,
-          padding: "2.5rem",
-          display: "flex",
-          flexDirection: "column",
-          gap: 20,
-          position: "relative",
-          overflow: "hidden",
-        }}
-      >
-        {/* Ambient top glow */}
-        <div style={{
-          position: "absolute", top: -60, left: -60,
-          width: 220, height: 220, borderRadius: "50%",
-          background: `radial-gradient(circle, ${t.color}14 0%, transparent 70%)`,
-          pointerEvents: "none",
-        }} />
-
-        {/* Year badge */}
-        <div style={{
-          display: "inline-flex", alignItems: "center", gap: 8,
-          padding: "5px 14px", borderRadius: 100,
-          background: `${t.color}12`, border: `1px solid ${t.color}30`,
-          width: "fit-content",
-        }}>
-          <span style={{ fontSize: 18 }}>{t.icon}</span>
-          <span style={{
-            fontFamily: "monospace", fontSize: 11,
-            letterSpacing: "0.15em", fontWeight: 700,
-            textTransform: "uppercase", color: t.color,
-          }}>
-            {t.year} · {t.label}
-          </span>
-        </div>
-
-        {/* Heading */}
-        <h4 style={{
-          fontFamily: "'Georgia', serif",
-          fontSize: "1.6rem",
-          fontWeight: 700,
-          color: "#f0f4ff",
-          lineHeight: 1.2,
-        }}>
-          {t.heading}
-        </h4>
-
-        {/* Divider */}
-        <div style={{
-          width: 48, height: 2,
-          background: `linear-gradient(90deg, ${t.color}, transparent)`,
-          borderRadius: 2,
-        }} />
-
-        {/* Body text */}
-        <p style={{
-          color: "#9ca3af",
-          fontSize: 14.5,
-          lineHeight: 1.8,
-          flex: 1,
-        }}>
-          {t.body}
-        </p>
-
-        {/* Bottom card number */}
-        <span style={{
-          fontFamily: "monospace",
-          fontSize: 42,
-          fontWeight: 900,
-          color: `${t.color}10`,
-          position: "absolute",
-          bottom: -8, right: 20,
-          lineHeight: 1,
-          userSelect: "none",
-        }}>
-          0{index + 1}
-        </span>
-      </motion.div>
-    </motion.div>
-  );
-}
-
-/* ═══════════════════════════════════════════════════════════════════════════
-   STATS STRIP — shown after timeline
-   ═══════════════════════════════════════════════════════════════════════════ */
-function StatsStrip() {
-  const ref    = useRef(null);
-  const inView = useInView(ref, { once: true, margin: "-100px" });
-
-  const stats = [
-    { val: "15+",    label: "Years of Experience", color: "#00ff88" },
-    { val: "2,000+", label: "Students Trained",    color: "#00d4ff" },
-    { val: "500+",   label: "Live Sessions",        color: "#ffc857" },
-    { val: "93%",    label: "Student Success Rate", color: "#bf80ff" },
-  ];
-
-  return (
-    <section
-      ref={ref}
-      style={{
-        background: "#0f1421",
-        padding: "80px 10vw",
-        borderTop: "1px solid rgba(255,255,255,0.05)",
-      }}
-    >
-      <div style={{
-        display: "grid",
-        gridTemplateColumns: "repeat(auto-fit, minmax(180px, 1fr))",
-        gap: 40,
-        textAlign: "center",
-      }}>
-        {stats.map((s, i) => (
-          <motion.div
-            key={i}
-            initial={{ opacity: 0, y: 24 }}
-            animate={inView ? { opacity: 1, y: 0 } : {}}
-            transition={{ duration: 0.6, delay: i * 0.1 }}
-          >
-            <div style={{
-              fontFamily: "'Georgia', serif",
-              fontSize: "3rem",
-              fontWeight: 700,
-              color: s.color,
-              lineHeight: 1,
-              marginBottom: 8,
-              textShadow: `0 0 30px ${s.color}40`,
-            }}>
-              {s.val}
-            </div>
-            <div style={{
-              fontSize: 12,
-              textTransform: "uppercase",
-              letterSpacing: "0.12em",
-              color: "#6b7280",
-              fontFamily: "monospace",
-            }}>
-              {s.label}
-            </div>
-          </motion.div>
-        ))}
-      </div>
-    </section>
-  );
-}
-
-/* ═══════════════════════════════════════════════════════════════════════════
-   TEAM SECTION
-   ═══════════════════════════════════════════════════════════════════════════ */
-function TeamSection() {
-  const ref    = useRef(null);
-  const inView = useInView(ref, { once: true, margin: "-80px" });
-
-  const team = [
-    { initials: "RK", name: "Rajesh Kumar",   role: "Founder & Lead Mentor",       exp: "15+ yrs", markets: "Equity · Derivatives", color: "#00ff88" },
-    { initials: "PA", name: "Priya Anand",    role: "Forex & Macro Strategist",    exp: "12 yrs",  markets: "Forex · Commodities",  color: "#00d4ff" },
-    { initials: "SM", name: "Suresh Mani",    role: "Options & Volatility Expert", exp: "10 yrs",  markets: "Options · F&O",        color: "#ffc857" },
-  ];
-
-  return (
-    <section
-      ref={ref}
-      style={{ background: "#0a0e1a", padding: "100px 10vw" }}
-    >
-      <motion.div
-        initial={{ opacity: 0, y: 20 }}
-        animate={inView ? { opacity: 1, y: 0 } : {}}
-        transition={{ duration: 0.6 }}
-        style={{ marginBottom: 56, textAlign: "center" }}
-      >
-        <p style={{
-          fontFamily: "monospace", fontSize: 10, letterSpacing: "0.2em",
-          textTransform: "uppercase", color: "#6b7280", marginBottom: 10,
-        }}>
-          The Team
-        </p>
-        <h2 style={{
-          fontFamily: "'Georgia', serif", fontSize: "clamp(2rem,3.5vw,2.8rem)",
-          fontWeight: 700, color: "#f0f4ff",
-        }}>
-          Traders Who Teach
-        </h2>
-      </motion.div>
-
-      <div style={{
-        display: "grid",
-        gridTemplateColumns: "repeat(auto-fit, minmax(280px, 1fr))",
-        gap: 28,
-      }}>
-        {team.map((m, i) => (
-          <motion.div
-            key={i}
-            initial={{ opacity: 0, y: 30 }}
-            animate={inView ? { opacity: 1, y: 0 } : {}}
-            transition={{ duration: 0.6, delay: i * 0.12 }}
-          >
-            <div style={{
-              background: "#0b0f1c",
-              border: `1px solid ${m.color}20`,
-              borderRadius: 16,
-              padding: "2rem",
-              display: "flex",
-              flexDirection: "column",
-              gap: 16,
-              transition: "border-color 0.3s",
-            }}>
-              {/* Avatar */}
-              <div style={{
-                width: 64, height: 64, borderRadius: "50%",
-                background: `linear-gradient(135deg, ${m.color}30, ${m.color}08)`,
-                border: `2px solid ${m.color}40`,
-                display: "flex", alignItems: "center", justifyContent: "center",
-                fontFamily: "'Georgia', serif", fontWeight: 700, fontSize: 22,
-                color: m.color,
-              }}>
-                {m.initials}
-              </div>
-
-              <div>
-                <div style={{ fontFamily: "'Georgia', serif", fontSize: "1.15rem", fontWeight: 700, color: "#f0f4ff", marginBottom: 4 }}>
-                  {m.name}
+    <section className="relative z-[5] py-24 px-6">
+      <div className="max-w-5xl mx-auto">
+        <FadeUp className="mb-14">
+          <Eyebrow>What We Offer</Eyebrow>
+          <H2>Programs for <Italic>every level.</Italic></H2>
+          <p className="font-sans text-[13.5px] font-light text-purple-200/38 mt-4 max-w-[440px] leading-[1.78]">
+            Opening your first Demat account or sitting for professional certification —
+            there's a clear path for you here.
+          </p>
+        </FadeUp>
+        <div className="grid md:grid-cols-2 gap-4">
+          {PROGRAMS.map(({ name, tag, dur, desc }, i) => (
+            <FadeUp key={name} delay={i * 0.06}>
+              <motion.div whileHover={{ y: -3 }} transition={{ type: "spring", stiffness: 320, damping: 24 }}
+                className="group h-full bg-[#0C0420]/55 border border-purple-500/[0.08] backdrop-blur-xl rounded-2xl p-6 cursor-default hover:border-purple-400/18 transition-colors duration-300">
+                <div className="flex items-start justify-between gap-3 mb-3">
+                  <p className="font-serif text-[17.5px] text-purple-50 leading-tight">{name}</p>
+                  <span className={`font-sans text-[9px] font-bold tracking-[0.12em] uppercase px-2.5 py-1 rounded-full border shrink-0 mt-0.5 ${TAG_CLR[tag] ?? TAG_CLR["Events"]}`}>{tag}</span>
                 </div>
-                <div style={{ fontSize: 12, color: m.color, fontWeight: 600, letterSpacing: "0.04em" }}>
-                  {m.role}
-                </div>
-              </div>
-
-              <div style={{
-                display: "flex", gap: 8, flexWrap: "wrap",
-              }}>
-                {[`${m.exp} experience`, ...m.markets.split(" · ").map(x => x)].map((tag, j) => (
-                  <span key={j} style={{
-                    padding: "3px 10px", borderRadius: 100,
-                    background: `${m.color}0d`, border: `1px solid ${m.color}20`,
-                    fontSize: 11, color: "#9ca3af",
-                    fontFamily: "monospace", letterSpacing: "0.04em",
-                  }}>
-                    {tag}
+                <p className="font-sans text-[12.5px] font-light text-purple-200/38 leading-[1.72] mb-4">{desc}</p>
+                <div className="flex items-center justify-between">
+                  <span className="font-sans text-[9.5px] tracking-[0.12em] uppercase text-purple-400/38">Duration · {dur}</span>
+                  <span className="font-sans text-[11px] text-purple-400/45 group-hover:text-purple-300/65 transition-colors flex items-center gap-1">
+                    Learn more <ArrowRight className="w-3 h-3" />
                   </span>
-                ))}
-              </div>
-            </div>
-          </motion.div>
-        ))}
+                </div>
+              </motion.div>
+            </FadeUp>
+          ))}
+        </div>
       </div>
     </section>
   );
 }
 
-/* ═══════════════════════════════════════════════════════════════════════════
-   PAGE ROOT
-   ═══════════════════════════════════════════════════════════════════════════ */
-export function About() {
+/* ══════════════════════════════════════════════════════════════
+   5 · CONTACT
+══════════════════════════════════════════════════════════════ */
+function Contact() {
   return (
-    <div style={{ background: "#0a0e1a", color: "#f0f4ff", minHeight: "100vh" }}>
-      {/* Noise grain */}
-      <div style={{
-        position: "fixed", inset: 0, pointerEvents: "none", zIndex: 0, opacity: 0.35,
-        backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.035'/%3E%3C/svg%3E")`,
-      }} />
+    <section className="relative z-[5] py-24 px-6" id="contact">
+      <Rule />
+      <div className="max-w-5xl mx-auto py-24">
+        <FadeUp className="mb-14">
+          <Eyebrow>Find Us</Eyebrow>
+          <H2>Visit <Italic>NTA Academy.</Italic></H2>
+        </FadeUp>
 
-      <Header />
+        <div className="grid md:grid-cols-[1fr_1.55fr] gap-6 items-start">
+          <FadeUp className="flex flex-col gap-3">
+            {[
+              { Icon: MapPin, label: "Address", value: "NTA Academy, Chennai\nTamil Nadu, India" },
+              { Icon: Phone,  label: "Phone",   value: "+91 XXXXX XXXXX"                         },
+              { Icon: Mail,   label: "Email",   value: "info@ntaacademy.com"                      },
+            ].map(({ Icon, label, value }) => (
+              <div key={label} className="flex gap-4 p-5 rounded-2xl bg-[#0C0420]/65 border border-purple-500/[0.08] backdrop-blur-xl hover:border-purple-400/18 transition-colors duration-300">
+                <div className="w-9 h-9 rounded-xl bg-purple-500/[0.09] border border-purple-400/[0.11] flex items-center justify-center shrink-0">
+                  <Icon className="w-4 h-4 text-purple-400" />
+                </div>
+                <div>
+                  <p className="font-sans text-[9.5px] tracking-[0.14em] uppercase text-purple-400/42 mb-1">{label}</p>
+                  <p className="font-sans text-[13px] text-purple-100/68 whitespace-pre-line leading-[1.6]">{value}</p>
+                </div>
+              </div>
+            ))}
+            <motion.button whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }}
+              className="w-full mt-1 flex items-center justify-center gap-2.5 py-3.5 rounded-full bg-gradient-to-r from-violet-700 to-purple-500 font-sans font-semibold text-[13px] tracking-[0.04em] text-white border-0 cursor-pointer shadow-[0_4px_24px_rgba(109,40,217,0.38)] hover:shadow-[0_6px_32px_rgba(139,92,246,0.52)] transition-shadow duration-300">
+              <svg width="15" height="15" fill="currentColor" viewBox="0 0 24 24">
+                <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/>
+              </svg>
+              Chat on WhatsApp
+            </motion.button>
+          </FadeUp>
 
-      {/* ── 1. Scroll-driven candlestick hero ── */}
-      <ScrollCandleHero />
+          <FadeUp delay={0.14}>
+            <div className="relative rounded-3xl overflow-hidden border border-purple-500/[0.11] shadow-[0_0_40px_rgba(109,40,217,0.07)]" style={{ height: 420 }}>
+              <iframe src="https://www.google.com/maps?q=NTA+Academy+Chennai&output=embed"
+                width="100%" height="100%" className="absolute inset-0 border-0 grayscale opacity-75"
+                allowFullScreen loading="lazy" referrerPolicy="no-referrer-when-downgrade" />
+              <div className="absolute inset-0 pointer-events-none [background:linear-gradient(to_top,rgba(6,1,15,0.45)_0%,transparent_60%)]" />
+              <div className="absolute bottom-4 left-4 flex items-center gap-3 bg-[#0D0520]/92 border border-purple-500/18 backdrop-blur-xl px-4 py-3 rounded-2xl pointer-events-none">
+                <div className="w-8 h-8 rounded-full bg-gradient-to-br from-violet-700 to-purple-500 flex items-center justify-center shrink-0">
+                  <MapPin className="w-3.5 h-3.5 text-white" />
+                </div>
+                <div>
+                  <p className="font-sans text-[13px] font-semibold text-white/88">NTA Academy</p>
+                  <p className="font-sans text-[10px] text-purple-300/38">Chennai, Tamil Nadu</p>
+                </div>
+              </div>
+            </div>
+          </FadeUp>
+        </div>
+      </div>
+    </section>
+  );
+}
 
-      {/* ── 2. Horizontal timeline ── */}
-      <HorizontalTimeline />
+/* ══════════════════════════════════════════════════════════════
+   6 · BOTTOM CTA
+══════════════════════════════════════════════════════════════ */
+function BottomCTA() {
+  return (
+    <section className="relative z-[5] py-8 px-6">
+      <Rule />
+      <div className="relative max-w-3xl mx-auto text-center py-28">
+        <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-[560px] h-[280px] pointer-events-none [background:radial-gradient(ellipse_at_center,rgba(139,92,246,0.09)_0%,transparent_70%)]" />
+        <FadeUp>
+          <Eyebrow>Ready to Begin</Eyebrow>
+          <H2 className="mb-5">
+            Your market journey<br />begins <Italic>with one session.</Italic>
+          </H2>
+          <p className="font-sans text-[14px] font-light text-purple-200/38 max-w-[400px] mx-auto leading-[1.8] mb-10">
+            Attend a free live demo class — no commitment, no sales pitch.
+            Just come and watch how we actually trade.
+          </p>
+          <div className="flex justify-center gap-3 flex-wrap">
+            <motion.button whileHover={{ scale: 1.03 }} whileTap={{ scale: 0.97 }}
+              className="bg-gradient-to-r from-violet-700 to-purple-500 text-white font-sans text-[13px] font-semibold tracking-[0.04em] px-8 py-3.5 rounded-full border-0 cursor-pointer shadow-[0_4px_24px_rgba(139,92,246,0.38)] hover:shadow-[0_6px_32px_rgba(139,92,246,0.52)] transition-shadow duration-300 flex items-center gap-2">
+              Book Free Demo <ArrowRight className="w-4 h-4" />
+            </motion.button>
+            <button className="font-sans text-[13px] font-normal tracking-[0.04em] text-purple-200/50 px-8 py-3.5 rounded-full border border-purple-400/[0.14] hover:border-purple-400/30 hover:text-purple-100/75 transition-all duration-200 bg-transparent cursor-pointer">
+              View Programs
+            </button>
+          </div>
+        </FadeUp>
+      </div>
+    </section>
+  );
+}
 
-      {/* ── 3. Stats ── */}
-      <StatsStrip />
-
-      {/* ── 4. Team ── */}
-      <TeamSection />
-
-      <Footer />
-
+/* ══════════════════════════════════════════════════════════════
+   PAGE ASSEMBLY
+   Order: Hero → Stats → FounderMessage → WhyNTA → Programs → Contact → CTA
+══════════════════════════════════════════════════════════════ */
+export default function AboutPage() {
+  return (
+    <>
       <style>{`
-        * { box-sizing: border-box; }
-        ::-webkit-scrollbar { width: 3px; }
-        ::-webkit-scrollbar-track { background: #0a0e1a; }
-        ::-webkit-scrollbar-thumb { background: #1f2937; border-radius:2px; }
+        @import url('https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;1,9..40,300&display=swap');
       `}</style>
-    </div>
+
+      <div className="relative bg-[#06010F] text-purple-50 overflow-x-hidden font-sans min-h-screen">
+        <div className="fixed inset-0 pointer-events-none z-0 [background:radial-gradient(ellipse_80%_45%_at_50%_-8%,rgba(109,40,217,0.06)_0%,transparent_70%)]" />
+
+        <Navbar />
+        <Hero />
+        <Stats />
+        <FounderMessage />
+        <WhyNTA />
+        <Reviews/>
+        <Contact />
+        <BottomCTA />
+        <Footer />
+
+        <div className="relative z-[5] text-center py-8 border-t border-purple-500/[0.06] font-sans text-[10px] tracking-[0.08em] text-purple-400/18">
+          © 2026 NTA Trading Academy · Chennai, Tamil Nadu
+        </div>
+      </div>
+    </>
   );
 }

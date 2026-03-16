@@ -433,13 +433,13 @@ export function Services() {
                 fontWeight: 900, letterSpacing: "-1.5px",
                 lineHeight: 1.05, color: "#fff", margin: 0,
               }}>
-                Five ways to become a{" "}
+                Five Pillars of{" "}
                 <span style={{
                   background: "linear-gradient(120deg,#d8b4fe,#a855f7,#7c3aed)",
                   WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent",
                   fontStyle: "italic",
                 }}>
-                  better trader.
+                  Investing Better .
                 </span>
               </h2>
               <p style={{

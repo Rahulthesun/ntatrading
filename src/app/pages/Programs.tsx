@@ -1,350 +1,482 @@
-import { motion } from 'motion/react';
-import { Link } from 'react-router';
+import { useRef } from "react";
+import { motion, useInView } from "motion/react";
+import { Link } from "react-router";
 import {
-  LineChart,
-  BarChart3,
-  Globe,
-  CheckCircle,
-  Clock,
-  Users,
-  TrendingUp,
-  BookOpen,
-  Video,
-  FileText,
-  ArrowLeft
-} from 'lucide-react';
-import { Header } from '../components/Header';
-import { Footer } from '../components/Footer';
-import { AnimatedLineChart } from '../components/AnimatedLineChart';
+  LineChart, BarChart3, Globe, CheckCircle2,
+  Clock, Users, Video, BookOpen, FileText,
+  TrendingUp, ArrowRight, ArrowLeft, Zap, ShieldCheck,
+} from "lucide-react";
+import { Navbar } from "../components/Navbar";
+import LightRays from "../../components/LightRays";
+import { Footer } from "../components/Footer";
 
-export function Programs() {
-  const programs = [
-    {
-      id: 'equity',
-      icon: LineChart,
-      title: 'Equity Trading Program',
-      subtitle: 'Master Stock Market Analysis',
-      description: 'Comprehensive training in equity markets, from price action to institutional order flow. Learn to identify high-probability setups and manage positions like a professional.',
-      color: '#00ff88',
-      duration: '12 Weeks',
-      sessions: '36 Live Sessions',
-      students: 'Max 15 Students',
-      curriculum: [
-        'Market Structure & Institutional Flow',
-        'Technical Analysis & Chart Patterns',
-        'Volume Profile & Order Flow',
-        'Support & Resistance Dynamics',
-        'Momentum & Trend Analysis',
-        'Position Sizing & Risk Management',
-        'Entry & Exit Strategies',
-        'Trade Psychology & Discipline'
-      ],
-      includes: [
-        'Live Trading Room Access',
-        'Recorded Session Library',
-        'Trading Workbook & Templates',
-        'One-on-One Mentorship Sessions',
-        'Community Access',
-        'Lifetime Updates'
-      ]
-    },
-    {
-      id: 'options',
-      icon: BarChart3,
-      title: 'Options Trading Program',
-      subtitle: 'Advanced Derivatives Strategies',
-      description: 'Deep dive into options trading, Greeks, volatility analysis, and professional strategies used by market makers and institutions.',
-      color: '#00d4ff',
-      duration: '16 Weeks',
-      sessions: '48 Live Sessions',
-      students: 'Max 12 Students',
-      curriculum: [
-        'Options Fundamentals & Greeks',
-        'Implied Volatility Analysis',
-        'Directional Strategies (Calls & Puts)',
-        'Spread Strategies (Verticals, Butterflies)',
-        'Income Strategies (Iron Condors, Credit Spreads)',
-        'Volatility Trading (Straddles & Strangles)',
-        'Risk Management & Position Hedging',
-        'Options Chain Analysis'
-      ],
-      includes: [
-        'Live Trading Room Access',
-        'Options Scanner Tools',
-        'Strategy Backtesting Templates',
-        'Weekly Strategy Sessions',
-        'Community Access',
-        'Lifetime Updates'
-      ]
-    },
-    {
-      id: 'forex',
-      icon: Globe,
-      title: 'Forex & Futures Program',
-      subtitle: 'Global Markets Mastery',
-      description: 'Navigate the world of currency pairs and futures contracts with institutional-grade analysis and risk management frameworks.',
-      color: '#ffc857',
-      duration: '14 Weeks',
-      sessions: '42 Live Sessions',
-      students: 'Max 15 Students',
-      curriculum: [
-        'Forex Market Structure & Sessions',
-        'Currency Pair Dynamics',
-        'Multi-Timeframe Analysis',
-        'Futures Contracts & Specifications',
-        'Macro-Economic Analysis',
-        'Leverage & Margin Management',
-        'Risk-Reward Optimization',
-        'Correlation & Portfolio Management'
-      ],
-      includes: [
-        'Live Trading Room Access',
-        'Economic Calendar Tools',
-        'Multi-Asset Analysis Framework',
-        'Risk Calculator Templates',
-        'Community Access',
-        'Lifetime Updates'
-      ]
-    }
-  ];
-
+/* ══════════════════════════════════════════════════════════════
+   SHARED PRIMITIVES
+══════════════════════════════════════════════════════════════ */
+function FadeUp({ children, delay = 0, className = "" }: {
+  children: React.ReactNode; delay?: number; className?: string;
+}) {
+  const ref = useRef(null);
+  const inView = useInView(ref, { once: true, margin: "-50px" });
   return (
-    <div className="min-h-screen bg-[#0a0e1a] text-white">
-      <Header />
+    <motion.div ref={ref}
+      initial={{ opacity: 0, y: 28 }}
+      animate={inView ? { opacity: 1, y: 0 } : {}}
+      transition={{ duration: 0.72, delay, ease: [0.22, 1, 0.36, 1] }}
+      className={className}
+    >{children}</motion.div>
+  );
+}
 
-      {/* Hero Section */}
-      <section className="relative pt-32 pb-20 px-6 overflow-hidden">
-        <div className="absolute inset-0 opacity-30">
-          <div className="absolute inset-0 bg-gradient-to-br from-[#00ff88]/20 via-transparent to-[#00d4ff]/20" />
-        </div>
+function Eyebrow({ children }: { children: React.ReactNode }) {
+  return (
+    <div className="inline-flex items-center gap-2.5 mb-5">
+      <div className="h-px w-6 bg-purple-500/40" />
+      <span className="font-sans text-[10px] tracking-[0.22em] uppercase text-purple-400/60">{children}</span>
+    </div>
+  );
+}
 
-        <div className="relative z-10 max-w-7xl mx-auto">
-          <Link 
-            to="/"
-            className="inline-flex items-center gap-2 text-gray-400 hover:text-[#00ff88] transition-colors mb-8"
-          >
-            <ArrowLeft className="w-4 h-4" />
-            Back to Home
+function H2({ children, className = "" }: { children: React.ReactNode; className?: string }) {
+  return (
+    <h2 className={`font-serif font-normal leading-[1.08] tracking-[-0.02em] text-purple-50 ${className}`}
+      style={{ fontSize: "clamp(28px,3.6vw,48px)" }}>
+      {children}
+    </h2>
+  );
+}
+
+function Italic({ children }: { children: React.ReactNode }) {
+  return (
+    <span className="font-serif italic text-transparent bg-clip-text"
+      style={{ backgroundImage: "linear-gradient(135deg,#d8b4fe 0%,#a855f7 55%,#c084fc 100%)" }}>
+      {children}
+    </span>
+  );
+}
+
+function Rule() {
+  return <div className="w-full h-px bg-gradient-to-r from-transparent via-purple-500/[0.11] to-transparent" />;
+}
+
+/* ══════════════════════════════════════════════════════════════
+   PROGRAM DATA
+══════════════════════════════════════════════════════════════ */
+const PROGRAMS = [
+  {
+    id: "equity",
+    Icon: LineChart,
+    title: "Equity Trading",
+    subtitle: "Master Stock Market Analysis",
+    desc: "Comprehensive training in equity markets — from price action and chart patterns to institutional order flow. Learn to identify high-probability setups and manage positions like a professional.",
+    accent: "from-violet-500/20 to-purple-400/5",
+    border: "border-violet-500/20",
+    dot: "bg-violet-400",
+    tag: "Most Popular",
+    tagColor: "bg-violet-400/12 text-violet-300 border-violet-400/22",
+    duration: "12 Weeks",
+    sessions: "36 Live Sessions",
+    seats: "Max 15 Students",
+    curriculum: [
+      "Market Structure & Institutional Flow",
+      "Technical Analysis & Chart Patterns",
+      "Volume Profile & Order Flow",
+      "Support & Resistance Dynamics",
+      "Momentum & Trend Analysis",
+      "Position Sizing & Risk Management",
+      "Entry & Exit Strategies",
+      "Trade Psychology & Discipline",
+    ],
+    includes: [
+      "Live Trading Room Access",
+      "Recorded Session Library",
+      "Trading Workbook & Templates",
+      "1-on-1 Mentorship Sessions",
+      "Private Community Access",
+      "Lifetime Material Updates",
+    ],
+  },
+  {
+    id: "options",
+    Icon: BarChart3,
+    title: "Options Trading",
+    subtitle: "Advanced Derivatives Strategies",
+    desc: "Deep dive into options trading, Greeks, volatility analysis and professional strategies used by market makers. Build systematic edge in the derivatives market.",
+    accent: "from-purple-500/18 to-fuchsia-400/5",
+    border: "border-purple-500/18",
+    dot: "bg-purple-400",
+    tag: "Advanced",
+    tagColor: "bg-rose-400/10 text-rose-400 border-rose-400/20",
+    duration: "16 Weeks",
+    sessions: "48 Live Sessions",
+    seats: "Max 12 Students",
+    curriculum: [
+      "Options Fundamentals & Greeks",
+      "Implied Volatility Analysis",
+      "Directional Strategies (Calls & Puts)",
+      "Spread Strategies (Verticals, Butterflies)",
+      "Income Strategies (Iron Condors, Credit Spreads)",
+      "Volatility Trading (Straddles & Strangles)",
+      "Risk Management & Position Hedging",
+      "Options Chain Analysis",
+    ],
+    includes: [
+      "Live Trading Room Access",
+      "Options Scanner Tools",
+      "Strategy Backtesting Templates",
+      "Weekly Strategy Sessions",
+      "Private Community Access",
+      "Lifetime Material Updates",
+    ],
+  },
+  {
+    id: "commodity",
+    Icon: Globe,
+    title: "Commodity & Futures",
+    subtitle: "MCX, Forex & Global Markets",
+    desc: "Navigate Gold, Silver, Crude Oil and currency pairs with institutional-grade analysis. Learn leverage management, macro-economic drivers and multi-asset correlation.",
+    accent: "from-fuchsia-500/15 to-purple-400/5",
+    border: "border-fuchsia-500/16",
+    dot: "bg-fuchsia-400",
+    tag: "Intermediate",
+    tagColor: "bg-amber-400/10 text-amber-400 border-amber-400/20",
+    duration: "14 Weeks",
+    sessions: "42 Live Sessions",
+    seats: "Max 15 Students",
+    curriculum: [
+      "Forex Market Structure & Sessions",
+      "Currency Pair Dynamics",
+      "Multi-Timeframe Analysis",
+      "Futures Contracts & Specifications",
+      "Macro-Economic Analysis",
+      "Leverage & Margin Management",
+      "Risk-Reward Optimisation",
+      "Correlation & Portfolio Management",
+    ],
+    includes: [
+      "Live Trading Room Access",
+      "Economic Calendar Tools",
+      "Multi-Asset Analysis Framework",
+      "Risk Calculator Templates",
+      "Private Community Access",
+      "Lifetime Material Updates",
+    ],
+  },
+];
+
+/* ══════════════════════════════════════════════════════════════
+   MINI ANIMATED SPARKLINE (SVG, no lib needed)
+══════════════════════════════════════════════════════════════ */
+const SPARKS: Record<string, number[]> = {
+  equity:    [40,46,43,52,48,57,53,62,58,68,64,72,70,78,75,82],
+  options:   [50,55,51,60,57,65,61,70,66,75,71,79,76,83,80,87],
+  commodity: [35,42,38,47,44,52,49,57,53,61,58,65,62,69,66,73],
+};
+
+function MiniSpark({ id }: { id: string }) {
+  const data = SPARKS[id] ?? SPARKS.equity;
+  const W = 280, H = 56, pad = 3;
+  const mn = Math.min(...data) - 3, mx = Math.max(...data) + 3;
+  const sy = (v: number) => H - pad - ((v - mn) / (mx - mn)) * (H - pad * 2);
+  const st = (W - pad * 2) / (data.length - 1);
+  const pts = data.map((v, i) => `${pad + i * st},${sy(v)}`).join(" ");
+  const area = `${pad},${H} ${pts} ${pad + (data.length - 1) * st},${H}`;
+  return (
+    <svg width={W} height={H} viewBox={`0 0 ${W} ${H}`} className="overflow-visible w-full opacity-70">
+      <defs>
+        <linearGradient id={`sg-${id}`} x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0%" stopColor="#a855f7" stopOpacity="0.18"/>
+          <stop offset="100%" stopColor="#a855f7" stopOpacity="0"/>
+        </linearGradient>
+      </defs>
+      <polygon points={area} fill={`url(#sg-${id})`}/>
+      <polyline points={pts} fill="none" stroke="#a855f7" strokeWidth="1.4"/>
+      <circle cx={pad + (data.length - 1) * st} cy={sy(data[data.length - 1])}
+        r="3" fill="#d8b4fe"/>
+    </svg>
+  );
+}
+
+/* ══════════════════════════════════════════════════════════════
+   1 · HERO
+══════════════════════════════════════════════════════════════ */
+function Hero() {
+  return (
+    <section className="relative min-h-[72vh] flex flex-col items-center justify-center text-center px-6 pt-32 pb-20 overflow-hidden">
+      <div className="absolute inset-0 z-0 pointer-events-none">
+        <LightRays raysOrigin="top-center" raysColor="#cb70f5" raysSpeed={0.7}
+          lightSpread={1} rayLength={1.4} pulsating={false} fadeDistance={1}
+          saturation={1} followMouse mouseInfluence={0.07} noiseAmount={0} distortion={0}/>
+      </div>
+      <div className="absolute inset-0 z-[1] pointer-events-none [background:radial-gradient(ellipse_100%_55%_at_50%_0%,transparent_28%,#06010F_100%)]" />
+
+      <div className="relative z-[5] max-w-[700px] mx-auto">
+        {/* back link */}
+        <motion.div initial={{ opacity: 0, x: -12 }} animate={{ opacity: 1, x: 0 }}
+          transition={{ duration: 0.5, delay: 0.05 }}
+          className="flex justify-center mb-10">
+          <Link to="/"
+            className="inline-flex items-center gap-2 font-sans text-[12px] text-purple-400/45 hover:text-purple-300/70 transition-colors duration-200">
+            <ArrowLeft className="w-3.5 h-3.5" /> Back to Home
           </Link>
+        </motion.div>
 
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8 }}
-          >
-            <h1 className="text-5xl md:text-6xl font-bold mb-6">
-              Trading <span className="text-[#00ff88]">Programs</span>
-            </h1>
-            <p className="text-xl text-gray-300 max-w-3xl leading-relaxed">
-              Specialized training programs designed to transform you into a disciplined, systematic trader. 
-              Choose the path that aligns with your trading goals.
-            </p>
-          </motion.div>
-        </div>
-      </section>
+        <motion.div initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6, delay: 0.12, ease: [0.22,1,0.36,1] }}
+          className="inline-flex items-center gap-2 bg-violet-700/[0.12] border border-violet-500/[0.18] px-5 py-1.5 rounded-full mb-8">
+          <span className="w-1.5 h-1.5 rounded-full bg-purple-400 animate-pulse" />
+          <span className="font-sans text-[10px] tracking-[0.18em] uppercase text-purple-300/70">
+            Trading Programs
+          </span>
+        </motion.div>
 
-      {/* Programs Grid */}
-      <section className="py-12 px-6">
-        <div className="max-w-7xl mx-auto space-y-16">
-          {programs.map((program, index) => (
-            <motion.div
-              key={program.id}
-              initial={{ opacity: 0, y: 30 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, delay: index * 0.1 }}
-              viewport={{ once: true }}
-              className="bg-[#0f1421] border border-gray-800 rounded-2xl overflow-hidden hover:border-[#00ff88]/50 transition-all duration-300"
-            >
-              <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 p-8 lg:p-12">
-                {/* Left Column - Overview */}
-                <div className="lg:col-span-1">
-                  <div 
-                    className="w-16 h-16 rounded-xl flex items-center justify-center mb-6"
-                    style={{ backgroundColor: program.color + '20' }}
-                  >
-                    <program.icon className="w-8 h-8" style={{ color: program.color }} />
-                  </div>
+        <motion.h1 initial={{ opacity: 0, y: 28 }} animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.85, delay: 0.22, ease: [0.22,1,0.36,1] }}
+          className="font-serif font-normal text-purple-50 leading-[1.06] tracking-[-0.02em] mb-6"
+          style={{ fontSize: "clamp(38px,5.2vw,68px)" }}>
+          Choose your path to<br /><Italic>market mastery.</Italic>
+        </motion.h1>
 
-                  <h2 className="text-3xl font-bold mb-2">{program.title}</h2>
-                  <p className="text-gray-400 mb-6">{program.subtitle}</p>
-                  <p className="text-gray-300 leading-relaxed mb-8">{program.description}</p>
+        <motion.p initial={{ opacity: 0, y: 18 }} animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.7, delay: 0.36, ease: [0.22,1,0.36,1] }}
+          className="font-sans text-[15px] font-light text-purple-200/42 leading-[1.75]">
+          Specialised programs built around live markets — not slides or recordings.
+          Every session is a real trading day.
+        </motion.p>
+      </div>
+    </section>
+  );
+}
 
-                  {/* Quick Stats */}
-                  <div className="space-y-4 mb-8">
-                    <div className="flex items-center gap-3 text-gray-300">
-                      <Clock className="w-5 h-5" style={{ color: program.color }} />
-                      <span>{program.duration}</span>
-                    </div>
-                    <div className="flex items-center gap-3 text-gray-300">
-                      <Video className="w-5 h-5" style={{ color: program.color }} />
-                      <span>{program.sessions}</span>
-                    </div>
-                    <div className="flex items-center gap-3 text-gray-300">
-                      <Users className="w-5 h-5" style={{ color: program.color }} />
-                      <span>{program.students}</span>
-                    </div>
-                  </div>
+/* ══════════════════════════════════════════════════════════════
+   2 · PROGRAM CARDS
+══════════════════════════════════════════════════════════════ */
+function ProgramCard({ program, index }: { program: typeof PROGRAMS[0]; index: number }) {
+  const { Icon } = program;
+  return (
+    <FadeUp delay={index * 0.1}>
+      <div className={`relative bg-[#0C0420]/65 border ${program.border} backdrop-blur-xl rounded-3xl overflow-hidden hover:border-purple-400/28 transition-all duration-400`}>
 
-                  {/* Mini Chart */}
-                  <div className="h-32 bg-[#0a0e1a] rounded-lg overflow-hidden">
-                    <AnimatedLineChart color={program.color} height={128} />
-                  </div>
-                </div>
+        {/* top shimmer */}
+        <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-purple-400/20 to-transparent" />
 
-                {/* Middle Column - Curriculum */}
-                <div className="lg:col-span-1">
-                  <div className="flex items-center gap-2 mb-6">
-                    <BookOpen className="w-5 h-5 text-[#00ff88]" />
-                    <h3 className="text-xl font-semibold">Curriculum</h3>
-                  </div>
+        {/* background gradient blob */}
+        <div className={`absolute -top-12 -right-12 w-56 h-56 rounded-full bg-gradient-to-br ${program.accent} blur-3xl pointer-events-none`} />
 
-                  <div className="space-y-3">
-                    {program.curriculum.map((item, idx) => (
-                      <div 
-                        key={idx}
-                        className="flex items-start gap-3 text-gray-300"
-                      >
-                        <CheckCircle 
-                          className="w-5 h-5 mt-0.5 flex-shrink-0" 
-                          style={{ color: program.color }} 
-                        />
-                        <span>{item}</span>
-                      </div>
-                    ))}
-                  </div>
-                </div>
+        <div className="relative grid lg:grid-cols-3 gap-0 divide-y lg:divide-y-0 lg:divide-x divide-purple-500/[0.08]">
 
-                {/* Right Column - What's Included */}
-                <div className="lg:col-span-1">
-                  <div className="flex items-center gap-2 mb-6">
-                    <FileText className="w-5 h-5 text-[#00d4ff]" />
-                    <h3 className="text-xl font-semibold">What's Included</h3>
-                  </div>
-
-                  <div className="space-y-3 mb-8">
-                    {program.includes.map((item, idx) => (
-                      <div 
-                        key={idx}
-                        className="flex items-start gap-3 text-gray-300"
-                      >
-                        <CheckCircle 
-                          className="w-5 h-5 mt-0.5 flex-shrink-0" 
-                          style={{ color: program.color }} 
-                        />
-                        <span>{item}</span>
-                      </div>
-                    ))}
-                  </div>
-
-                  {/* CTA */}
-                  <div className="space-y-3">
-                    <button 
-                      className="w-full px-6 py-4 text-[#0a0e1a] font-semibold rounded-lg hover:opacity-90 transition-all duration-300 shadow-lg"
-                      style={{ backgroundColor: program.color }}
-                    >
-                      Enroll Now
-                    </button>
-                    <button className="w-full px-6 py-4 border border-gray-700 text-white font-semibold rounded-lg hover:border-[#00ff88] hover:text-[#00ff88] transition-all duration-300">
-                      Book Free Demo
-                    </button>
-                  </div>
-                </div>
+          {/* ── COL 1: Overview ── */}
+          <div className="p-8 lg:p-10 flex flex-col">
+            {/* icon + tag row */}
+            <div className="flex items-start justify-between mb-7">
+              <div className="w-12 h-12 rounded-2xl bg-purple-500/[0.10] border border-purple-400/[0.12] flex items-center justify-center">
+                <Icon className="w-5 h-5 text-purple-400" />
               </div>
-            </motion.div>
-          ))}
-        </div>
-      </section>
+              <span className={`font-sans text-[9px] font-bold tracking-[0.14em] uppercase px-2.5 py-1 rounded-full border ${program.tagColor}`}>
+                {program.tag}
+              </span>
+            </div>
 
-      {/* Why Choose Section */}
-      <section className="py-24 px-6 bg-[#0f1421]">
-        <div className="max-w-7xl mx-auto">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6 }}
-            viewport={{ once: true }}
-            className="text-center mb-16"
-          >
-            <h2 className="text-4xl md:text-5xl font-bold mb-4">
-              Why Choose <span className="text-[#00ff88]">NTA</span>
-            </h2>
-            <p className="text-gray-400 text-lg">What sets our programs apart</p>
-          </motion.div>
+            <h3 className="font-serif text-[26px] text-purple-50 leading-tight mb-1">{program.title}</h3>
+            <p className="font-sans text-[11px] tracking-[0.10em] uppercase text-purple-400/45 mb-5">{program.subtitle}</p>
+            <p className="font-sans text-[13px] font-light text-purple-200/42 leading-[1.75] mb-8 flex-1">{program.desc}</p>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {[
-              {
-                icon: TrendingUp,
-                title: 'Live Market Experience',
-                description: 'Learn by doing. Trade live markets with real-time guidance and instant feedback.'
-              },
-              {
-                icon: Users,
-                title: 'Small Batch Sizes',
-                description: 'Limited students per batch ensure personalized attention and mentorship.'
-              },
-              {
-                icon: BookOpen,
-                title: 'Structured Curriculum',
-                description: 'Progressive learning path from fundamentals to advanced institutional strategies.'
-              },
-              {
-                icon: Video,
-                title: 'Lifetime Access',
-                description: 'All recordings, materials, and future updates included with your enrollment.'
-              },
-              {
-                icon: CheckCircle,
-                title: 'No Hidden Costs',
-                description: 'One-time fee with no recurring charges. Transparent pricing, no surprises.'
-              },
-              {
-                icon: TrendingUp,
-                title: 'Post-Program Support',
-                description: 'Continued access to community and quarterly strategy sessions after graduation.'
-              }
-            ].map((item, index) => (
-              <motion.div
-                key={index}
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.5, delay: index * 0.1 }}
-                viewport={{ once: true }}
-                className="bg-[#0a0e1a] border border-gray-800 rounded-xl p-6 hover:border-[#00ff88]/50 transition-all duration-300"
-              >
-                <div className="w-12 h-12 bg-[#00ff88]/20 rounded-lg flex items-center justify-center mb-4">
-                  <item.icon className="w-6 h-6 text-[#00ff88]" />
+            {/* quick stats */}
+            <div className="flex flex-col gap-3 mb-8">
+              {[
+                { Icon: Clock,   v: program.duration },
+                { Icon: Video,   v: program.sessions  },
+                { Icon: Users,   v: program.seats     },
+              ].map(({ Icon: I, v }) => (
+                <div key={v} className="flex items-center gap-3">
+                  <div className="w-7 h-7 rounded-lg bg-purple-500/[0.08] border border-purple-400/[0.10] flex items-center justify-center shrink-0">
+                    <I className="w-3.5 h-3.5 text-purple-400/70" />
+                  </div>
+                  <span className="font-sans text-[12.5px] text-purple-200/55">{v}</span>
                 </div>
-                <h3 className="text-xl font-semibold mb-3">{item.title}</h3>
-                <p className="text-gray-400 leading-relaxed">{item.description}</p>
-              </motion.div>
-            ))}
+              ))}
+            </div>
+
+            {/* sparkline */}
+            <div className="bg-[#080218]/60 border border-purple-500/[0.07] rounded-xl p-3">
+              <p className="font-sans text-[8.5px] tracking-[0.14em] uppercase text-purple-400/30 mb-2">Performance trend</p>
+              <MiniSpark id={program.id} />
+            </div>
+          </div>
+
+          {/* ── COL 2: Curriculum ── */}
+          <div className="p-8 lg:p-10">
+            <div className="flex items-center gap-2.5 mb-7">
+              <div className="w-7 h-7 rounded-lg bg-purple-500/[0.08] border border-purple-400/[0.10] flex items-center justify-center">
+                <BookOpen className="w-3.5 h-3.5 text-purple-400/70" />
+              </div>
+              <span className="font-sans text-[11px] tracking-[0.14em] uppercase text-purple-400/55">Curriculum</span>
+            </div>
+
+            <div className="flex flex-col gap-3">
+              {program.curriculum.map((item, i) => (
+                <motion.div key={i}
+                  initial={{ opacity: 0, x: -8 }}
+                  whileInView={{ opacity: 1, x: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ duration: 0.4, delay: i * 0.05 }}
+                  className="flex items-start gap-3">
+                  <CheckCircle2 className="w-4 h-4 text-purple-400/60 shrink-0 mt-0.5" />
+                  <span className="font-sans text-[13px] font-light text-purple-200/55 leading-[1.55]">{item}</span>
+                </motion.div>
+              ))}
+            </div>
+          </div>
+
+          {/* ── COL 3: Includes + CTA ── */}
+          <div className="p-8 lg:p-10 flex flex-col">
+            <div className="flex items-center gap-2.5 mb-7">
+              <div className="w-7 h-7 rounded-lg bg-purple-500/[0.08] border border-purple-400/[0.10] flex items-center justify-center">
+                <FileText className="w-3.5 h-3.5 text-purple-400/70" />
+              </div>
+              <span className="font-sans text-[11px] tracking-[0.14em] uppercase text-purple-400/55">What's Included</span>
+            </div>
+
+            <div className="flex flex-col gap-3 mb-auto">
+              {program.includes.map((item, i) => (
+                <div key={i} className="flex items-start gap-3">
+                  <div className={`w-1.5 h-1.5 rounded-full ${program.dot} shrink-0 mt-[5px]`} />
+                  <span className="font-sans text-[13px] font-light text-purple-200/55 leading-[1.55]">{item}</span>
+                </div>
+              ))}
+            </div>
+
+            {/* CTAs */}
+            <div className="flex flex-col gap-3 mt-10">
+              <motion.button
+                whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.97 }}
+                className="relative overflow-hidden w-full py-3.5 rounded-full bg-gradient-to-r from-violet-700 to-purple-500 font-sans font-semibold text-[13px] tracking-[0.04em] text-white border-0 cursor-pointer shadow-[0_4px_24px_rgba(109,40,217,0.38)] hover:shadow-[0_6px_32px_rgba(139,92,246,0.52)] transition-shadow duration-300 flex items-center justify-center gap-2">
+                <span className="absolute inset-x-0 top-0 h-px bg-white/18" />
+                Enroll Now <ArrowRight className="w-3.5 h-3.5" />
+              </motion.button>
+              <button className="w-full py-3.5 rounded-full font-sans font-normal text-[13px] tracking-[0.04em] text-purple-200/50 border border-purple-400/[0.14] hover:border-purple-400/30 hover:text-purple-100/75 transition-all duration-200 bg-transparent cursor-pointer">
+                Book Free Demo
+              </button>
+            </div>
           </div>
         </div>
-      </section>
+      </div>
+    </FadeUp>
+  );
+}
 
-      {/* Final CTA */}
-      <section className="py-24 px-6">
-        <div className="max-w-4xl mx-auto">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6 }}
-            viewport={{ once: true }}
-            className="bg-gradient-to-br from-[#00ff88]/10 to-[#00d4ff]/10 border border-[#00ff88]/30 rounded-2xl p-12 text-center"
-          >
-            <h2 className="text-4xl font-bold mb-4">Not Sure Which Program is Right?</h2>
-            <p className="text-gray-300 text-lg mb-8 max-w-2xl mx-auto">
-              Book a free consultation call to discuss your trading goals and get personalized program recommendations
-            </p>
-            <button className="px-8 py-4 bg-[#00ff88] text-[#0a0e1a] font-semibold rounded-lg hover:bg-[#00d4ff] transition-all duration-300 shadow-lg shadow-[#00ff88]/20">
-              Schedule Free Consultation
-            </button>
-          </motion.div>
+function ProgramCards() {
+  return (
+    <section className="relative z-[5] py-8 px-6">
+      <div className="max-w-6xl mx-auto flex flex-col gap-8">
+        {PROGRAMS.map((p, i) => <ProgramCard key={p.id} program={p} index={i} />)}
+      </div>
+    </section>
+  );
+}
+
+/* ══════════════════════════════════════════════════════════════
+   3 · WHY NTA
+══════════════════════════════════════════════════════════════ */
+const WHY = [
+  { Icon: TrendingUp,   title: "Live Market Only",       desc: "Every session happens during real market hours with real positions open. No hypotheticals." },
+  { Icon: Users,        title: "Small Batch Sizes",      desc: "Limited students per batch so mentors can correct your specific calls as they happen." },
+  { Icon: BookOpen,     title: "Structured Curriculum",  desc: "Progressive path from fundamentals to institutional strategies — nothing out of order." },
+  { Icon: Video,        title: "Lifetime Access",        desc: "All recordings, materials and future updates included. One fee, no recurring charges." },
+  { Icon: ShieldCheck,  title: "Honest Timelines",       desc: "We tell you it takes 3–6 months to get consistent. No overnight-riches promises here." },
+  { Icon: Zap,          title: "Post-Program Support",   desc: "Lifetime community access and quarterly strategy sessions after you complete the program." },
+];
+
+function WhyNTA() {
+  return (
+    <section className="relative z-[5] py-28 px-6">
+      <Rule />
+      <div className="max-w-6xl mx-auto py-28">
+        <FadeUp className="text-center mb-16">
+          <Eyebrow>Why NTA</Eyebrow>
+          <H2>What makes our programs <Italic>different.</Italic></H2>
+        </FadeUp>
+
+        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-4">
+          {WHY.map(({ Icon: I, title, desc }, i) => (
+            <FadeUp key={title} delay={i * 0.07}>
+              <motion.div whileHover={{ y: -4 }} transition={{ type: "spring", stiffness: 300, damping: 22 }}
+                className="group h-full bg-[#0C0420]/55 border border-purple-500/[0.08] backdrop-blur-xl rounded-2xl p-6 cursor-default hover:border-purple-400/20 transition-colors duration-300">
+                <div className="w-10 h-10 rounded-xl bg-purple-500/[0.09] border border-purple-400/[0.10] flex items-center justify-center mb-4 group-hover:bg-purple-500/[0.15] transition-colors duration-300">
+                  <I className="text-purple-400" size={17} />
+                </div>
+                <p className="font-serif text-[17px] text-purple-50 mb-2">{title}</p>
+                <p className="font-sans text-[12.5px] font-light text-purple-200/38 leading-[1.72]">{desc}</p>
+              </motion.div>
+            </FadeUp>
+          ))}
         </div>
-      </section>
+      </div>
+      <Rule />
+    </section>
+  );
+}
 
-      <Footer />
-    </div>
+/* ══════════════════════════════════════════════════════════════
+   4 · BOTTOM CTA
+══════════════════════════════════════════════════════════════ */
+function BottomCTA() {
+  return (
+    <section className="relative z-[5] py-10 px-6">
+      <div className="relative max-w-3xl mx-auto text-center py-28">
+        <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-[560px] h-[260px] pointer-events-none [background:radial-gradient(ellipse_at_center,rgba(139,92,246,0.09)_0%,transparent_70%)]" />
+        <FadeUp>
+          <Eyebrow>Not Sure Where to Start</Eyebrow>
+          <H2 className="mb-5">
+            Let's find the right<br /><Italic>program for you.</Italic>
+          </H2>
+          <p className="font-sans text-[14px] font-light text-purple-200/38 max-w-[400px] mx-auto leading-[1.8] mb-10">
+            Book a free 20-minute consultation call — we'll understand your goals
+            and recommend exactly what fits your level and schedule.
+          </p>
+          <div className="flex justify-center gap-3 flex-wrap">
+            <motion.button whileHover={{ scale: 1.03 }} whileTap={{ scale: 0.97 }}
+              className="relative overflow-hidden bg-gradient-to-r from-violet-700 to-purple-500 text-white font-sans text-[13px] font-semibold tracking-[0.04em] px-8 py-3.5 rounded-full border-0 cursor-pointer shadow-[0_4px_24px_rgba(139,92,246,0.38)] hover:shadow-[0_6px_32px_rgba(139,92,246,0.52)] transition-shadow duration-300 flex items-center gap-2">
+              <span className="absolute inset-x-0 top-0 h-px bg-white/18" />
+              <span className="relative">Schedule Free Consultation</span>
+              <ArrowRight className="w-4 h-4 relative" />
+            </motion.button>
+            <Link to="/about">
+              <button className="font-sans text-[13px] font-normal tracking-[0.04em] text-purple-200/50 px-8 py-3.5 rounded-full border border-purple-400/[0.14] hover:border-purple-400/30 hover:text-purple-100/75 transition-all duration-200 bg-transparent cursor-pointer">
+                Learn About Us
+              </button>
+            </Link>
+          </div>
+        </FadeUp>
+      </div>
+    </section>
+  );
+}
+
+/* ══════════════════════════════════════════════════════════════
+   PAGE
+══════════════════════════════════════════════════════════════ */
+export function Programs() {
+  return (
+    <>
+      <style>{`
+        @import url('https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;1,9..40,300&display=swap');
+      `}</style>
+
+      <div className="relative bg-[#06010F] text-purple-50 overflow-x-hidden font-sans min-h-screen">
+        <div className="fixed inset-0 pointer-events-none z-0 [background:radial-gradient(ellipse_80%_45%_at_50%_-8%,rgba(109,40,217,0.06)_0%,transparent_70%)]" />
+
+        <Navbar />
+        <Hero />
+        <ProgramCards />
+        <WhyNTA />
+        <BottomCTA />
+        <Footer />
+
+        <div className="relative z-[5] text-center py-8 border-t border-purple-500/[0.06] font-sans text-[10px] tracking-[0.08em] text-purple-400/18">
+          © 2026 NTA Trading Academy · Chennai, Tamil Nadu
+        </div>
+      </div>
+    </>
   );
 }

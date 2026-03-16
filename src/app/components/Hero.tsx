@@ -1,312 +1,146 @@
-import { useEffect, useRef, useState } from "react"
+import { useEffect, useState } from "react"
+import LightRays from "../../components/LightRays"
+import { Navbar } from "./Navbar"
+import { MarketCarousel } from "./MarketCarousel"
 
-/* ─── CDN Script Loader ───────────────────────────────────────── */
-function useScript(src: string) {
-  const [ready, setReady] = useState(false)
+/* ─── Sparkline util ──────────────────────────────────────────── */
+const SPARK  = [52,58,54,67,63,72,68,80,76,88,84,96,92,105,101,112]
+const SPARK2 = [80,74,78,65,70,60,64,52,56,44,48,36,40,28,32,20]
 
-  useEffect(() => {
-    const existing = document.querySelector(`script[src="${src}"]`)
-    if (existing) {
-      setReady(true)
-      return
-    }
-
-    const script = document.createElement("script")
-    script.src = src
-    script.async = true
-    script.onload = () => setReady(true)
-
-    document.head.appendChild(script)
-  }, [src])
-
-  return ready
-}
-
-/* ─── Ticker Data ─────────────────────────────────────────────── */
-const TICKERS = [
-  { sym: "NIFTY 50", val: "24,832", chg: "+1.24%", up: true },
-  { sym: "BANKNIFTY", val: "52,140", chg: "+2.08%", up: true },
-  { sym: "SENSEX", val: "81,520", chg: "+0.97%", up: true },
-  { sym: "RELIANCE", val: "₹2,941", chg: "+3.21%", up: true },
-  { sym: "TCS", val: "₹4,128", chg: "-0.42%", up: false },
-  { sym: "INFY", val: "₹1,820", chg: "+1.85%", up: true },
-  { sym: "HDFC BANK", val: "₹1,672", chg: "+0.63%", up: true },
-  { sym: "NIFTY CE", val: "₹148.50", chg: "+12.8%", up: true },
-]
-
-/* ─── Mini Chart ─────────────────────────────────────────────── */
-const RAW = [52,58,54,67,63,72,68,80,76,88,84,96,92,105,101,112]
-
-function MiniChart() {
-  const W = 340
-  const H = 90
-  const pad = 6
-
-  const mn = Math.min(...RAW) - 4
-  const mx = Math.max(...RAW) + 4
-
-  const sy = (v: number) =>
-    H - pad - ((v - mn) / (mx - mn)) * (H - pad * 2)
-
-  const step = (W - pad * 2) / (RAW.length - 1)
-
-  const pts = RAW.map((v, i) => `${pad + i * step},${sy(v)}`).join(" ")
-
-  const area = `${pad},${H} ${pts} ${pad + (RAW.length - 1) * step},${H}`
-
-  return (
-    <svg width={W} height={H} viewBox={`0 0 ${W} ${H}`}>
-      <defs>
-        <linearGradient id="areaG" x1="0" y1="0" x2="0" y2="1">
-          <stop offset="0%" stopColor="#a855f7" stopOpacity="0.25" />
-          <stop offset="100%" stopColor="#a855f7" stopOpacity="0" />
-        </linearGradient>
-      </defs>
-
-      <polygon points={area} fill="url(#areaG)" />
-
-      <polyline
-        points={pts}
-        fill="none"
-        stroke="#a855f7"
-        strokeWidth="1.5"
-      />
-    </svg>
-  )
-}
-
-/* ─── Gauge ──────────────────────────────────────────────────── */
-function Gauge({ pct = 72 }: { pct?: number }) {
-  const r = 44
-  const cx = 56
-  const cy = 56
-  const stroke = 8
-
-  const circ = Math.PI * r
-  const offset = circ * (1 - pct / 100)
-
-  return (
-    <svg width={112} height={72} viewBox="0 0 112 72">
-      <defs>
-        <linearGradient id="gaugeG" x1="0" y1="0" x2="1" y2="0">
-          <stop offset="0%" stopColor="#7c3aed" />
-          <stop offset="100%" stopColor="#a855f7" />
-        </linearGradient>
-      </defs>
-
-      <path
-        d={`M ${cx - r} ${cy} A ${r} ${r} 0 0 1 ${cx + r} ${cy}`}
-        fill="none"
-        stroke="rgba(168,85,247,0.12)"
-        strokeWidth={stroke}
-      />
-
-      <path
-        d={`M ${cx - r} ${cy} A ${r} ${r} 0 0 1 ${cx + r} ${cy}`}
-        fill="none"
-        stroke="url(#gaugeG)"
-        strokeWidth={stroke}
-        strokeDasharray={`${circ}`}
-        strokeDashoffset={offset}
-      />
-
-      <text
-        x={cx}
-        y={cy - 4}
-        textAnchor="middle"
-        fill="#e9d5ff"
-        fontSize="14"
-        fontWeight="700"
-      >
-        {pct}%
-      </text>
-    </svg>
-  )
-}
-
-/* ─── Progress Bar ───────────────────────────────────────────── */
-function ProgressBar({
-  pct,
-  label,
-  val,
-}: {
-  pct: number
-  label: string
-  val: string
-}) {
-  return (
-    <div className="mb-3">
-      <div className="flex justify-between text-xs text-purple-200/70 mb-1">
-        <span>{label}</span>
-        <span>{val}</span>
-      </div>
-
-      <div className="h-1.5 bg-purple-500/10 rounded-full overflow-hidden">
-        <div
-          className="h-full bg-gradient-to-r from-violet-700 to-purple-500"
-          style={{ width: `${pct}%` }}
-        />
-      </div>
-    </div>
-  )
+function makePath(data: number[], W: number, H: number, pad = 3) {
+  const mn = Math.min(...data) - 2
+  const mx = Math.max(...data) + 2
+  const sy = (v: number) => H - pad - ((v - mn) / (mx - mn)) * (H - pad * 2)
+  const step = (W - pad * 2) / (data.length - 1)
+  return {
+    line: data.map((v, i) => `${pad + i * step},${sy(v)}`).join(" "),
+    area: `${pad},${H} ${data.map((v, i) => `${pad + i * step},${sy(v)}`).join(" ")} ${pad + (data.length - 1) * step},${H}`,
+    last: { x: pad + (data.length - 1) * step, y: sy(data[data.length - 1]) },
+  }
 }
 
 /* ─── Main Hero ───────────────────────────────────────────────── */
-
-export default function NTAHero() {
-  const gsapReady = useScript(
-    "https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"
-  )
-
-  const rootRef = useRef<HTMLDivElement>(null)
-
-  const fc1 = useRef<HTMLDivElement>(null)
-  const fc2 = useRef<HTMLDivElement>(null)
-  const fc3 = useRef<HTMLDivElement>(null)
-  const fc4 = useRef<HTMLDivElement>(null)
-
-  const [activeTab, setActiveTab] = useState("Personal")
-
-  useEffect(() => {
-    if (!gsapReady || !(window as any).gsap) return
-
-    const g = (window as any).gsap
-
-    const tl = g.timeline()
-
-    tl.from(".n-badge", { y: -24, opacity: 0, duration: 0.6 })
-      .from(".n-title", { y: 60, opacity: 0, duration: 1 }, "-=0.3")
-      .from(".n-sub", { y: 30, opacity: 0, duration: 0.8 }, "-=0.4")
-
-    ;[
-      [fc1, 3.8, -18],
-      [fc2, 4.4, -14],
-      [fc3, 5.1, -22],
-      [fc4, 4.7, -16],
-    ].forEach(([r, d, y]: any) => {
-      if (!r.current) return
-      g.to(r.current, {
-        y,
-        duration: d,
-        repeat: -1,
-        yoyo: true,
-        ease: "sine.inOut",
-      })
-    })
-  }, [gsapReady])
-
+export default function Hero() {
   return (
-    <section
-      ref={rootRef}
-      className="bg-[#07020F] text-purple-50 min-h-screen overflow-hidden"
-    >
-      {/* NAVBAR */}
+    <>
+      <style>{`
+        @import url('https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;1,9..40,300&display=swap');
 
-      <nav className="flex justify-between items-center px-12 h-[70px] border-b border-purple-500/10">
-        <div className="flex items-center gap-3">
-          <div className="w-9 h-9 rounded-lg bg-gradient-to-br from-violet-700 to-purple-500 flex items-center justify-center">
-            <svg
-              viewBox="0 0 24 24"
-              className="w-4 h-4 text-white"
-              fill="none"
-              stroke="currentColor"
-              strokeWidth="2"
-            >
-              <polyline points="22 7 13.5 15.5 8.5 10.5 2 17" />
-            </svg>
-          </div>
+        @keyframes fadeUp  { from{opacity:0;transform:translateY(28px)} to{opacity:1;transform:translateY(0)} }
+        @keyframes shimmer { 0%,100%{opacity:.6} 50%{opacity:1} }
+        @keyframes floatA  { 0%,100%{transform:translateY(0px)}  50%{transform:translateY(-14px)} }
+        @keyframes floatB  { 0%,100%{transform:translateY(0px)}  50%{transform:translateY(-9px)}  }
+        @keyframes floatC  { 0%,100%{transform:translateY(0px)}  50%{transform:translateY(-18px)} }
+        @keyframes ticker  { from{transform:translateX(0)} to{transform:translateX(-50%)} }
+      `}</style>
 
-          <div>
-            <p className="font-bold">NTA</p>
-            <p className="text-xs text-purple-300/60">
-              Trading Academy
-            </p>
-          </div>
-        </div>
+      <section className="relative bg-[#06010F] text-purple-50 min-h-screen overflow-x-hidden font-sans">
 
-        <div className="flex gap-6 text-sm text-purple-200/60">
-          {["Programs", "Results", "Blog", "Contact"].map((l) => (
-            <a key={l}>{l}</a>
-          ))}
-        </div>
-
-        <button className="bg-gradient-to-r from-violet-700 to-purple-500 px-5 py-2 rounded-lg text-sm font-semibold">
-          Book Free Demo
-        </button>
-      </nav>
-
-      {/* HERO */}
-
-      <div className="text-center pt-24 px-6">
-
-        <div className="n-badge inline-flex items-center gap-2 bg-purple-500/10 border border-purple-500/20 px-4 py-1 rounded-full mb-6 text-xs uppercase tracking-widest text-purple-300">
-          Live Trading Mentorship
-        </div>
-
-        <h1 className="n-title text-5xl md:text-6xl font-extrabold leading-tight mb-6">
-          Master the{" "}
-          <span className="text-purple-400">Stock Market</span>
-          <br />
-          with{" "}
-          <span className="text-purple-400">
-            Real Live Trades
-          </span>
-        </h1>
-
-        <p className="n-sub max-w-xl mx-auto text-purple-200/60 mb-10">
-          Learn professional trading strategies, risk management
-          and market psychology through real market sessions.
-        </p>
-
-        <div className="flex justify-center gap-4 mb-20">
-          <button className="bg-gradient-to-r from-violet-700 to-purple-500 px-8 py-3 rounded-xl font-semibold">
-            Join the Community
-          </button>
-
-          <button className="border border-purple-500/30 px-8 py-3 rounded-xl text-purple-200/80">
-            View Curriculum
-          </button>
-        </div>
-
-      </div>
-
-      {/* DASHBOARD CARDS */}
-
-      <div className="max-w-6xl mx-auto grid md:grid-cols-3 gap-6 px-6 pb-24">
-
-        <div className="bg-purple-900/20 border border-purple-500/10 rounded-xl p-5">
-          <h3 className="text-sm mb-3">My Goals</h3>
-
-          <ProgressBar
-            pct={78}
-            label="Profitable Month"
-            val="78%"
-          />
-
-          <ProgressBar
-            pct={56}
-            label="Risk Discipline"
-            val="56%"
+        {/* LightRays */}
+        <div className="absolute inset-0 z-0 pointer-events-none">
+          <LightRays
+            raysOrigin="top-center"
+            raysColor="#cb70f5"
+            raysSpeed={1}
+            lightSpread={1}
+            rayLength={2}
+            pulsating={false}
+            fadeDistance={1}
+            saturation={1}
+            followMouse
+            mouseInfluence={0.1}
+            noiseAmount={0}
+            distortion={0}
           />
         </div>
 
-        <div className="bg-purple-900/20 border border-purple-500/10 rounded-xl p-5">
+        {/* Vignette */}
+        <div className="absolute inset-0 z-[1] pointer-events-none [background:radial-gradient(ellipse_90%_70%_at_50%_0%,transparent_40%,#06010F_100%)]" />
 
-          <h3 className="mb-3 text-sm">Live Dashboard</h3>
+        {/* Navbar */}
+        <Navbar />
 
-          <MiniChart />
+        {/* ── HERO TEXT ── */}
+        <div className="relative z-[5] text-center pt-28 sm:pt-36 pb-4 px-5 sm:px-6">
 
+          {/* Badge */}
+          <div
+            className="inline-flex items-center gap-2 bg-violet-700/[0.10] border border-violet-500/[0.16] px-4 sm:px-5 py-1.5 rounded-full mb-7 sm:mb-8"
+            style={{ animation: "fadeUp .9s cubic-bezier(.16,1,.3,1) .1s both" }}
+          >
+            <span
+              className="w-1.5 h-1.5 rounded-full bg-purple-400 inline-block shrink-0"
+              style={{ animation: "shimmer 2s ease-in-out infinite" }}
+            />
+            <span className="font-sans text-[9px] sm:text-[10px] tracking-[0.16em] sm:tracking-[0.18em] uppercase text-purple-300/70">
+              Live Trading Mentorship
+            </span>
+          </div>
+
+          {/* Headline */}
+          <h1
+            className="font-serif font-normal text-purple-50 max-w-[780px] mx-auto leading-[1.08] sm:leading-[1.06] tracking-[-0.02em] mb-4 sm:mb-5 px-2 sm:px-0"
+            style={{
+              fontSize: "clamp(32px,7vw,68px)",
+              animation: "fadeUp .9s cubic-bezier(.16,1,.3,1) .25s both",
+            }}
+          >
+            Learn to Navigate the{" "}
+            {/* break to new line only on md+ */}
+            <span className="hidden sm:inline"><br /></span>
+            <span className="font-serif italic text-purple-300">Stock Market</span>{" "}
+            <span className="font-serif text-white/90">Confidently</span>
+          </h1>
+
+          {/* Sub */}
+          <p
+            className="font-sans text-[13px] sm:text-[14px] font-light text-purple-200/40 max-w-[340px] sm:max-w-[400px] mx-auto mb-8 sm:mb-10 leading-[1.8] tracking-[0.02em]"
+            style={{ animation: "fadeUp .9s cubic-bezier(.16,1,.3,1) .40s both" }}
+          >
+            Professional strategies, risk management & market
+            psychology — taught through real live sessions.
+          </p>
+
+          {/* CTAs — stack on mobile, side-by-side on sm+ */}
+          <div
+            className="flex flex-col sm:flex-row justify-center items-center gap-3 mb-10 sm:mb-14 px-6 sm:px-0"
+            style={{ animation: "fadeUp .9s cubic-bezier(.16,1,.3,1) .55s both" }}
+          >
+            <button className="relative overflow-hidden w-full sm:w-auto bg-gradient-to-r from-violet-700 to-purple-500 text-white font-serif text-[14px] tracking-[0.02em] px-8 py-3 rounded-2xl hover:brightness-110 hover:-translate-y-px transition-all duration-200 shadow-[0_4px_24px_rgba(139,92,246,0.30)] border-0 cursor-pointer">
+              <span className="absolute inset-x-0 top-0 h-px bg-white/20" />
+              Join the Community
+            </button>
+            <button className="w-full sm:w-auto font-serif text-[14px] tracking-[0.02em] text-purple-200/55 px-8 py-3 rounded-2xl border border-purple-400/[0.16] hover:border-purple-400/35 hover:text-purple-100/80 transition-all duration-200 bg-transparent cursor-pointer">
+              Our Programs
+            </button>
+          </div>
+
+          {/* Decorative line */}
+          <div
+            className="flex justify-center"
+            style={{ animation: "fadeUp .9s cubic-bezier(.16,1,.3,1) .65s both" }}
+          >
+            <div className="h-px w-24 bg-gradient-to-r from-transparent via-purple-400/25 to-transparent" />
+          </div>
         </div>
 
-        <div className="bg-purple-900/20 border border-purple-500/10 rounded-xl p-5">
+        {/* ── CAROUSEL ── */}
+        <div
+          className="relative z-[5] w-full max-w-[900px] mx-auto px-0 sm:px-4 pb-12 sm:pb-16"
+          style={{ animation: "fadeUp 1.1s cubic-bezier(.16,1,.3,1) .75s both" }}
+        >
+          <MarketCarousel />
 
-          <h3 className="text-sm mb-3">Performance</h3>
-
-          <Gauge pct={72} />
-
+          {/* ground reflection */}
+          <div className="absolute inset-x-0 bottom-0 h-24 sm:h-32 [background:linear-gradient(to_top,#06010F_0%,transparent_100%)] pointer-events-none" />
         </div>
 
-      </div>
-    </section>
+        {/* Footer note */}
+        <div className="relative z-[5] text-center pb-8 sm:pb-10 font-sans text-[10px] tracking-[0.08em] text-purple-400/20">
+          © 2026 NTA Trading Academy — All rights reserved
+        </div>
+
+      </section>
+    </>
   )
 }
