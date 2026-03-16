@@ -132,7 +132,7 @@ export function Footer() {
                 shadow-[0_0_12px_rgba(168,85,247,0.22)]
                 group-hover:shadow-[0_0_18px_rgba(196,132,252,0.32)]
                 transition-shadow duration-300">
-                <img src="assets/logo.webp" alt="NTA" className="w-full h-full object-cover scale-[1.1]" />
+                <img src="assets/logo.png" alt="NTA" className="w-full h-full object-cover scale-[1.1]" />
               </div>
               <div>
                 <p className="font-serif text-[15px] text-purple-50 leading-none">NTA</p>

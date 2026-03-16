@@ -298,7 +298,7 @@ export function Navbar() {
                 className="w-[28px] h-[28px] rounded-[9px] overflow-hidden shrink-0 shadow-[0_0_12px_rgba(139,92,246,0.25)]"
               >
                 <img
-                  src="assets/logo.webp"
+                  src="assets/logo.png"
                   alt="NTA"
                   className="w-full h-full object-cover scale-[1.08]"
                 />

@@ -1,15 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-  <!DOCTYPE html>
-  <html lang="en">
-    <head>
-      <meta charset="UTF-8" />
-      <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-      <title>NTA - Modern Trading Education</title>
-    </head>
+  <!-- ═══════════════════════════════════════
+       PRIMARY META
+  ═══════════════════════════════════════ -->
+  <title>NTA — Namma Trading Academy | Live Stock Market Training Chennai</title>
+  <meta name="description"
+    content="Namma Trading Academy (NTA) — South India's most hands-on stock market training. Learn equity, options & commodity trading through real live sessions. NISM/NCFM certified programs. Chennai, Tamil Nadu." />
+  <meta name="keywords"
+    content="stock market course Chennai, trading academy India, NTA trading, live trading sessions, NISM certification, options trading course, equity trading Tamil Nadu, namma trading academy" />
+  <meta name="author" content="Namma Trading Academy" />
+  <meta name="robots" content="index, follow" />
+  <link rel="canonical" href="https://www.ntaacademy.in/" />
 
-    <body>
-      <div id="root"></div>
-      <script type="module" src="/src/main.tsx"></script>
-    </body>
-  </html>
-  
+  <!-- ═══════════════════════════════════════
+       OPEN GRAPH (Facebook, WhatsApp, LinkedIn)
+  ═══════════════════════════════════════ -->
+  <meta property="og:type"        content="website" />
+  <meta property="og:site_name"   content="NTA — Namma Trading Academy" />
+  <meta property="og:title"       content="NTA — Live Stock Market Training | Chennai" />
+  <meta property="og:description" content="South India's most hands-on trading academy. Learn to trade equities, options & commodities through real live sessions with mentors who actually trade." />
+  <meta property="og:url"         content="https://www.ntaacademy.in/" />
+  <meta property="og:image"       content="https://www.ntaacademy.in/og-image.jpg" />
+  <meta property="og:image:width"  content="1200" />
+  <meta property="og:image:height" content="630" />
+  <meta property="og:image:alt"   content="Namma Trading Academy — Live Trading Sessions" />
+  <meta property="og:locale"      content="en_IN" />
+
+  <!-- ═══════════════════════════════════════
+       TWITTER / X CARD
+  ═══════════════════════════════════════ -->
+  <meta name="twitter:card"        content="summary_large_image" />
+  <meta name="twitter:site"        content="@ntaacademy" />
+  <meta name="twitter:creator"     content="@ntaacademy" />
+  <meta name="twitter:title"       content="NTA — Live Stock Market Training | Chennai" />
+  <meta name="twitter:description" content="South India's most hands-on trading academy. Real mentors. Real trades. Every session live." />
+  <meta name="twitter:image"       content="https://www.ntaacademy.in/og-image.jpg" />
+  <meta name="twitter:image:alt"   content="Namma Trading Academy" />
+
+  <!-- ═══════════════════════════════════════
+       FAVICON SUITE
+       Generate all sizes at: https://realfavicongenerator.net
+       Then drop into /public/
+  ═══════════════════════════════════════ -->
+  <link rel="icon"             type="image/png" sizes="32x32"   href="assets/favicon/favicon-32x32.png" />
+  <link rel="icon"             type="image/png" sizes="16x16"   href="assets/favicon/favicon-16x16.png" />
+  <link rel="icon"             type="image/x-icon"              href="assets/favicon/favicon.ico" />
+  <link rel="apple-touch-icon"                  sizes="180x180" href="assets/favicon/apple-touch-icon.png" />
+  <link rel="manifest"                                          href="assets/favicon/site.webmanifest" />
+  <meta name="theme-color"    content="#06010F" />
+  <meta name="msapplication-TileColor" content="#06010F" />
+
+  <!-- ═══════════════════════════════════════
+       GEO / LOCAL SEO
+  ═══════════════════════════════════════ -->
+  <meta name="geo.region"   content="IN-TN" />
+  <meta name="geo.placename" content="Chennai, Tamil Nadu, India" />
+
+  <!-- ═══════════════════════════════════════
+       STRUCTURED DATA — LocalBusiness + Course
+  ═══════════════════════════════════════ -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "EducationalOrganization",
+        "@id": "https://www.ntaacademy.in/#organization",
+        "name": "Namma Trading Academy",
+        "alternateName": "NTA",
+        "url": "https://www.ntaacademy.in/",
+        "logo": "https://www.ntaacademy.in/logo.png",
+        "image": "https://www.ntaacademy.in/og-image.jpg",
+        "description": "South India's most hands-on stock market training academy. Live trading sessions, NISM/NCFM certification preparation, equity and options courses.",
+        "address": {
+          "@type": "PostalAddress",
+          "addressLocality": "Chennai",
+          "addressRegion": "Tamil Nadu",
+          "addressCountry": "IN"
+        },
+        "contactPoint": {
+          "@type": "ContactPoint",
+          "contactType": "customer support",
+          "email": "info@ntaacademy.in",
+          "availableLanguage": ["English", "Tamil"]
+        },
+        "sameAs": [
+          "https://www.youtube.com/@ntaacademy",
+          "https://www.instagram.com/ntaacademy",
+          "https://twitter.com/ntaacademy",
+          "https://t.me/ntaacademy"
+        ],
+        "aggregateRating": {
+          "@type": "AggregateRating",
+          "ratingValue": "4.9",
+          "reviewCount": "500",
+          "bestRating": "5"
+        }
+      },
+      {
+        "@type": "WebSite",
+        "@id": "https://www.ntaacademy.in/#website",
+        "url": "https://www.ntaacademy.in/",
+        "name": "NTA — Namma Trading Academy",
+        "publisher": { "@id": "https://www.ntaacademy.in/#organization" },
+        "potentialAction": {
+          "@type": "SearchAction",
+          "target": "https://www.ntaacademy.in/?s={search_term_string}",
+          "query-input": "required name=search_term_string"
+        }
+      },
+      {
+        "@type": "Course",
+        "name": "30-Day Live Trading Program",
+        "description": "Intensive 30-day program with live market sessions every trading day. Learn equity trading, risk management and trade psychology alongside an active mentor.",
+        "provider": { "@id": "https://www.ntaacademy.in/#organization" },
+        "url": "https://www.ntaacademy.in/programs",
+        "courseMode": "onsite",
+        "inLanguage": ["en", "ta"],
+        "educationalLevel": "Beginner to Intermediate",
+        "timeRequired": "P30D"
+      }
+    ]
+  }
+  </script>
+
+  <!-- ═══════════════════════════════════════
+       PERFORMANCE HINTS
+  ═══════════════════════════════════════ -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link rel="dns-prefetch" href="https://fonts.googleapis.com" />
+</head>
+
+<body>
+  <div id="root"></div>
+  <script type="module" src="/src/main.tsx"></script>
+</body>
+</html>
