@@ -202,7 +202,7 @@ function MiniSpark({ id }: { id: string }) {
 ══════════════════════════════════════════════════════════════ */
 function Hero() {
   return (
-    <section className="relative min-h-[72vh] flex flex-col items-center justify-center text-center px-6 pt-32 pb-20 overflow-hidden">
+    <section id="hero" className="relative min-h-[72vh] flex flex-col items-center justify-center text-center px-6 pt-32 pb-20 overflow-hidden">
       <div className="absolute inset-0 z-0 pointer-events-none">
         <LightRays raysOrigin="top-center" raysColor="#cb70f5" raysSpeed={0.7}
           lightSpread={1} rayLength={1.4} pulsating={false} fadeDistance={1}

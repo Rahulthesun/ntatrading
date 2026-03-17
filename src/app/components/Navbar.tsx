@@ -8,9 +8,9 @@ import { HashLink } from 'react-router-hash-link';
    CONFIG
 ───────────────────────────────────────────── */
 const NAV_LINKS = [
-  { label: 'Home',      to: '/'         },
-  { label: 'About Us',  to: '/about'    },
-  { label: 'Programs',  to: '/programs' },
+  { label: 'Home',      to: '/#hero'         },
+  { label: 'About Us',  to: '/about#hero'    },
+  { label: 'Programs',  to: '/programs#hero' },
 ];
 
 const MORE_LINKS = [
@@ -114,9 +114,15 @@ function MoreMenu({
             <div className="overflow-hidden rounded-xl bg-[#0D0618]/98 border border-white/[0.09] shadow-[0_20px_56px_rgba(0,0,0,0.70)] backdrop-blur-2xl">
               {MORE_LINKS.map((item, i) => (
                 <HashLink
-                  key={item.to}
+                  smooth
                   to={item.to}
+                  scroll={(el) => {
+                    const yOffset = -80; // adjust if you have fixed navbar
+                    const y = el.getBoundingClientRect().top + window.scrollY + yOffset;
+                    window.scrollTo({ top: y, behavior: 'smooth' });
+                  }}
                   onClick={() => { onNav(item.to); setOpen(false); }}
+
                   className={`
                     group flex items-center gap-3 px-4 py-2
                     font-sans text-[12.5px] tracking-[0.01em]
@@ -173,9 +179,16 @@ function MobileDrawer({
                   animate={{ opacity: 1, x: 0  }}
                   transition={{ delay: i * 0.045, duration: 0.24 }}
                 >
-                  <Link
+                  <HashLink
+                    smooth
                     to={item.to}
-                    onClick={() => onNav(item.to)}
+                    scroll={(el) => {
+                      const yOffset = -80; // adjust if you have fixed navbar
+                      const y = el.getBoundingClientRect().top + window.scrollY + yOffset;
+                      window.scrollTo({ top: y, behavior: 'smooth' });
+                    }}
+                    onClick={() => { onNav(item.to); setOpen(false); }}
+
                     className={`
                       flex items-center justify-between px-4 py-3 rounded-xl
                       font-sans text-[13px] tracking-[0.01em] transition-all duration-150
@@ -186,7 +199,7 @@ function MobileDrawer({
                   >
                     {item.label}
                     {active === item.to && <span className="w-1.5 h-1.5 rounded-full bg-purple-400 shrink-0" />}
-                  </Link>
+                  </HashLink>
                 </motion.div>
               ))}
             </nav>

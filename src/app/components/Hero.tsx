@@ -34,7 +34,7 @@ export default function Hero() {
         @keyframes ticker  { from{transform:translateX(0)} to{transform:translateX(-50%)} }
       `}</style>
 
-      <section className="relative bg-[#06010F] text-purple-50 min-h-screen overflow-x-hidden font-sans">
+      <section id="hero" className="relative bg-[#06010F] text-purple-50 min-h-screen overflow-x-hidden font-sans">
 
         {/* LightRays */}
         <div className="absolute inset-0 z-0 pointer-events-none">
@@ -68,12 +68,9 @@ export default function Hero() {
             className="inline-flex items-center gap-2 bg-violet-700/[0.10] border border-violet-500/[0.16] px-4 sm:px-5 py-1.5 rounded-full mb-7 sm:mb-8"
             style={{ animation: "fadeUp .9s cubic-bezier(.16,1,.3,1) .1s both" }}
           >
-            <span
-              className="w-1.5 h-1.5 rounded-full bg-purple-400 inline-block shrink-0"
-              style={{ animation: "shimmer 2s ease-in-out infinite" }}
-            />
-            <span className="font-sans text-[9px] sm:text-[10px] tracking-[0.16em] sm:tracking-[0.18em] uppercase text-purple-300/70">
-              Live Trading Mentorship
+            
+            <span className="font-sans text-[9px] sm:text-[10px] font-bold text-purple-300/70">
+              Namma Trading Academy
             </span>
           </div>
 
@@ -81,7 +78,7 @@ export default function Hero() {
           <h1
             className="font-serif font-normal text-purple-50 max-w-[780px] mx-auto leading-[1.08] sm:leading-[1.06] tracking-[-0.02em] mb-4 sm:mb-5 px-2 sm:px-0"
             style={{
-              fontSize: "clamp(32px,7vw,68px)",
+              fontSize: "clamp(28px,7vw,68px)",
               animation: "fadeUp .9s cubic-bezier(.16,1,.3,1) .25s both",
             }}
           >

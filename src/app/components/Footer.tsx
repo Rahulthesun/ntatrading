@@ -192,7 +192,7 @@ export function Footer() {
             <ul className="flex flex-col gap-4">
               {[
                 { Icon: Mail,    href: "mailto:contact@ntatrading.in", value: "contact@ntatrading.in",      iconColor: "text-purple-400"  },
-                { Icon: Phone,   href: "tel:+919876543210",            value: "+91 98765 43210",            iconColor: "text-violet-400"  },
+                { Icon: Phone,   href: "tel:919176001402",            value: "+91 9176001402",            iconColor: "text-violet-400"  },
                 { Icon: MapPin,  href: undefined,                      value: "Chennai, Tamil Nadu, India", iconColor: "text-purple-300"  },
               ].map(({ Icon, href, value, iconColor }) => (
                 <li key={value}>

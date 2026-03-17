@@ -143,7 +143,7 @@ function Card({ item }: { item: typeof TESTIMONIALS[0] }) {
 /* ══════════════════════════════════════════════════════════════
    MAIN EXPORT
 ══════════════════════════════════════════════════════════════ */
-export default function Reviews() {
+export default function TestimonialsSection() {
   const sectionRef = useRef<HTMLElement>(null);
   const [visible, setVisible]       = useState(false);
   const [row1Paused, setRow1Paused] = useState(false);
@@ -172,7 +172,7 @@ export default function Reviews() {
         .mq-r { animation: marquee-r 48s linear infinite; will-change: transform; }
       `}</style>
 
-      <section ref={sectionRef} id="testimonials" className="relative bg-[#06010F] py-24 overflow-hidden">
+      <section ref={sectionRef} id="reviews" className="relative bg-[#06010F] py-24 px-5 sm:px-6 overflow-hidden">
 
         {/* ambient glow */}
         <div className="absolute inset-0 pointer-events-none">
@@ -182,11 +182,11 @@ export default function Reviews() {
             style={{ background: "radial-gradient(ellipse, rgba(109,40,217,0.05) 0%, transparent 70%)" }} />
         </div>
 
-        {/* top rule */}
-        <div className="w-full h-px bg-gradient-to-r from-transparent via-purple-500/[0.11] to-transparent mb-24" />
+        {/* top rule — matches Services */}
+        <div className="w-full h-px bg-gradient-to-r from-transparent via-purple-500/[0.11] to-transparent mb-16" />
 
         {/* ── Header ── */}
-        <div className="relative z-10 text-center px-6 mb-16">
+        <div className="relative z-10 text-center max-w-5xl mx-auto mb-16">
 
           {/* rating badge */}
           <div className="flex justify-center mb-7">
@@ -248,7 +248,7 @@ export default function Reviews() {
         </div>
 
         {/* bottom rule */}
-        <div className="w-full h-px bg-gradient-to-r from-transparent via-purple-500/[0.11] to-transparent mt-24" />
+        <div className="w-full h-px bg-gradient-to-r from-transparent via-purple-500/[0.11] to-transparent mt-16" />
       </section>
     </>
   );

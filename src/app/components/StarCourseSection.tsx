@@ -1,404 +1,389 @@
-import { useEffect, useRef, useState } from "react";
+import { useRef, useState } from "react";
+import { motion, useInView } from "motion/react";
 import {
-  TrendingUp, Shield, Lock, Star,
-  ArrowRight, CheckCircle2, Flame,
-  Sparkles, BarChart2, PiggyBank, Landmark,
+  TrendingUp, Shield, Lock, Star, ArrowRight,
+  CheckCircle2, Flame, Sparkles, BarChart2,
+  PiggyBank, Landmark,
 } from "lucide-react";
+import SpotLightCard from "../../components/SpotlightCard";
 
-declare global { interface Window { gsap: any } }
-
-const bullets = [
-  { icon: TrendingUp, text: "Stock Market & live trading strategies" },
-  { icon: BarChart2,  text: "Mutual Funds, SIPs & index investing" },
-  { icon: PiggyBank,  text: "Wealth management & financial planning" },
-  { icon: Landmark,   text: "Bonds, ETFs & portfolio diversification" },
+const BULLETS = [
+  { Icon: TrendingUp, text: "Live stock market & trading strategies"  },
+  { Icon: BarChart2,  text: "Mutual Funds, SIPs & index investing"    },
+  { Icon: PiggyBank,  text: "Wealth management & financial planning"  },
+  { Icon: Landmark,   text: "Bonds, ETFs & portfolio diversification" },
 ];
 
 export default function StarCourseSection() {
-  const blobARef    = useRef<HTMLDivElement>(null);
-  const blobBRef    = useRef<HTMLDivElement>(null);
-  const cardRef     = useRef<HTMLDivElement>(null);
-  const ctaRef      = useRef<HTMLButtonElement>(null);
-  const shieldRef   = useRef<HTMLDivElement>(null);
-  const orbitRef    = useRef<HTMLDivElement>(null);
-  const heroRef     = useRef<HTMLDivElement>(null);
-  const bulletRefs  = useRef<(HTMLDivElement | null)[]>([]);
-
-  const [email, setEmail]         = useState("");
-  const [name,  setName]          = useState("");
+  const [name,      setName]      = useState("");
+  const [email,     setEmail]     = useState("");
   const [submitted, setSubmitted] = useState(false);
-  const [focus, setFocus]         = useState<string | null>(null);
-  const [gsapReady, setGsapReady] = useState(false);
+  const [focus,     setFocus]     = useState<string | null>(null);
 
-  useEffect(() => {
-    if (window.gsap) { setGsapReady(true); return; }
-    const s = document.createElement("script");
-    s.src = "https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js";
-    s.onload = () => setGsapReady(true);
-    document.head.appendChild(s);
-  }, []);
+  const ref    = useRef(null);
+  const inView = useInView(ref, { once: true, margin: "-60px" });
 
-  useEffect(() => {
-    if (!gsapReady) return;
-    const g = window.gsap;
+  const WHATSAPP_NUMBER = "919176001402"; // ← replace with real number
 
-    const tl = g.timeline({ defaults: { ease: "power3.out" } });
-    tl.from([blobARef.current, blobBRef.current],
-      { scale: 0.2, opacity: 0, duration: 2.5, stagger: 0.4, ease: "expo.out" }, 0)
-      .from(cardRef.current,
-        { y: 55, opacity: 0, scale: 0.94, duration: 0.85, ease: "back.out(1.2)" }, 0.5)
-      .from(heroRef.current?.querySelectorAll(".hw") ?? [],
-        { y: 60, opacity: 0, duration: 0.65, stagger: 0.12, ease: "power4.out" }, 0.85)
-      .from(bulletRefs.current,
-        { x: -22, opacity: 0, duration: 0.4, stagger: 0.09 }, 1.15);
+  const submit = () => {
+    if (!name.trim() || !email.trim()) return;
+    const message = encodeURIComponent(
+`Hi! I'm interested in enrolling in the 30-Day Star Course offered by NTA Academy.
 
-    g.to(blobARef.current, { x: 50, y: 35,  repeat: -1, yoyo: true, duration: 12, ease: "sine.inOut" });
-    g.to(blobBRef.current, { x:-44, y:-28,  repeat: -1, yoyo: true, duration: 15, ease: "sine.inOut" });
-    g.to(orbitRef.current, { rotation: 360, repeat: -1, duration: 9, ease: "none" });
-    g.to(shieldRef.current,{ y: -5, repeat: -1, yoyo: true, duration: 2.3, ease: "sine.inOut" });
-    g.to(ctaRef.current, {
-      boxShadow: "0 0 40px rgba(200,180,255,0.2), 0 8px 32px rgba(100,0,180,0.35)",
-      repeat: -1, yoyo: true, duration: 2, ease: "sine.inOut",
-    });
-  }, [gsapReady]);
+Here are my details:
 
-  const onCtaEnter = () => window.gsap?.to(ctaRef.current, { scale: 1.03, duration: 0.28, ease: "power2.out" });
-  const onCtaLeave = () => window.gsap?.to(ctaRef.current, { scale: 1,    duration: 0.45, ease: "elastic.out(1,0.55)" });
+Name: ${name}
+Email: ${email}
 
-  const handleSubmit = () => {
-    if (!email || !name) {
-      window.gsap?.to(ctaRef.current, { x: -6, duration: 0.07, repeat: 5, yoyo: true });
-      return;
-    }
+I would like to reserve my spot and get more information about the course structure, schedule, and next steps.
+
+Looking forward to your response. Thank you!`    );
+    window.open(`https://wa.me/${WHATSAPP_NUMBER}?text=${message}`, "_blank");
     setSubmitted(true);
   };
 
   return (
     <>
-      <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,400;0,500;0,600;0,700;0,800;0,900;1,800;1,900&display=swap" rel="stylesheet" />
+      <style>{`
+        @import url('https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600&display=swap');
+        .nta-input::placeholder { color: rgba(196,132,252,0.25); }
+        .nta-input:focus { outline: none; }
 
-      <section style={{
-        minHeight: "100vh",
-        background: "#06000f",
-        fontFamily: "'Plus Jakarta Sans', sans-serif",
-        position: "relative", overflow: "hidden",
-        display: "flex", alignItems: "center", justifyContent: "center",
-      }}>
+        /* ── Override SpotlightCard's default bg so our purple shows through ── */
+        .nta-spotlight-card {
+          background: linear-gradient(160deg, rgba(22,8,44,0.97) 0%, rgba(12,3,24,0.99) 100%) !important;
+          border: 1px solid rgba(196,132,252,0.16) !important;
+          box-shadow: 0 40px 100px rgba(0,0,0,0.65),
+                      0 0 0 1px rgba(255,255,255,0.03),
+                      inset 0 1px 0 rgba(255,255,255,0.06) !important;
+          border-radius: 24px !important;
+          padding: 0 !important;
+          overflow: hidden !important;
+        }
+      `}</style>
 
-        {/* ambient blobs — muted */}
-        <div ref={blobARef} style={{
-          position:"absolute", width:680, height:680, top:-240, left:-240, pointerEvents:"none",
-          background:"radial-gradient(ellipse,#38005a 0%,#180028 45%,transparent 72%)",
-          borderRadius:"60% 40% 55% 45%/50% 62% 38% 54%", filter:"blur(6px)", opacity:0.85,
-        }}/>
-        <div ref={blobBRef} style={{
-          position:"absolute", width:560, height:560, bottom:-190, right:-180, pointerEvents:"none",
-          background:"radial-gradient(ellipse,#400068 0%,#1e0038 48%,transparent 74%)",
-          borderRadius:"42% 58% 48% 52%/58% 42% 56% 44%", filter:"blur(6px)", opacity:0.8,
-        }}/>
-        {/* faint grid */}
-        <div style={{
-          position:"absolute", inset:0, pointerEvents:"none", opacity:0.022,
-          backgroundImage:"linear-gradient(rgba(160,80,255,0.8) 1px,transparent 1px),linear-gradient(90deg,rgba(160,80,255,0.8) 1px,transparent 1px)",
-          backgroundSize:"54px 54px",
-        }}/>
+      <section
+        ref={ref}
+        className="relative overflow-hidden font-sans bg-[#06010F] py-24 px-5 sm:px-6"
+      >
+        {/* ── ambient — matches SocialProof ── */}
+        <div className="absolute inset-0 pointer-events-none">
+          <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[700px] h-[400px]"
+            style={{ background: "radial-gradient(ellipse at 50% 0%, rgba(139,92,246,0.08) 0%, transparent 65%)" }} />
+          <div className="absolute bottom-0 left-1/4 w-[400px] h-[300px]"
+            style={{ background: "radial-gradient(ellipse, rgba(109,40,217,0.06) 0%, transparent 70%)" }} />
+          <div className="absolute inset-0 opacity-[0.018]"
+            style={{
+              backgroundImage: "linear-gradient(rgba(196,132,252,1) 1px,transparent 1px),linear-gradient(90deg,rgba(196,132,252,1) 1px,transparent 1px)",
+              backgroundSize: "52px 52px",
+            }} />
+        </div>
 
-        {/* ── CARD ── */}
-        <div
-          ref={cardRef}
-          style={{
-            position:"relative", zIndex:10,
-            width:"100%", maxWidth:960,
-            margin:"0 24px",
-            borderRadius:28,
-            overflow:"hidden",
-            /* toned-down deep purple gradient */
-            background:"linear-gradient(150deg,#1e0042 0%,#2e0058 25%,#240050 55%,#180038 100%)",
-            border:"1px solid rgba(160,100,255,0.2)",
-            boxShadow:"0 32px 90px rgba(60,0,120,0.5), 0 0 0 1px rgba(255,255,255,0.04), inset 0 1px 0 rgba(255,255,255,0.07)",
-          }}
-        >
-          {/* top shimmer line */}
-          <div style={{
-            position:"absolute", top:0, left:"8%", right:"8%", height:1,
-            background:"linear-gradient(90deg,transparent,rgba(200,160,255,0.45),transparent)",
-          }}/>
-          {/* subtle center radial */}
-          <div style={{
-            position:"absolute", top:"-20%", left:"50%", transform:"translateX(-50%)",
-            width:"55%", height:"65%", pointerEvents:"none",
-            background:"radial-gradient(ellipse,rgba(140,60,220,0.1) 0%,transparent 68%)",
-          }}/>
+        {/* ── top rule — identical to SocialProof ── */}
+        <div className="w-full h-px bg-gradient-to-r from-transparent via-purple-500/[0.11] to-transparent mb-16" />
 
-          <div style={{ display:"flex", position:"relative", zIndex:1 }}>
+        {/* ── same max-width as SocialProof ── */}
+        <div className="relative z-10 max-w-5xl mx-auto">
 
-            {/* ───── LEFT ───── */}
-            <div style={{
-              flex:"1.15", padding:"34px 34px 28px",
-              borderRight:"1px solid rgba(160,100,255,0.12)",
-              display:"flex", flexDirection:"column",
-            }}>
+          {/* Section header */}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={inView ? { opacity: 1, y: 0 } : {}}
+            transition={{ duration: 0.65, ease: [0.22,1,0.36,1] }}
+            className="mb-14"
+          >
+            {/* eyebrow — matches SocialProof style */}
+            <div className="flex items-center gap-3 mb-5">
+              <div className="h-px w-6 bg-purple-500/40" />
+              <span className="font-sans text-[10px] tracking-[0.22em] uppercase text-purple-400/60">
+                30-Day Star Course
+              </span>
+            </div>
 
-              {/* badge */}
-              <div style={{
-                display:"inline-flex", alignItems:"center", gap:7,
-                padding:"5px 13px", borderRadius:99, marginBottom:24,
-                background:"rgba(160,100,255,0.12)", border:"1px solid rgba(160,100,255,0.22)",
-                alignSelf:"flex-start",
-              }}>
-                <Star size={10} color="#b980ff" fill="#b980ff"/>
-                <span style={{ color:"rgba(200,160,255,0.85)", fontSize:10, fontWeight:700, letterSpacing:"0.17em", textTransform:"uppercase" }}>
-                  30-Day Star Course · Limited Slots
-                </span>
-              </div>
+            <h2
+              className="font-serif font-normal leading-[1.08] tracking-[-0.02em] text-purple-50"
+              style={{ fontSize: "clamp(28px,3.6vw,48px)" }}
+            >
+              Go from zero to{" "}
+              <span
+                className="font-serif italic inline-block px-1 text-transparent bg-clip-text"
+                style={{ backgroundImage: "linear-gradient(135deg,#d8b4fe 0%,#a855f7 55%,#c084fc 100%)" }}
+              >
+                consistently profitable.
+              </span>
+            </h2>
 
-              {/* ── ZERO TO HERO ── */}
-              <div ref={heroRef} style={{ marginBottom:22 }}>
+            <p className="font-sans text-[13.5px] font-light text-purple-200/40 mt-4 max-w-[440px] leading-[1.78]">
+              Everything you need — from live sessions to certification to
+              community — in one structured 30-day journey.
+            </p>
+          </motion.div>
 
-                {/* "Zero" — lighter, refined */}
-                <div className="hw" style={{
-                  fontSize:"clamp(52px,6.8vw,82px)",
-                  fontWeight:900,
-                  fontStyle:"italic",
-                  letterSpacing:"-2.5px",
-                  lineHeight:1,
-                  color:"rgba(220,190,255,0.55)",          /* muted lavender — feels like a ghost word */
-                  display:"block",
-                }}>Zero</div>
+          {/* ── CARD ── */}
+          <motion.div
+            initial={{ opacity: 0, y: 28 }}
+            animate={inView ? { opacity: 1, y: 0 } : {}}
+            transition={{ duration: 0.75, delay: 0.15, ease: [0.22,1,0.36,1] }}
+          >
+            <SpotLightCard
+              spotlightColor="rgba(168, 85, 247, 0.18)"
+              className="nta-spotlight-card"
+            >
+              {/* ── TOP BAND: Zero → Hero ── */}
+              <div
+                className="relative px-6 sm:px-10 pt-8 sm:pt-10 pb-6 sm:pb-8"
+                style={{ borderBottom: "1px solid rgba(139,92,246,0.10)" }}
+              >
+                {/* inner top glow */}
+                <div className="absolute top-0 left-1/2 -translate-x-1/2 w-3/4 h-40 pointer-events-none"
+                  style={{ background: "radial-gradient(ellipse at 50% 0%, rgba(109,40,217,0.14) 0%, transparent 70%)" }} />
 
-                {/* arrow divider — thin elegant line */}
-                <div className="hw" style={{
-                  display:"flex", alignItems:"center", gap:12, margin:"4px 0",
-                }}>
-                  <div style={{ flex:1, maxWidth:120, height:1, background:"linear-gradient(90deg,rgba(180,120,255,0.5),transparent)" }}/>
-                  <span style={{ color:"rgba(180,120,255,0.6)", fontSize:18, fontWeight:300 }}>→</span>
+                <div className="relative flex items-baseline gap-3 sm:gap-5 flex-wrap">
+                  {/* Zero — ghost outline */}
+                  <span
+                    className="font-serif italic leading-none select-none"
+                    style={{
+                      fontSize: "clamp(44px,7vw,82px)",
+                      letterSpacing: "-2px",
+                      color: "transparent",
+                      backgroundImage: "linear-gradient(135deg, rgba(216,180,254,0.18), rgba(168,85,247,0.10))",
+                      WebkitBackgroundClip: "text",
+                      backgroundClip: "text",
+                      WebkitTextStroke: "1px rgba(216,180,254,0.20)",
+                    }}
+                  >Zero</span>
+
+                  {/* arrow */}
+                  <div className="flex items-center gap-2 sm:gap-3 pb-1.5">
+                    <div className="w-8 sm:w-14 h-px"
+                      style={{ background: "linear-gradient(90deg,rgba(167,139,250,0.40),transparent)" }} />
+                    <span className="font-sans font-light text-purple-400/35 text-xl sm:text-2xl leading-none">→</span>
+                  </div>
+
+                  {/* Hero — gradient */}
+                  <span
+                    className="font-serif italic leading-none text-transparent bg-clip-text"
+                    style={{
+                      fontSize: "clamp(44px,7vw,82px)",
+                      letterSpacing: "-2px",
+                      backgroundImage: "linear-gradient(125deg,#f3e8ff 0%,#d8b4fe 28%,#a855f7 62%,#7c3aed 100%)",
+                    }}
+                  >Hero.</span>
+
+                  {/* tagline desktop */}
+                  <p className="font-sans text-[12.5px] font-light text-purple-200/30 leading-[1.75] ml-auto hidden lg:block max-w-[200px] text-right pb-1">
+                    From knowing nothing about markets to building real wealth — in 30 days flat.
+                  </p>
                 </div>
 
-                {/* "Hero" — bright, dominant */}
-                <div className="hw" style={{
-                  fontSize:"clamp(62px,8.5vw,100px)",
-                  fontWeight:900,
-                  fontStyle:"italic",
-                  letterSpacing:"-3px",
-                  lineHeight:0.92,
-                  background:"linear-gradient(120deg,#d8b4fe 0%,#c084fc 40%,#a855f7 75%,#9333ea 100%)",
-                  WebkitBackgroundClip:"text",
-                  WebkitTextFillColor:"transparent",
-                  display:"block",
-                }}>Hero.</div>
-
-                {/* one-line description */}
-                <p className="hw" style={{
-                  fontSize:13, fontWeight:500,
-                  color:"rgba(200,170,255,0.5)",
-                  letterSpacing:"0.01em",
-                  lineHeight:1.5,
-                  margin:"10px 0 0",
-                  maxWidth:340,
-                }}>
+                {/* tagline mobile */}
+                <p className="font-sans text-[12.5px] font-light text-purple-200/30 leading-[1.75] mt-2.5 lg:hidden">
                   From knowing nothing about markets to building real wealth — in 30 days flat.
                 </p>
               </div>
 
-              {/* bullets */}
-              <div style={{ display:"flex", flexDirection:"column", gap:11, flex:1 }}>
-                {bullets.map((b, i) => {
-                  const BIcon = b.icon;
-                  return (
-                    <div key={i} ref={el => { bulletRefs.current[i] = el; }}
-                      style={{ display:"flex", alignItems:"center", gap:11 }}>
-                      <div style={{
-                        width:32, height:32, borderRadius:9, flexShrink:0,
-                        display:"flex", alignItems:"center", justifyContent:"center",
-                        background:"rgba(160,100,255,0.14)",
-                        border:"1px solid rgba(160,100,255,0.2)",
-                      }}>
-                        <BIcon size={14} color="#b980ff" strokeWidth={2.2}/>
-                      </div>
-                      <span style={{ color:"rgba(220,200,255,0.65)", fontSize:13, fontWeight:500 }}>
-                        {b.text}
-                      </span>
-                    </div>
-                  );
-                })}
-              </div>
+              {/* ── BOTTOM: bullets | form ── */}
+              <div className="flex flex-col lg:flex-row">
 
-              {/* stats */}
-              <div style={{
-                display:"flex", gap:0, marginTop:22,
-                borderRadius:12, overflow:"hidden",
-                border:"1px solid rgba(160,100,255,0.14)",
-              }}>
-                {[{n:"30",s:"Days"},{n:"94%",s:"Completion"},{n:"12k+",s:"Graduates"}].map((x,i)=>(
-                  <div key={i} style={{
-                    flex:1, padding:"10px 0", textAlign:"center",
-                    background:"rgba(160,100,255,0.06)",
-                    borderRight: i < 2 ? "1px solid rgba(160,100,255,0.1)" : "none",
-                  }}>
-                    <div style={{
-                      fontSize:20, fontWeight:900,
-                      background:"linear-gradient(135deg,#e9d5ff,#c084fc)",
-                      WebkitBackgroundClip:"text", WebkitTextFillColor:"transparent",
-                    }}>{x.n}</div>
-                    <div style={{ color:"rgba(200,170,255,0.38)", fontSize:9.5, fontWeight:600, textTransform:"uppercase", letterSpacing:"0.1em" }}>{x.s}</div>
-                  </div>
-                ))}
-              </div>
-            </div>
+                {/* LEFT: bullets + stats */}
+                <div className="flex-1 px-6 sm:px-10 py-7 sm:py-8"
+                  style={{ borderRight: "1px solid rgba(139,92,246,0.08)" }}>
 
-            {/* ───── RIGHT — signup ───── */}
-            <div style={{
-              width:288, padding:"28px 24px 24px",
-              display:"flex", flexDirection:"column", justifyContent:"space-between",
-              position:"relative",
-            }}>
-              {/* orbit */}
-              <div ref={orbitRef} style={{
-                position:"absolute", top:18, right:18, width:40, height:40,
-                border:"1px dashed rgba(160,100,255,0.28)", borderRadius:"50%", pointerEvents:"none",
-              }}>
-                <div style={{
-                  position:"absolute", top:-3.5, left:"50%", transform:"translateX(-50%)",
-                  width:7, height:7, borderRadius:"50%",
-                  background:"#a855f7",
-                  boxShadow:"0 0 8px rgba(168,85,247,0.7)",
-                }}/>
-              </div>
-
-              {!submitted ? (
-                <>
-                  <div>
-                    <div style={{ display:"flex", alignItems:"center", gap:8, marginBottom:14 }}>
-                      <span style={{ fontSize:9, color:"rgba(200,160,255,0.4)", textTransform:"uppercase", letterSpacing:"0.18em", fontWeight:700 }}>Enrollment</span>
-                      <span style={{ padding:"2px 8px", borderRadius:99, fontSize:9, fontWeight:900, color:"#0e0020", background:"#c8f542" }}>OPEN</span>
-                    </div>
-
-                    {/* price blur */}
-                    <div style={{ marginBottom:16 }}>
-                      <div style={{ color:"rgba(200,160,255,0.3)", fontSize:9, textTransform:"uppercase", letterSpacing:"0.17em", fontWeight:700, marginBottom:6 }}>Investment</div>
-                      <div style={{ position:"relative", display:"inline-block" }}>
-                        <div style={{
-                          fontSize:42, fontWeight:900, letterSpacing:"-2px",
-                          background:"linear-gradient(135deg,#d8b4fe,#a855f7)",
-                          WebkitBackgroundClip:"text", WebkitTextFillColor:"transparent",
-                          filter:"blur(12px)", userSelect:"none", lineHeight:1,
-                        }}>$XXX</div>
-                        <div style={{ position:"absolute", inset:0, display:"flex", alignItems:"center", justifyContent:"center" }}>
-                          <div style={{
-                            display:"flex", alignItems:"center", gap:5,
-                            padding:"4px 10px", borderRadius:99,
-                            background:"rgba(6,0,15,0.8)", border:"1px solid rgba(160,100,255,0.2)",
-                            backdropFilter:"blur(8px)",
+                  <div className="flex flex-col gap-2.5 sm:gap-3 mb-7 sm:mb-8">
+                    {BULLETS.map(({ Icon, text }, i) => (
+                      <motion.div
+                        key={i}
+                        initial={{ opacity: 0, x: -10 }}
+                        animate={inView ? { opacity: 1, x: 0 } : {}}
+                        transition={{ duration: 0.5, delay: 0.35 + i * 0.08, ease: [0.22,1,0.36,1] }}
+                        className="flex items-center gap-3"
+                      >
+                        <div className="w-7 h-7 sm:w-8 sm:h-8 rounded-xl flex items-center justify-center shrink-0"
+                          style={{
+                            background: "rgba(139,92,246,0.10)",
+                            border: "1px solid rgba(139,92,246,0.18)",
                           }}>
-                            <Lock size={9} color="rgba(200,160,255,0.55)" strokeWidth={2.5}/>
-                            <span style={{ color:"rgba(200,160,255,0.55)", fontSize:9.5, fontWeight:700, whiteSpace:"nowrap" }}>Revealed on booking</span>
+                          <Icon size={13} className="text-purple-400" strokeWidth={2} />
+                        </div>
+                        <span className="font-sans text-[12.5px] sm:text-[13px] font-light text-purple-200/52">{text}</span>
+                      </motion.div>
+                    ))}
+                  </div>
+
+                  {/* stat chips */}
+                  <motion.div
+                    initial={{ opacity: 0, y: 8 }}
+                    animate={inView ? { opacity: 1, y: 0 } : {}}
+                    transition={{ duration: 0.5, delay: 0.68 }}
+                    className="flex flex-wrap gap-2"
+                  >
+                    {[
+                      { n: "30 Days", s: "Program"    },
+                      { n: "94%",     s: "Completion" },
+                      { n: "500+",    s: "Graduates"  },
+                    ].map(({ n, s }) => (
+                      <div key={n}
+                        className="flex items-center gap-1.5 px-3 sm:px-4 py-1.5 sm:py-2 rounded-xl"
+                        style={{
+                          background: "rgba(139,92,246,0.08)",
+                          border: "1px solid rgba(139,92,246,0.14)",
+                        }}>
+                        <span className="font-serif text-[14px] sm:text-[15px] text-transparent bg-clip-text"
+                          style={{ backgroundImage: "linear-gradient(135deg,#f3e8ff,#c084fc)" }}>{n}</span>
+                        <span className="font-sans text-[9.5px] text-purple-400/38 font-medium">{s}</span>
+                      </div>
+                    ))}
+                  </motion.div>
+                </div>
+
+                {/* RIGHT: form */}
+                <motion.div
+                  initial={{ opacity: 0, y: 14 }}
+                  animate={inView ? { opacity: 1, y: 0 } : {}}
+                  transition={{ duration: 0.6, delay: 0.4, ease: [0.22,1,0.36,1] }}
+                  className="px-6 sm:px-10 py-7 sm:py-8 lg:w-[290px] lg:shrink-0 flex flex-col gap-4 sm:gap-5"
+                  style={{ borderTop: "1px solid rgba(139,92,246,0.08)" }}
+                >
+                  {!submitted ? (
+                    <>
+                      <div>
+                        <div className="flex items-center gap-2 mb-3">
+                          <span className="font-sans text-[9px] uppercase tracking-[0.18em] font-bold text-purple-400/38">
+                            Enrollment
+                          </span>
+                          <span className="font-sans text-[8px] font-black text-[#06010F] px-2 py-0.5 rounded-full"
+                            style={{ background: "#c8f542" }}>OPEN</span>
+                        </div>
+
+                        {/* blurred price */}
+                        <div className="relative inline-flex items-center mb-1">
+                          <span className="font-serif text-[34px] leading-none tracking-[-2px] text-transparent bg-clip-text select-none"
+                            style={{
+                              backgroundImage: "linear-gradient(135deg,#d8b4fe,#a855f7)",
+                              filter: "blur(9px)",
+                            }}>
+                            ₹XX,XXX
+                          </span>
+                          <div className="absolute inset-0 flex items-center">
+                            <div className="flex items-center gap-1.5 px-3 py-1.5 rounded-full"
+                              style={{
+                                background: "rgba(6,1,15,0.90)",
+                                border: "1px solid rgba(139,92,246,0.22)",
+                                backdropFilter: "blur(8px)",
+                              }}>
+                              <Lock size={8} className="text-purple-400/50" strokeWidth={2.5} />
+                              <span className="font-sans text-[9px] font-medium text-purple-300/55 whitespace-nowrap">
+                                Revealed on booking
+                              </span>
+                            </div>
                           </div>
                         </div>
+                        <p className="font-sans text-[9.5px] text-purple-400/28">
+                          Cohort pricing · very limited seats
+                        </p>
                       </div>
-                      <div style={{ color:"rgba(200,160,255,0.28)", fontSize:10, marginTop:5 }}>Cohort pricing · seats extremely limited</div>
-                    </div>
 
-                    {/* inputs */}
-                    <div style={{ display:"flex", flexDirection:"column", gap:8 }}>
-                      {[
-                        { key:"name",  ph:"Your full name",  val:name,  fn:setName  },
-                        { key:"email", ph:"Your best email", val:email, fn:setEmail },
-                      ].map(f => (
-                        <input
-                          key={f.key}
-                          type={f.key==="email" ? "email" : "text"}
-                          placeholder={f.ph}
-                          value={f.val}
-                          onChange={e => f.fn(e.target.value)}
-                          onFocus={() => setFocus(f.key)}
-                          onBlur={() => setFocus(null)}
-                          style={{
-                            width:"100%", padding:"10px 12px", borderRadius:10,
-                            fontFamily:"'Plus Jakarta Sans',sans-serif",
-                            fontSize:12, fontWeight:500,
-                            boxSizing:"border-box" as const,
-                            color:"rgba(230,210,255,0.9)",
-                            background:"rgba(160,100,255,0.08)",
-                            border: focus===f.key
-                              ? "1px solid rgba(168,85,247,0.55)"
-                              : "1px solid rgba(160,100,255,0.14)",
-                            outline:"none", transition:"border-color 0.25s",
-                          }}
-                        />
-                      ))}
-                    </div>
-                  </div>
+                      {/* inputs */}
+                      <div className="flex flex-col gap-2">
+                        {[
+                          { key: "name",  ph: "Your full name",  val: name,  fn: setName  },
+                          { key: "email", ph: "Your best email", val: email, fn: setEmail },
+                        ].map(f => (
+                          <input
+                            key={f.key}
+                            type={f.key === "email" ? "email" : "text"}
+                            placeholder={f.ph}
+                            value={f.val}
+                            onChange={e => f.fn(e.target.value)}
+                            onFocus={() => setFocus(f.key)}
+                            onBlur={() => setFocus(null)}
+                            className="nta-input w-full font-sans text-[13px] font-light text-purple-100/85 rounded-xl transition-all duration-200"
+                            style={{
+                              padding: "11px 14px",
+                              background: "rgba(139,92,246,0.07)",
+                              border: focus === f.key
+                                ? "1px solid rgba(168,85,247,0.48)"
+                                : "1px solid rgba(139,92,246,0.13)",
+                              boxSizing: "border-box",
+                            }}
+                          />
+                        ))}
+                      </div>
 
-                  <div style={{ marginTop:14 }}>
-                    <button
-                      ref={ctaRef}
-                      onMouseEnter={onCtaEnter}
-                      onMouseLeave={onCtaLeave}
-                      onClick={handleSubmit}
-                      style={{
-                        width:"100%", padding:"13px 0", borderRadius:12, border:"none",
-                        fontFamily:"'Plus Jakarta Sans',sans-serif",
-                        fontWeight:900, fontSize:11.5, letterSpacing:"0.14em", textTransform:"uppercase",
-                        color:"#fff", cursor:"pointer",
-                        background:"linear-gradient(135deg,#7c3aed,#9333ea,#a855f7)",
-                        boxShadow:"0 8px 28px rgba(124,58,237,0.45)",
-                        display:"flex", alignItems:"center", justifyContent:"center", gap:7,
-                      }}
-                    >
-                      <Sparkles size={12} strokeWidth={2.5}/>
-                      Claim My Spot Now
-                      <ArrowRight size={12} strokeWidth={2.5}/>
-                    </button>
+                      {/* CTA */}
+                      <motion.button
+                        whileHover={{ scale: 1.03, y: -1 }}
+                        whileTap={{ scale: 0.97 }}
+                        onClick={submit}
+                        className="relative overflow-hidden w-full flex items-center justify-center gap-2 py-3.5 rounded-full font-sans font-semibold text-[12px] tracking-[0.10em] uppercase text-white border-0 cursor-pointer"
+                        style={{
+                          background: "linear-gradient(135deg,#6d28d9,#7c3aed,#a855f7)",
+                          boxShadow: "0 6px 28px rgba(109,40,217,0.48), inset 0 1px 0 rgba(255,255,255,0.12)",
+                        }}
+                      >
+                        <span className="absolute inset-x-0 top-0 h-px bg-white/[0.18]" />
+                        <Sparkles size={12} strokeWidth={2.5} />
+                        Claim My Spot
+                        <ArrowRight size={12} strokeWidth={2.5} />
+                      </motion.button>
 
-                    <div style={{ display:"flex", alignItems:"center", justifyContent:"center", gap:4, marginTop:6 }}>
-                      <Flame size={10} color="rgba(200,160,255,0.3)" strokeWidth={2}/>
-                      <span style={{ color:"rgba(200,160,255,0.28)", fontSize:10 }}>Only a few seats left this cohort</span>
-                    </div>
+                      {/* urgency */}
+                      <div className="flex items-center justify-center gap-1.5 -mt-1.5">
+                        <Flame size={9} className="text-purple-400/28" strokeWidth={2} />
+                        <span className="font-sans text-[10px] text-purple-400/26">
+                          Only a few seats left this cohort
+                        </span>
+                      </div>
 
-                    {/* guarantee */}
-                    <div ref={shieldRef} style={{
-                      display:"flex", alignItems:"center", gap:9, marginTop:10,
-                      padding:"10px 12px", borderRadius:11,
-                      background:"rgba(160,100,255,0.07)", border:"1px solid rgba(160,100,255,0.14)",
-                    }}>
-                      <Shield size={14} color="#a855f7" strokeWidth={2.2} style={{ flexShrink:0 }}/>
-                      <span style={{ color:"rgba(200,170,255,0.45)", fontSize:10, lineHeight:1.4 }}>
-                        <strong style={{ color:"rgba(220,200,255,0.75)", fontWeight:800 }}>Full Refund</strong> if not transformed in 30 days.
-                      </span>
+                      {/* guarantee */}
+                      <motion.div
+                        animate={{ y: [0, -3, 0] }}
+                        transition={{ duration: 2.8, repeat: Infinity, ease: "easeInOut" }}
+                        className="flex items-center gap-3 rounded-xl p-3 mt-auto"
+                        style={{
+                          background: "rgba(139,92,246,0.06)",
+                          border: "1px solid rgba(139,92,246,0.13)",
+                        }}
+                      >
+                        <Shield size={13} className="text-purple-400 shrink-0" strokeWidth={2.2} />
+                        <span className="font-sans text-[10.5px] text-purple-200/38 leading-[1.5]">
+                          <strong className="text-purple-200/68 font-semibold">Full Refund</strong>
+                          {" "}if not transformed in 30 days.
+                        </span>
+                      </motion.div>
+                    </>
+                  ) : (
+                    <div className="flex flex-col items-center justify-center text-center gap-5 py-8 flex-1">
+                      <motion.div
+                        initial={{ scale: 0.5, opacity: 0 }}
+                        animate={{ scale: 1, opacity: 1 }}
+                        transition={{ type: "spring", stiffness: 300, damping: 18 }}
+                        className="w-14 h-14 rounded-full flex items-center justify-center"
+                        style={{
+                          background: "linear-gradient(135deg,rgba(139,92,246,0.32),rgba(109,40,217,0.22))",
+                          border: "1px solid rgba(139,92,246,0.38)",
+                          boxShadow: "0 0 32px rgba(139,92,246,0.30)",
+                        }}
+                      >
+                        <CheckCircle2 size={26} className="text-purple-200" strokeWidth={2} />
+                      </motion.div>
+                      <div>
+                        <p className="font-serif text-[20px] text-purple-50 mb-2">You're In! 🎉</p>
+                        <p className="font-sans text-[12px] font-light text-purple-300/40 leading-[1.7]">
+                          Slot details sent to<br />
+                          <span className="text-purple-200/72 font-medium">{email}</span>
+                        </p>
+                      </div>
                     </div>
-                  </div>
-                </>
-              ) : (
-                <div style={{
-                  height:"100%", display:"flex", flexDirection:"column",
-                  alignItems:"center", justifyContent:"center", textAlign:"center", gap:14,
-                }}>
-                  <div style={{
-                    width:52, height:52, borderRadius:"50%",
-                    display:"flex", alignItems:"center", justifyContent:"center",
-                    background:"linear-gradient(135deg,rgba(168,85,247,0.4),rgba(124,58,237,0.3))",
-                    border:"1px solid rgba(168,85,247,0.35)",
-                    boxShadow:"0 0 30px rgba(168,85,247,0.3)",
-                  }}>
-                    <CheckCircle2 size={24} color="#d8b4fe" strokeWidth={2.5}/>
-                  </div>
-                  <div>
-                    <div style={{ color:"rgba(230,210,255,0.9)", fontSize:17, fontWeight:900, marginBottom:5 }}>You're In! 🎉</div>
-                    <div style={{ color:"rgba(200,170,255,0.4)", fontSize:11, lineHeight:1.6 }}>
-                      Slot details sent to<br/><span style={{ color:"rgba(200,160,255,0.75)", fontWeight:700 }}>{email}</span>
-                    </div>
-                  </div>
-                </div>
-              )}
-            </div>
-          </div>
+                  )}
+                </motion.div>
+              </div>
+            </SpotLightCard>
+          </motion.div>
         </div>
 
-        <style>{`
-          * { box-sizing: border-box; }
-          button, input { outline: none; }
-          input::placeholder { color: rgba(180,140,255,0.3); }
-        `}</style>
+        {/* ── bottom rule — identical to SocialProof ── */}
+        <div className="w-full h-px bg-gradient-to-r from-transparent via-purple-500/[0.11] to-transparent mt-16" />
       </section>
     </>
   );
