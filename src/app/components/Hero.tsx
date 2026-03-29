@@ -1,142 +1,175 @@
-import { useEffect, useState } from "react"
-import LightRays from "../../components/LightRays"
-import { Navbar } from "./Navbar"
+{/*
+  
+  // Home — default behaviour, no props needed
+<Hero />
+
+// Programs page — custom headline, no ticker
+<Hero
+  headline="Master Every Strategy, One Course at a Time"
+  hasMarketTicker={false}
+/>
+
+// About page — JSX headline with a styled word
+<Hero
+  headline={<>Built by Traders,<br/>For Traders</>}
+  hasMarketTicker={false}
+/>
+
+*/}
+
+
 import { MarketCarousel } from "./MarketCarousel"
 
-/* ─── Sparkline util ──────────────────────────────────────────── */
-const SPARK  = [52,58,54,67,63,72,68,80,76,88,84,96,92,105,101,112]
-const SPARK2 = [80,74,78,65,70,60,64,52,56,44,48,36,40,28,32,20]
 
-function makePath(data: number[], W: number, H: number, pad = 3) {
-  const mn = Math.min(...data) - 2
-  const mx = Math.max(...data) + 2
-  const sy = (v: number) => H - pad - ((v - mn) / (mx - mn)) * (H - pad * 2)
-  const step = (W - pad * 2) / (data.length - 1)
-  return {
-    line: data.map((v, i) => `${pad + i * step},${sy(v)}`).join(" "),
-    area: `${pad},${H} ${data.map((v, i) => `${pad + i * step},${sy(v)}`).join(" ")} ${pad + (data.length - 1) * step},${H}`,
-    last: { x: pad + (data.length - 1) * step, y: sy(data[data.length - 1]) },
-  }
+
+
+interface HeroProps {
+  headline?: React.ReactNode
+  hasMarketTicker?: boolean
 }
 
-/* ─── Main Hero ───────────────────────────────────────────────── */
-export default function Hero() {
+export default function Hero({
+  headline = (
+    <>
+      Learn to Navigate the{" "}
+      <br className="hidden sm:block" />
+      Stock Market Confidently
+    </>
+  ),
+  hasMarketTicker = true,
+}: HeroProps) {
   return (
     <>
       <style>{`
         @import url('https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;1,9..40,300&display=swap');
-
-        @keyframes fadeUp  { from{opacity:0;transform:translateY(28px)} to{opacity:1;transform:translateY(0)} }
-        @keyframes shimmer { 0%,100%{opacity:.6} 50%{opacity:1} }
-        @keyframes floatA  { 0%,100%{transform:translateY(0px)}  50%{transform:translateY(-14px)} }
-        @keyframes floatB  { 0%,100%{transform:translateY(0px)}  50%{transform:translateY(-9px)}  }
-        @keyframes floatC  { 0%,100%{transform:translateY(0px)}  50%{transform:translateY(-18px)} }
-        @keyframes ticker  { from{transform:translateX(0)} to{transform:translateX(-50%)} }
+        @keyframes fadeUp { from{opacity:0;transform:translateY(24px)} to{opacity:1;transform:translateY(0)} }
       `}</style>
 
-      <section id="hero" className="relative bg-[#06010F] text-purple-50 min-h-screen overflow-x-hidden font-sans">
-
-        {/* LightRays */}
-        <div className="absolute inset-0 z-0 pointer-events-none">
-          <LightRays
-            raysOrigin="top-center"
-            raysColor="#cb70f5"
-            raysSpeed={1}
-            lightSpread={1}
-            rayLength={2}
-            pulsating={false}
-            fadeDistance={1}
-            saturation={1}
-            followMouse
-            mouseInfluence={0.1}
-            noiseAmount={0}
-            distortion={0}
-          />
-        </div>
-
-        {/* Vignette */}
-        <div className="absolute inset-0 z-[1] pointer-events-none [background:radial-gradient(ellipse_90%_70%_at_50%_0%,transparent_40%,#06010F_100%)]" />
-
-        {/* Navbar */}
-        <Navbar />
-
-        {/* ── HERO TEXT ── */}
-        <div className="relative z-[5] text-center pt-28 sm:pt-36 pb-4 px-5 sm:px-6">
-
-          {/* Badge */}
+      <section
+        id="hero"
+        className="relative text-purple-50 min-h-screen overflow-x-hidden font-sans"
+        style={{ background: "transparent" }}
+      >
+        {/* ── CENTRAL CARD ── */}
+        <div
+          className="relative z-[5] flex flex-col items-center px-4 sm:px-8 pt-28 sm:pt-32 pb-10"
+          style={{ animation: "fadeUp .9s cubic-bezier(.16,1,.3,1) .1s both" }}
+        >
           <div
-            className="inline-flex items-center gap-2 bg-violet-700/[0.10] border border-violet-500/[0.16] px-4 sm:px-5 py-1.5 rounded-full mb-7 sm:mb-8"
-            style={{ animation: "fadeUp .9s cubic-bezier(.16,1,.3,1) .1s both" }}
-          >
-            
-            <span className="font-sans text-[9px] sm:text-[10px] font-bold text-purple-300/70">
-              Namma Trading Academy
-            </span>
-          </div>
-
-          {/* Headline */}
-          <h1
-            className="font-serif font-normal text-purple-50 max-w-[780px] mx-auto leading-[1.08] sm:leading-[1.06] tracking-[-0.02em] mb-4 sm:mb-5 px-2 sm:px-0"
+            className="relative w-full max-w-7xl rounded-4xl overflow-hidden"
             style={{
-              fontSize: "clamp(28px,7vw,68px)",
-              animation: "fadeUp .9s cubic-bezier(.16,1,.3,1) .25s both",
+              background: "radial-gradient(145% 125% at 50% 95%, rgb(209, 85, 251) 0%, #1e1b4b 50%, #0d0b2a 100%)",
+              boxShadow: "0 8px 40px rgba(0,0,0,0.45)",
             }}
           >
-            Learn to Navigate the{" "}
-            {/* break to new line only on md+ */}
-            <span className="hidden sm:inline"><br /></span>
-            <span className="font-serif italic text-purple-300">Stock Market</span>{" "}
-            <span className="font-serif text-white/90">Confidently</span>
-          </h1>
+            {/* Content — padded */}
+            <div className="relative z-[2] text-center px-6 sm:px-12 pt-12 sm:pt-16 pb-8">
 
-          {/* Sub */}
-          <p
-            className="font-sans text-[13px] sm:text-[14px] font-light text-purple-200/40 max-w-[340px] sm:max-w-[400px] mx-auto mb-8 sm:mb-10 leading-[1.8] tracking-[0.02em]"
-            style={{ animation: "fadeUp .9s cubic-bezier(.16,1,.3,1) .40s both" }}
-          >
-            Professional strategies, risk management & market
-            psychology — taught through real live sessions.
-          </p>
+              {/* Badge */}
+              <div
+                className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full mb-8"
+                style={{
+                  background: "rgba(120,40,220,0.18)",
+                  border: "1px solid rgba(160,80,255,0.25)",
+                  animation: "fadeUp .9s cubic-bezier(.16,1,.3,1) .2s both",
+                }}
+              >
+                <span
+                  style={{
+                    width: 6, height: 6, borderRadius: "50%",
+                    background: "#c084fc", display: "inline-block",
+                    boxShadow: "0 0 8px #c084fc", flexShrink: 0,
+                  }}
+                />
+                <span
+                  className="font-sans text-[10px] font-semibold tracking-[0.14em] uppercase"
+                  style={{ color: "rgba(216,180,254,0.8)" }}
+                >
+                  Namma Trading Academy
+                </span>
+              </div>
 
-          {/* CTAs — stack on mobile, side-by-side on sm+ */}
-          <div
-            className="flex flex-col sm:flex-row justify-center items-center gap-3 mb-10 sm:mb-14 px-6 sm:px-0"
-            style={{ animation: "fadeUp .9s cubic-bezier(.16,1,.3,1) .55s both" }}
-          >
-            <button className="relative overflow-hidden w-full sm:w-auto bg-gradient-to-r from-violet-700 to-purple-500 text-white font-serif text-[14px] tracking-[0.02em] px-8 py-3 rounded-2xl hover:brightness-110 hover:-translate-y-px transition-all duration-200 shadow-[0_4px_24px_rgba(139,92,246,0.30)] border-0 cursor-pointer">
-              <span className="absolute inset-x-0 top-0 h-px bg-white/20" />
-              Join the Community
-            </button>
-            <button className="w-full sm:w-auto font-serif text-[14px] tracking-[0.02em] text-purple-200/55 px-8 py-3 rounded-2xl border border-purple-400/[0.16] hover:border-purple-400/35 hover:text-purple-100/80 transition-all duration-200 bg-transparent cursor-pointer">
-              Our Programs
-            </button>
+              {/* Headline */}
+              <h1
+                className="font-bold text-[35px] sm:text-[70px] text-left sm:text-center font-normal max-w-[780px] mx-auto leading-[1.07] tracking-[-0.02em] mb-5"
+                style={{
+                  color: "#f5f0ff",
+                  animation: "fadeUp .9s cubic-bezier(.16,1,.3,1) .35s both",
+                }}
+              >
+                {headline}
+              </h1>
+
+              {/* Subtext */}
+              <p
+                className="font-sans text-[14px] sm:text-[15px] font-light max-w-[440px] mx-auto mb-10 leading-[1.8]"
+                style={{
+                  color: "rgba(216,180,254,0.40)",
+                  animation: "fadeUp .9s cubic-bezier(.16,1,.3,1) .5s both",
+                }}
+              >
+                Professional strategies, risk management & market psychology —
+                taught through real live sessions.
+              </p>
+
+              {/* CTAs */}
+              <div
+                className="flex flex-col sm:flex-row justify-center items-center gap-3 mb-10 sm:mb-12"
+                style={{ animation: "fadeUp .9s cubic-bezier(.16,1,.3,1) .62s both" }}
+              >
+                <button
+                  className="relative overflow-hidden w-full sm:w-auto text-white font-serif text-[15px] tracking-[0.02em] px-10 py-3.5 rounded-xl hover:brightness-110 hover:-translate-y-px transition-all duration-200 cursor-pointer border-0"
+                  style={{
+                    background: "linear-gradient(135deg, #9333ea, #7c3aed, #6d28d9)",
+                    boxShadow: "0 4px 32px rgba(147,51,234,0.55), inset 0 1px 0 rgba(255,255,255,0.15)",
+                  }}
+                >
+                  <span className="absolute inset-x-0 top-0 h-px" style={{ background: "linear-gradient(90deg,transparent,rgba(255,255,255,0.25),transparent)" }} />
+                  Join the Community
+                </button>
+
+                <button
+                  className="w-full sm:w-auto font-serif text-[15px] tracking-[0.02em] px-10 py-3.5 rounded-xl transition-all duration-200 bg-transparent cursor-pointer"
+                  style={{ color: "rgba(216,180,254,0.6)", border: "1px solid rgba(160,80,255,0.25)" }}
+                  onMouseEnter={(e) => {
+                    (e.currentTarget as HTMLButtonElement).style.borderColor = "rgba(160,80,255,0.55)"
+                    ;(e.currentTarget as HTMLButtonElement).style.color = "rgba(233,213,255,0.9)"
+                  }}
+                  onMouseLeave={(e) => {
+                    (e.currentTarget as HTMLButtonElement).style.borderColor = "rgba(160,80,255,0.25)"
+                    ;(e.currentTarget as HTMLButtonElement).style.color = "rgba(216,180,254,0.6)"
+                  }}
+                >
+                  Our Programs
+                </button>
+              </div>
+
+              {/* Divider */}
+              <div className="flex justify-center mb-8">
+                <div className="h-px w-28" style={{ background: "linear-gradient(90deg,transparent,rgba(160,80,255,0.28),transparent)" }} />
+              </div>
+            </div>
+
+            {/* ── CAROUSEL ── */}
+            {hasMarketTicker && (
+              <div
+                className="relative w-full pb-8 sm:pb-10"
+                style={{ animation: "fadeUp 1.1s cubic-bezier(.16,1,.3,1) .78s both" }}
+              >
+                <MarketCarousel />
+              </div>
+            )}
+
           </div>
-
-          {/* Decorative line */}
-          <div
-            className="flex justify-center"
-            style={{ animation: "fadeUp .9s cubic-bezier(.16,1,.3,1) .65s both" }}
-          >
-            <div className="h-px w-24 bg-gradient-to-r from-transparent via-purple-400/25 to-transparent" />
-          </div>
-        </div>
-
-        {/* ── CAROUSEL ── */}
-        <div
-          className="relative z-[5] w-full max-w-[900px] mx-auto px-0 sm:px-4 pb-12 sm:pb-16"
-          style={{ animation: "fadeUp 1.1s cubic-bezier(.16,1,.3,1) .75s both" }}
-        >
-          <MarketCarousel />
-
-          {/* ground reflection */}
-          <div className="absolute inset-x-0 bottom-0 h-24 sm:h-32 [background:linear-gradient(to_top,#06010F_0%,transparent_100%)] pointer-events-none" />
         </div>
 
         {/* Footer note */}
-        <div className="relative z-[5] text-center pb-8 sm:pb-10 font-sans text-[10px] tracking-[0.08em] text-purple-400/20">
+        <div
+          className="relative z-[5] text-center pb-8 font-sans text-[10px] tracking-[0.08em]"
+          style={{ color: "rgba(120,40,200,0.30)" }}
+        >
           © 2026 NTA Trading Academy — All rights reserved
         </div>
-
       </section>
     </>
   )

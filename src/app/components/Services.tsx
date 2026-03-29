@@ -172,7 +172,7 @@ function ServiceRow({
           background: "transparent",
           border: "none",
           cursor: "pointer",
-          fontFamily: "'DM Sans', sans-serif",
+          fontFamily: 'DM Sans',
         }}
       >
         {/* number — hidden on very small screens */}
@@ -208,7 +208,6 @@ function ServiceRow({
               color: isOpen ? "#fff" : "rgba(230,215,255,0.75)",
               letterSpacing: "-0.3px",
               transition: "color 0.3s",
-              fontFamily: "'DM Serif Display', serif",
             }}>{s.title}</span>
             <span style={{
               fontSize: 8, fontWeight: 800, letterSpacing: "0.12em",
@@ -223,7 +222,7 @@ function ServiceRow({
           <div style={{
             fontSize: 12, color: "rgba(200,170,255,0.38)",
             fontWeight: 400, marginTop: 2,
-            fontFamily: "'DM Sans', sans-serif",
+            fontFamily: 'DM Sans',
           }}>{s.subtitle}</div>
         </div>
 
@@ -275,7 +274,7 @@ function ServiceRow({
             <p style={{
               fontSize: 13, color: "rgba(220,200,255,0.52)",
               lineHeight: 1.8, fontWeight: 400,
-              fontFamily: "'DM Sans', sans-serif",
+              fontFamily: "DM Sans",
               margin: 0,
             }}>{s.description}</p>
 
@@ -298,7 +297,7 @@ function ServiceRow({
               style={{
                 display: "inline-flex", alignItems: "center", gap: 7,
                 padding: "11px 20px", borderRadius: 10, border: "none",
-                fontFamily: "'DM Sans', sans-serif",
+                fontFamily: "DM Sans",
                 fontSize: 11, fontWeight: 700, letterSpacing: "0.10em",
                 textTransform: "uppercase", cursor: "pointer",
                 color: "#0c0020",
@@ -343,7 +342,7 @@ function ServiceRow({
                   fontSize: 12.5, lineHeight: 1.5,
                   color: f.hot ? "rgba(235,220,255,0.85)" : "rgba(200,170,255,0.40)",
                   fontWeight: f.hot ? 600 : 400,
-                  fontFamily: "'DM Sans', sans-serif",
+                  fontFamily: "'DM Sans",
                 }}>{f.text}</span>
               </div>
             ))}
@@ -363,93 +362,14 @@ export function Services() {
 
   return (
     <section
-      className="relative overflow-hidden bg-[#06010F] py-24 px-5 sm:px-6"
-      style={{ fontFamily: "'DM Sans', sans-serif" }}
+      className="relative overflow-hidden bg-transparent py-5 px-6 sm:px-0"
+      style={{ fontFamily: "DM Sans" }}
     >
       {/* ambient blobs */}
-      <div style={{
-        position: "absolute", top: -160, left: -160, width: 500, height: 500,
-        background: "radial-gradient(ellipse,#2a0050 0%,transparent 68%)",
-        borderRadius: "60% 40% 55% 45%/50% 62% 38% 54%",
-        filter: "blur(10px)", opacity: 0.6, pointerEvents: "none",
-      }} />
-      <div style={{
-        position: "absolute", bottom: -120, right: -120, width: 420, height: 420,
-        background: "radial-gradient(ellipse,#320060 0%,transparent 70%)",
-        borderRadius: "42% 58% 48% 52%",
-        filter: "blur(10px)", opacity: 0.5, pointerEvents: "none",
-      }} />
-      {/* grid */}
-      <div style={{
-        position: "absolute", inset: 0, pointerEvents: "none", opacity: 0.018,
-        backgroundImage: "linear-gradient(rgba(160,100,255,1) 1px,transparent 1px),linear-gradient(90deg,rgba(160,100,255,1) 1px,transparent 1px)",
-        backgroundSize: "54px 54px",
-      }} />
-
+    
       {/* top rule — matches testimonials */}
-      <div className="w-full h-px mb-16"
+      <div className="w-full h-px mb-5"
         style={{ background: "linear-gradient(90deg,transparent,rgba(196,132,252,0.11),transparent)" }} />
-
-      <div className="relative z-10 max-w-5xl mx-auto">
-
-        {/* ── HEADER ── */}
-        <div className="mb-12 sm:mb-14">
-          {/* eyebrow */}
-          <div className="inline-flex items-center gap-2 mb-5"
-            style={{
-              padding: "5px 14px", borderRadius: 99,
-              background: "rgba(160,100,255,0.10)",
-              border: "1px solid rgba(160,100,255,0.20)",
-            }}>
-            <Star size={9} color="#a78bfa" fill="#a78bfa" />
-            <span style={{
-              color: "rgba(200,160,255,0.80)", fontSize: 9,
-              fontWeight: 700, letterSpacing: "0.20em", textTransform: "uppercase",
-              fontFamily: "'DM Sans', sans-serif",
-            }}>Our Programs</span>
-          </div>
-
-          {/* heading + sub — stack on mobile, side-by-side on md+ */}
-          <div className="flex flex-col md:flex-row md:items-end md:justify-between gap-4">
-            <h2
-              style={{
-                fontSize: "clamp(28px,5vw,50px)",
-                fontFamily: "'DM Serif Display', serif",
-                fontWeight: 400,
-                letterSpacing: "-0.8px",
-                lineHeight: 1.06,
-                color: "#fff",
-                margin: 0,
-              }}
-            >
-              Five ways to become a{" "}
-              <span
-                className="font-serif italic inline-block px-1"
-                style={{
-                  backgroundImage: "linear-gradient(135deg,#d8b4fe 0%,#a855f7 55%,#c084fc 100%)",
-                  WebkitBackgroundClip: "text",
-                  WebkitTextFillColor: "transparent",
-                  backgroundClip: "text",
-                }}
-              >
-                better trader.
-              </span>
-            </h2>
-            <p style={{
-              fontSize: 12.5,
-              color: "rgba(200,170,255,0.36)",
-              maxWidth: 220,
-              lineHeight: 1.7,
-              fontWeight: 400,
-              margin: 0,
-              fontFamily: "'DM Sans', sans-serif",
-              flexShrink: 0,
-            }}>
-              Pick one or stack them all.
-              Each program compounds the others.
-            </p>
-          </div>
-        </div>
 
         {/* ── ACCORDION ── */}
         <div style={{
@@ -474,9 +394,6 @@ export function Services() {
             />
           ))}
         </div>
-
-      </div>
-
       {/* bottom rule — matches Testimonials */}
       <div className="w-full h-px mt-16"
         style={{ background: "linear-gradient(90deg,transparent,rgba(196,132,252,0.11),transparent)" }} />

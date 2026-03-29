@@ -146,7 +146,7 @@ export function SocialProof() {
 
   return (
     /* ── same outer padding as Services + TestimonialsSection ── */
-    <section className="relative bg-[#06010F] py-10 px-5 sm:px-6 overflow-hidden">
+    <section className="relative bg-transparent py-10 px-5 sm:px-6 overflow-hidden">
 
       {/* atmosphere */}
       <div className="absolute inset-0 pointer-events-none">

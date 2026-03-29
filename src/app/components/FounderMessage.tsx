@@ -46,12 +46,11 @@ export function FounderMessage() {
         @import url('https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;1,9..40,300&display=swap');
       `}</style>
 
-      <section id="founder-story" className="relative bg-[#06010F] py-28 px-6 overflow-hidden font-sans">
+      <section id="founder-story" className="relative bg-transparent py-28 px-6 overflow-hidden font-sans">
 
         {/* ambient glow */}
         <div className="absolute inset-0 pointer-events-none">
-          <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[800px] h-[500px]"
-            style={{ background: "radial-gradient(ellipse at 50% 0%, rgba(139,92,246,0.09) 0%, transparent 65%)" }} />
+          <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[800px] h-[500px]"/>
         </div>
 
         {/* top rule */}

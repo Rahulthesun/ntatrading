@@ -129,7 +129,14 @@
 
   body {
     @apply bg-background text-foreground;
+    
   }
+
+  body {
+  margin: 0;
+  min-height: 100vh;
+  background: linear-gradient(to bottom, #3b82f6, #1e3a8a);
+}
 
   /**
   * Default typography styles for HTML elements (h1-h4, p, label, button, input).
@@ -182,3 +189,5 @@
     line-height: 1.5;
   }
 }
+
+

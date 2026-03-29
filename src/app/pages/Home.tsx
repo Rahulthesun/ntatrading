@@ -10,50 +10,27 @@ import { Services } from "../components/Services";
 import StarCourseSection from "../components/StarCourseSection";
 import Hero from "../components/Hero";
 import { CTASection } from "../components/CTASection";
-import LightRays from "../../components/LightRays";
 import { Navbar } from "../components/Navbar";
-
-
-
+import PackagesSection from "../../components/PackagesSection";
 
 /* ════════════════════════════════════════
    HOME
 ════════════════════════════════════════ */
 export function Home() {
-  const { scrollY } = useScroll();
-  const heroOpacity = useTransform(scrollY, [0, 500], [1, 0]);
-  const heroScale   = useTransform(scrollY, [0, 500], [1, 0.96]);
-
   return (
-    <div className="min-h-screen text-white bg-[#0B0B12] font-sans">
-      
+    <div className="min-h-screen text-white font-sans bg-gradient-to-br
+from-[#1d4ed8]
+via-[#0f172a]
+to-[#000000]
+">
+      {/* Navbar lives here — once — at the top */}
+      <Navbar />
 
-      {/* ─── HERO ─── */}
-      <Navbar/>
-      <Hero/>
-
-      <Services />
-
-      {/* ─── TICKER ─── 
-      <MarketTicker />
-
-      */}
-
-      <SocialProof />
-
-
+      <Hero />
+      {/* <SocialProof /> */}
+      <PackagesSection />
       <StarCourseSection />
-      
-   
-
-      {/* ─── SERVICES ─── */}
-      
-
-      {/* ─── STATS ─── */}
-      
-
-      <CTASection/>
-
+      <CTASection />
       <Footer />
     </div>
   );

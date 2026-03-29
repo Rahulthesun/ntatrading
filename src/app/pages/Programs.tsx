@@ -7,8 +7,8 @@ import {
   TrendingUp, ArrowRight, ArrowLeft, Zap, ShieldCheck,
 } from "lucide-react";
 import { Navbar } from "../components/Navbar";
-import LightRays from "../../components/LightRays";
 import { Footer } from "../components/Footer";
+import Hero from "../components/Hero"
 
 /* ══════════════════════════════════════════════════════════════
    SHARED PRIMITIVES
@@ -32,7 +32,7 @@ function Eyebrow({ children }: { children: React.ReactNode }) {
   return (
     <div className="inline-flex items-center gap-2.5 mb-5">
       <div className="h-px w-6 bg-purple-500/40" />
-      <span className="font-sans text-[10px] tracking-[0.22em] uppercase text-purple-400/60">{children}</span>
+      <span className="font-sans text-[10px] tracking-[0.22em] uppercase text-purple-300/75">{children}</span>
     </div>
   );
 }
@@ -197,56 +197,7 @@ function MiniSpark({ id }: { id: string }) {
   );
 }
 
-/* ══════════════════════════════════════════════════════════════
-   1 · HERO
-══════════════════════════════════════════════════════════════ */
-function Hero() {
-  return (
-    <section id="hero" className="relative min-h-[72vh] flex flex-col items-center justify-center text-center px-6 pt-32 pb-20 overflow-hidden">
-      <div className="absolute inset-0 z-0 pointer-events-none">
-        <LightRays raysOrigin="top-center" raysColor="#cb70f5" raysSpeed={0.7}
-          lightSpread={1} rayLength={1.4} pulsating={false} fadeDistance={1}
-          saturation={1} followMouse mouseInfluence={0.07} noiseAmount={0} distortion={0}/>
-      </div>
-      <div className="absolute inset-0 z-[1] pointer-events-none [background:radial-gradient(ellipse_100%_55%_at_50%_0%,transparent_28%,#06010F_100%)]" />
 
-      <div className="relative z-[5] max-w-[700px] mx-auto">
-        {/* back link */}
-        <motion.div initial={{ opacity: 0, x: -12 }} animate={{ opacity: 1, x: 0 }}
-          transition={{ duration: 0.5, delay: 0.05 }}
-          className="flex justify-center mb-10">
-          <Link to="/"
-            className="inline-flex items-center gap-2 font-sans text-[12px] text-purple-400/45 hover:text-purple-300/70 transition-colors duration-200">
-            <ArrowLeft className="w-3.5 h-3.5" /> Back to Home
-          </Link>
-        </motion.div>
-
-        <motion.div initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6, delay: 0.12, ease: [0.22,1,0.36,1] }}
-          className="inline-flex items-center gap-2 bg-violet-700/[0.12] border border-violet-500/[0.18] px-5 py-1.5 rounded-full mb-8">
-          <span className="w-1.5 h-1.5 rounded-full bg-purple-400 animate-pulse" />
-          <span className="font-sans text-[10px] tracking-[0.18em] uppercase text-purple-300/70">
-            Trading Programs
-          </span>
-        </motion.div>
-
-        <motion.h1 initial={{ opacity: 0, y: 28 }} animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.85, delay: 0.22, ease: [0.22,1,0.36,1] }}
-          className="font-serif font-normal text-purple-50 leading-[1.06] tracking-[-0.02em] mb-6"
-          style={{ fontSize: "clamp(38px,5.2vw,68px)" }}>
-          Choose your path to<br /><Italic>market mastery.</Italic>
-        </motion.h1>
-
-        <motion.p initial={{ opacity: 0, y: 18 }} animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.7, delay: 0.36, ease: [0.22,1,0.36,1] }}
-          className="font-sans text-[15px] font-light text-purple-200/42 leading-[1.75]">
-          Specialised programs built around live markets — not slides or recordings.
-          Every session is a real trading day.
-        </motion.p>
-      </div>
-    </section>
-  );
-}
 
 /* ══════════════════════════════════════════════════════════════
    2 · PROGRAM CARDS
@@ -278,8 +229,8 @@ function ProgramCard({ program, index }: { program: typeof PROGRAMS[0]; index: n
             </div>
 
             <h3 className="font-serif text-[26px] text-purple-50 leading-tight mb-1">{program.title}</h3>
-            <p className="font-sans text-[11px] tracking-[0.10em] uppercase text-purple-400/45 mb-5">{program.subtitle}</p>
-            <p className="font-sans text-[13px] font-light text-purple-200/42 leading-[1.75] mb-8 flex-1">{program.desc}</p>
+            <p className="font-sans text-[11px] tracking-[0.10em] uppercase text-purple-200/90 mb-5">{program.subtitle}</p>
+            <p className="font-sans text-[13px] font-normal text-white/80 leading-[1.75] mb-8 flex-1">{program.desc}</p>
 
             {/* quick stats */}
             <div className="flex flex-col gap-3 mb-8">
@@ -292,14 +243,14 @@ function ProgramCard({ program, index }: { program: typeof PROGRAMS[0]; index: n
                   <div className="w-7 h-7 rounded-lg bg-purple-500/[0.08] border border-purple-400/[0.10] flex items-center justify-center shrink-0">
                     <I className="w-3.5 h-3.5 text-purple-400/70" />
                   </div>
-                  <span className="font-sans text-[12.5px] text-purple-200/55">{v}</span>
+                  <span className="font-sans text-[12.5px] text-white/82">{v}</span>
                 </div>
               ))}
             </div>
 
             {/* sparkline */}
             <div className="bg-[#080218]/60 border border-purple-500/[0.07] rounded-xl p-3">
-              <p className="font-sans text-[8.5px] tracking-[0.14em] uppercase text-purple-400/30 mb-2">Performance trend</p>
+              <p className="font-sans text-[8.5px] tracking-[0.14em] uppercase text-purple-300/55 mb-2">Performance trend</p>
               <MiniSpark id={program.id} />
             </div>
           </div>
@@ -321,8 +272,8 @@ function ProgramCard({ program, index }: { program: typeof PROGRAMS[0]; index: n
                   viewport={{ once: true }}
                   transition={{ duration: 0.4, delay: i * 0.05 }}
                   className="flex items-start gap-3">
-                  <CheckCircle2 className="w-4 h-4 text-purple-400/60 shrink-0 mt-0.5" />
-                  <span className="font-sans text-[13px] font-light text-purple-200/55 leading-[1.55]">{item}</span>
+                  <CheckCircle2 className="w-4 h-4 text-purple-300/75 shrink-0 mt-0.5" />
+                  <span className="font-sans text-[13px] font-normal text-white/82 leading-[1.55]">{item}</span>
                 </motion.div>
               ))}
             </div>
@@ -341,7 +292,7 @@ function ProgramCard({ program, index }: { program: typeof PROGRAMS[0]; index: n
               {program.includes.map((item, i) => (
                 <div key={i} className="flex items-start gap-3">
                   <div className={`w-1.5 h-1.5 rounded-full ${program.dot} shrink-0 mt-[5px]`} />
-                  <span className="font-sans text-[13px] font-light text-purple-200/55 leading-[1.55]">{item}</span>
+                  <span className="font-sans text-[13px] font-normal text-white/82 leading-[1.55]">{item}</span>
                 </div>
               ))}
             </div>
@@ -354,7 +305,7 @@ function ProgramCard({ program, index }: { program: typeof PROGRAMS[0]; index: n
                 <span className="absolute inset-x-0 top-0 h-px bg-white/18" />
                 Enroll Now <ArrowRight className="w-3.5 h-3.5" />
               </motion.button>
-              <button className="w-full py-3.5 rounded-full font-sans font-normal text-[13px] tracking-[0.04em] text-purple-200/50 border border-purple-400/[0.14] hover:border-purple-400/30 hover:text-purple-100/75 transition-all duration-200 bg-transparent cursor-pointer">
+              <button className="w-full py-3.5 rounded-full font-sans font-normal text-[13px] tracking-[0.04em] text-white/75 border border-purple-400/[0.14] hover:border-purple-400/30 hover:text-purple-100/75 transition-all duration-200 bg-transparent cursor-pointer">
                 Book Free Demo
               </button>
             </div>
@@ -406,7 +357,7 @@ function WhyNTA() {
                   <I className="text-purple-400" size={17} />
                 </div>
                 <p className="font-serif text-[17px] text-purple-50 mb-2">{title}</p>
-                <p className="font-sans text-[12.5px] font-light text-purple-200/38 leading-[1.72]">{desc}</p>
+                <p className="font-sans text-[12.5px] font-normal text-white/75 leading-[1.72]">{desc}</p>
               </motion.div>
             </FadeUp>
           ))}
@@ -430,7 +381,7 @@ function BottomCTA() {
           <H2 className="mb-5">
             Let's find the right<br /><Italic>program for you.</Italic>
           </H2>
-          <p className="font-sans text-[14px] font-light text-purple-200/38 max-w-[400px] mx-auto leading-[1.8] mb-10">
+          <p className="font-sans text-[14px] font-normal text-white/75 max-w-[400px] mx-auto leading-[1.8] mb-10">
             Book a free 20-minute consultation call — we'll understand your goals
             and recommend exactly what fits your level and schedule.
           </p>
@@ -442,7 +393,7 @@ function BottomCTA() {
               <ArrowRight className="w-4 h-4 relative" />
             </motion.button>
             <Link to="/about">
-              <button className="font-sans text-[13px] font-normal tracking-[0.04em] text-purple-200/50 px-8 py-3.5 rounded-full border border-purple-400/[0.14] hover:border-purple-400/30 hover:text-purple-100/75 transition-all duration-200 bg-transparent cursor-pointer">
+              <button className="font-sans text-[13px] font-normal tracking-[0.04em] text-white/75 px-8 py-3.5 rounded-full border border-purple-400/[0.14] hover:border-purple-400/30 hover:text-purple-100/75 transition-all duration-200 bg-transparent cursor-pointer">
                 Learn About Us
               </button>
             </Link>
@@ -463,11 +414,19 @@ export function Programs() {
         @import url('https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;1,9..40,300&display=swap');
       `}</style>
 
-      <div className="relative bg-[#06010F] text-purple-50 overflow-x-hidden font-sans min-h-screen">
-        <div className="fixed inset-0 pointer-events-none z-0 [background:radial-gradient(ellipse_80%_45%_at_50%_-8%,rgba(109,40,217,0.06)_0%,transparent_70%)]" />
+      <div className="relative bg-gradient-to-br
+        from-[#1d4ed8]
+        via-[#0f172a]
+        to-[#000000]
+        text-white overflow-x-hidden font-sans min-h-screen">
+        <div className="fixed inset-0 pointer-events-none z-0" />
 
         <Navbar />
-        <Hero />
+        <Hero 
+        headline="Choose your path to
+market mastery."
+        hasMarketTicker={false}
+        />
         <ProgramCards />
         <WhyNTA />
         <BottomCTA />

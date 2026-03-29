@@ -172,7 +172,7 @@ export default function TestimonialsSection() {
         .mq-r { animation: marquee-r 48s linear infinite; will-change: transform; }
       `}</style>
 
-      <section ref={sectionRef} id="reviews" className="relative bg-[#06010F] py-24 px-5 sm:px-6 overflow-hidden">
+      <section ref={sectionRef} id="reviews" className="relative bg-transparent py-24 px-5 sm:px-6 overflow-hidden">
 
         {/* ambient glow */}
         <div className="absolute inset-0 pointer-events-none">

@@ -34,7 +34,7 @@ export function CTASection() {
 
       <section
         ref={ref}
-        className="relative bg-[#06010F] overflow-hidden font-sans"
+        className="relative bg-transparent overflow-hidden font-sans"
       >
         {/* ── ambient glow ── */}
         <div className="absolute inset-0 pointer-events-none">
@@ -81,13 +81,7 @@ export function CTASection() {
             style={{ fontSize: "clamp(32px,5vw,62px)" }}
           >
             Get into the market <br className="hidden sm:block" />
-            with{" "}
-            <span
-              className="font-serif italic text-transparent bg-clip-text inline-block px-1"
-              style={{ backgroundImage: "linear-gradient(135deg,#f3e8ff 0%,#d8b4fe 30%,#a855f7 65%,#7c3aed 100%)" }}
-            >
-              confidence.
-            </span>
+            with confidence.
           </motion.h2>
 
           {/* subtext */}
@@ -95,7 +89,7 @@ export function CTASection() {
             initial={{ opacity: 0, y: 16 }}
             animate={inView ? { opacity: 1, y: 0 } : {}}
             transition={{ duration: 0.65, delay: 0.22, ease: [0.22, 1, 0.36, 1] }}
-            className="font-sans text-[14px] sm:text-[15px] font-light text-purple-200/40 max-w-[440px] mx-auto leading-[1.8] mb-10"
+            className="font-sans text-[14px] sm:text-[15px] font-semibold text-grey-400 max-w-[440px] mx-auto leading-[1.8] mb-10"
           >
             You don't need to be a genius. You need a system, a mentor, and the
             guts to start. We'll handle the first two.

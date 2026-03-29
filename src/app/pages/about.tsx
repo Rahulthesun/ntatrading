@@ -9,6 +9,7 @@ import LightRays from "../../components/LightRays";
 import { FounderMessage } from "../components/FounderMessage";
 import Reviews from "../components/Reviews";
 import { Footer } from "../components/Footer";
+import Hero from "../components/Hero"
 
 /* ══════════════════════════════════════════════════════════════
    SHARED PRIMITIVES
@@ -76,84 +77,6 @@ function Rule() {
   return <div className="w-full h-px bg-gradient-to-r from-transparent via-purple-500/[0.11] to-transparent" />;
 }
 
-/* ══════════════════════════════════════════════════════════════
-   1 · HERO
-══════════════════════════════════════════════════════════════ */
-function Hero() {
-  return (
-    <section id="hero" className="relative min-h-[85vh] flex flex-col items-center justify-center text-center px-5 sm:px-6 pt-28 sm:pt-32 pb-14 sm:pb-20 overflow-hidden">
-      <div className="absolute inset-0 z-0 pointer-events-none">
-        <LightRays raysOrigin="top-center" raysColor="#cb70f5" raysSpeed={0.7}
-          lightSpread={1} rayLength={1.5} pulsating={false} fadeDistance={1}
-          saturation={1} followMouse mouseInfluence={0.07} noiseAmount={0} distortion={0} />
-      </div>
-      <div className="absolute inset-0 z-[1] pointer-events-none [background:radial-gradient(ellipse_100%_55%_at_50%_0%,transparent_28%,#06010F_100%)]" />
-
-      <div className="relative z-[5] max-w-[720px] mx-auto">
-        <motion.div initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6, delay: 0.1, ease: [0.22,1,0.36,1] }}
-          className="inline-flex items-center gap-2 bg-violet-700/[0.12] border border-violet-500/[0.18] px-4 sm:px-5 py-1.5 rounded-full mb-6 sm:mb-8">
-          <span className="w-1.5 h-1.5 rounded-full bg-purple-400 animate-pulse" />
-          <span className="font-sans text-[9px] sm:text-[10px] tracking-[0.16em] sm:tracking-[0.18em] uppercase text-purple-300/70">
-            Namma Trading Academy · Chennai
-          </span>
-        </motion.div>
-
-        <motion.h1 initial={{ opacity: 0, y: 28 }} animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.85, delay: 0.22, ease: [0.22,1,0.36,1] }}
-          className="font-serif font-normal text-purple-50 leading-[1.07] tracking-[-0.02em] mb-5"
-          style={{ fontSize: "clamp(34px,6vw,68px)" }}>
-          South India's most<br />
-          <Italic>live</Italic> trading academy.
-        </motion.h1>
-
-        <motion.p initial={{ opacity: 0, y: 18 }} animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.7, delay: 0.36, ease: [0.22,1,0.36,1] }}
-          className="font-sans text-[13.5px] sm:text-[15px] font-light text-purple-200/45 max-w-[480px] mx-auto leading-[1.78] mb-4 sm:mb-5">
-          Every session begins with a real terminal open, real capital at stake
-          and a mentor who actually trades.{" "}
-          <span className="text-purple-200/65 font-normal">Live markets, every day.</span>
-        </motion.p>
-
-        {/* proof strip */}
-        <motion.div initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6, delay: 0.5, ease: [0.22,1,0.36,1] }}
-          className="flex items-center justify-center gap-5 sm:gap-8 mb-8 sm:mb-10">
-          {[
-            { v: "500+", l: "Students"  },
-            { v: "4.9★", l: "Rating"    },
-            { v: "100%", l: "Live Demo" },
-          ].map(({ v, l }) => (
-            <div key={l} className="text-center">
-              <p className="font-serif text-[16px] sm:text-[18px] text-purple-50/85 leading-none">{v}</p>
-              <p className="font-sans text-[8.5px] sm:text-[9px] tracking-[0.14em] uppercase text-purple-400/40 mt-0.5">{l}</p>
-            </div>
-          ))}
-        </motion.div>
-
-        {/* CTAs — stack on mobile */}
-        <motion.div initial={{ opacity: 0, y: 14 }} animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6, delay: 0.62, ease: [0.22,1,0.36,1] }}
-          className="flex flex-col sm:flex-row justify-center gap-3 px-4 sm:px-0">
-          <button className="w-full sm:w-auto bg-gradient-to-r from-violet-700 to-purple-500 text-white font-sans text-[13px] font-medium tracking-[0.04em] px-8 py-3 rounded-full border-0 cursor-pointer shadow-[0_4px_24px_rgba(139,92,246,0.35)] hover:brightness-110 transition-all duration-200">
-            Explore Programs
-          </button>
-          <button className="w-full sm:w-auto font-sans text-[13px] font-normal tracking-[0.04em] text-purple-200/50 px-8 py-3 rounded-full border border-purple-400/[0.14] hover:border-purple-400/32 hover:text-purple-100/75 transition-all duration-200 bg-transparent cursor-pointer">
-            Book Free Demo
-          </button>
-        </motion.div>
-      </div>
-
-      <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 1.3 }}
-        className="absolute bottom-6 sm:bottom-8 left-1/2 -translate-x-1/2 z-[5] flex flex-col items-center gap-1">
-        <span className="font-sans text-[9px] tracking-[0.18em] uppercase text-purple-400/22">Scroll</span>
-        <motion.div animate={{ y: [0, 5, 0] }} transition={{ duration: 1.6, repeat: Infinity, ease: "easeInOut" }}>
-          <ChevronDown className="w-4 h-4 text-purple-400/22" />
-        </motion.div>
-      </motion.div>
-    </section>
-  );
-}
 
 /* ══════════════════════════════════════════════════════════════
    2 · STATS
@@ -353,8 +276,8 @@ function Contact() {
           <FadeUp className="flex flex-col gap-2.5 sm:gap-3">
             {[
               { Icon: MapPin, label: "Address", value: "NTA Academy, Chennai\nTamil Nadu, India" },
-              { Icon: Phone,  label: "Phone",   value: "+91 XXXXX XXXXX"                         },
-              { Icon: Mail,   label: "Email",   value: "info@ntaacademy.com"                      },
+              { Icon: Phone,  label: "Phone",   value: "+91 9176001402"                         },
+              { Icon: Mail,   label: "Email",   value: "contact@ntaacademy.in"                      },
             ].map(({ Icon, label, value }) => (
               <div key={label} className="flex gap-3.5 p-4 sm:p-5 rounded-2xl bg-[#0C0420]/65 border border-purple-500/[0.08] backdrop-blur-xl hover:border-purple-400/18 transition-colors duration-300">
                 <div className="w-8 h-8 sm:w-9 sm:h-9 rounded-xl bg-purple-500/[0.09] border border-purple-400/[0.11] flex items-center justify-center shrink-0">
@@ -442,15 +365,21 @@ export default function AboutPage() {
         @import url('https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;1,9..40,300&display=swap');
       `}</style>
 
-      <div className="relative bg-[#06010F] text-purple-50 overflow-x-hidden font-sans min-h-screen">
-        <div className="fixed inset-0 pointer-events-none z-0 [background:radial-gradient(ellipse_80%_45%_at_50%_-8%,rgba(109,40,217,0.06)_0%,transparent_70%)]" />
+      <div className="relative bg-gradient-to-br
+from-[#1d4ed8]
+via-[#0f172a]
+to-[#000000] text-purple-50 overflow-x-hidden font-sans min-h-screen">
+        <div className="fixed inset-0 pointer-events-none z-0" />
 
         <Navbar />
-        <Hero />
+        <Hero  
+        headline="South India's most
+live trading academy"
+        hasMarketTicker={false}
+        />
         <Stats />
         <FounderMessage />
         <WhyNTA />
-        <Reviews />
         <Contact />
         <BottomCTA />
         <Footer />
