@@ -3,6 +3,7 @@
 import { motion } from "framer-motion";
 import { Zap, Flame, Shield, Crown } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { HashLink } from "react-router-hash-link";
 
 const ease = [0.25, 0.1, 0.25, 1] as const;
 
@@ -127,9 +128,9 @@ export default function PackagesSection({ className, packages = defaultPackages 
           </div>
 
           <h2
-            className="text-[clamp(26px,4vw,48px)] font-bold tracking-tight leading-[1.1] text-[#f0eeff] mb-4"
+            className="text-[clamp(26px,4vw,48px)] tracking-tight leading-[1.1] text-[#f0eeff] mb-4"
           >
-            Choose your path
+            Choose Your Own Path
           </h2>
 
           <p
@@ -145,7 +146,7 @@ export default function PackagesSection({ className, packages = defaultPackages 
             {packages.map((pkg) => {
               const c = colorMap[pkg.color];
               return (
-                <div key={pkg.name} className="group relative flex flex-col bg-[#080618]/95">
+                <div key={pkg.name} className="group relative flex flex-col bg-[linear-gradient(160deg,rgba(36,0,72,0.55),rgba(16,0,30,0.60))]">
 
                   {/* Top accent line on hover */}
                   <div className={cn(
@@ -217,7 +218,16 @@ export default function PackagesSection({ className, packages = defaultPackages 
                     </ul>
 
                     {/* CTA */}
-                    <button
+                    <HashLink 
+                     smooth
+                     to="/articles#contact"
+                     scroll = {(el) => {
+                      setTimeout(()=> {
+                        el.scrollIntoView({ behavior: "smooth" , block: "start" });
+                      }, 150)
+                     }}
+                     >
+                      <button
                       className={cn(
                         "w-full mt-8 py-3 rounded-xl border border-white/10 bg-transparent",
                         "text-[12px] font-semibold tracking-[0.08em] text-purple-200/60",
@@ -227,6 +237,8 @@ export default function PackagesSection({ className, packages = defaultPackages 
                     >
                       Enquire Now
                     </button>
+                    </HashLink>
+                    
 
                   </div>
                 </div>

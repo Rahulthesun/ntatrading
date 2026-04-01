@@ -1,14 +1,13 @@
 import { useState, useRef, useEffect } from "react";
 import {
   BookOpen, Radio, Users, Award, TrendingUp,
-  ArrowUpRight, Check, Star, ChevronDown,
+  ArrowUpRight, Check, ChevronDown,
 } from "lucide-react";
+import { HashLink } from "react-router-hash-link";
 
 declare global { interface Window { gsap: any } }
 
-/* ══════════════════════════════════════════════════════
-   DATA
-══════════════════════════════════════════════════════ */
+/* DATA */
 const SERVICES = [
   {
     num: "01",
@@ -108,24 +107,14 @@ const SERVICES = [
   },
 ];
 
-/* ══════════════════════════════════════════════════════
-   ACCORDION ROW
-══════════════════════════════════════════════════════ */
-function ServiceRow({
-  s, isOpen, onToggle, isLast,
-}: {
-  s: typeof SERVICES[0];
-  isOpen: boolean;
-  onToggle: () => void;
-  isLast: boolean;
-}) {
-  const bodyRef  = useRef<HTMLDivElement>(null);
+/* ROW */
+function ServiceRow({ s, isOpen, onToggle, isLast }: any) {
+  const bodyRef = useRef<HTMLDivElement>(null);
   const arrowRef = useRef<HTMLDivElement>(null);
-  const numRef   = useRef<HTMLSpanElement>(null);
+  const numRef = useRef<HTMLSpanElement>(null);
   const Icon = s.icon;
   const [hovered, setHovered] = useState(false);
 
-  /* load GSAP once */
   useEffect(() => {
     if (window.gsap) return;
     const tag = document.createElement("script");
@@ -136,267 +125,162 @@ function ServiceRow({
   useEffect(() => {
     if (!window.gsap || !bodyRef.current) return;
     const g = window.gsap;
+
     if (isOpen) {
-      g.to(bodyRef.current, { height: "auto", opacity: 1, duration: 0.45, ease: "power3.out" });
-      g.to(arrowRef.current, { rotation: 180, duration: 0.35, ease: "power2.out" });
-      g.to(numRef.current,   { color: s.color, duration: 0.3 });
+      g.to(bodyRef.current, { height: "auto", opacity: 1, duration: 0.45 });
+      g.to(arrowRef.current, { rotation: 180, duration: 0.35 });
+      g.to(numRef.current, { color: s.color, duration: 0.3 });
     } else {
-      g.to(bodyRef.current, { height: 0, opacity: 0, duration: 0.35, ease: "power2.inOut" });
-      g.to(arrowRef.current, { rotation: 0, duration: 0.3, ease: "power2.out" });
-      g.to(numRef.current,   { color: "rgba(200,170,255,0.25)", duration: 0.3 });
+      g.to(bodyRef.current, { height: 0, opacity: 0, duration: 0.35 });
+      g.to(arrowRef.current, { rotation: 0, duration: 0.3 });
+      g.to(numRef.current, { color: "rgba(200,170,255,0.25)", duration: 0.3 });
     }
-  }, [isOpen, s.color]);
+  }, [isOpen]);
 
   return (
     <div
       onMouseEnter={() => setHovered(true)}
       onMouseLeave={() => setHovered(false)}
-      style={{
-        borderBottom: isLast ? "none" : "1px solid rgba(160,100,255,0.10)",
-        transition: "background 0.3s",
-        background: isOpen
-          ? "rgba(160,100,255,0.04)"
-          : hovered ? "rgba(160,100,255,0.02)" : "transparent",
-        borderRadius: isOpen ? 14 : 0,
-      }}
+      className={`
+        transition-all duration-300
+        ${!isLast ? "border-b border-purple-400/10" : ""}
+        ${isOpen ? "bg-purple-500/5 rounded-[14px]" : ""}
+        ${!isOpen && hovered ? "bg-purple-500/5" : ""}
+      `}
     >
-      {/* ── HEADER ── */}
       <button
         onClick={onToggle}
-        className="w-full text-left"
-        style={{
-          padding: "20px 16px",
-          display: "flex",
-          alignItems: "center",
-          gap: 14,
-          background: "transparent",
-          border: "none",
-          cursor: "pointer",
-          fontFamily: 'DM Sans',
-        }}
+        className="w-full flex items-center gap-3 px-4 py-5 text-left font-[DM_Sans]"
       >
-        {/* number — hidden on very small screens */}
         <span
           ref={numRef}
-          className="hidden sm:block"
-          style={{
-            fontSize: 12, fontWeight: 700, letterSpacing: "0.06em",
-            fontVariantNumeric: "tabular-nums",
-            color: isOpen ? s.color : "rgba(200,170,255,0.25)",
-            flexShrink: 0, width: 24,
-            transition: "color 0.3s", fontFamily: "monospace",
-          }}
-        >{s.num}</span>
-
-        {/* icon */}
-        <div style={{
-          width: 36, height: 36, borderRadius: 10, flexShrink: 0,
-          display: "flex", alignItems: "center", justifyContent: "center",
-          background: isOpen ? `${s.color}20` : "rgba(160,100,255,0.08)",
-          border: `1px solid ${isOpen ? s.color + "35" : "rgba(160,100,255,0.12)"}`,
-          transition: "all 0.3s",
-        }}>
-          <Icon size={16} color={isOpen ? s.color : "rgba(180,140,255,0.45)"} strokeWidth={2.1} />
-        </div>
-
-        {/* title block */}
-        <div style={{ flex: 1, minWidth: 0 }}>
-          <div style={{ display: "flex", alignItems: "center", gap: 8, flexWrap: "wrap" }}>
-            <span style={{
-              fontSize: "clamp(15px,2.5vw,19px)",
-              fontWeight: 700,
-              color: isOpen ? "#fff" : "rgba(230,215,255,0.75)",
-              letterSpacing: "-0.3px",
-              transition: "color 0.3s",
-            }}>{s.title}</span>
-            <span style={{
-              fontSize: 8, fontWeight: 800, letterSpacing: "0.12em",
-              textTransform: "uppercase",
-              padding: "3px 8px", borderRadius: 99,
-              color: s.color,
-              background: `${s.color}18`,
-              border: `1px solid ${s.color}28`,
-              whiteSpace: "nowrap",
-            }}>{s.badge}</span>
-          </div>
-          <div style={{
-            fontSize: 12, color: "rgba(200,170,255,0.38)",
-            fontWeight: 400, marginTop: 2,
-            fontFamily: 'DM Sans',
-          }}>{s.subtitle}</div>
-        </div>
-
-        {/* tags — desktop only */}
-        <div
-          className="hidden md:flex"
-          style={{ gap: 6, flexShrink: 0, opacity: isOpen ? 0 : 1, transition: "opacity 0.2s" }}
+          className="hidden sm:block w-6 text-[12px] font-bold tracking-[0.06em] font-mono"
+          style={{ color: isOpen ? s.color : "rgba(200,170,255,0.25)" }}
         >
-          {s.tags.map((t, i) => (
-            <span key={i} style={{
-              fontSize: 10, fontWeight: 600,
-              padding: "4px 10px", borderRadius: 99,
-              color: "rgba(200,170,255,0.45)",
-              background: "rgba(160,100,255,0.07)",
-              border: "1px solid rgba(160,100,255,0.10)",
-              whiteSpace: "nowrap",
-            }}>{t}</span>
-          ))}
+          {s.num}
+        </span>
+
+        <div
+          className="w-9 h-9 rounded-[10px] flex items-center justify-center"
+          style={{
+            background: isOpen ? `${s.color}20` : "rgba(160,100,255,0.08)",
+            border: `1px solid ${isOpen ? s.color + "35" : "rgba(160,100,255,0.12)"}`,
+          }}
+        >
+          <Icon size={16} color={isOpen ? s.color : "rgba(180,140,255,0.45)"} />
         </div>
 
-        {/* chevron */}
-        <div ref={arrowRef} style={{ flexShrink: 0, display: "flex", alignItems: "center" }}>
-          <ChevronDown
-            size={17}
-            color={isOpen ? s.color : "rgba(160,100,255,0.35)"}
-            strokeWidth={2.2}
-            style={{ transition: "color 0.3s" }}
-          />
+        <div className="flex-1">
+          <div className="flex gap-2 flex-wrap items-center">
+            <span className={`text-[17px] font-semibold ${isOpen ? "text-white" : "text-purple-200/80"}`}>
+              {s.title}
+            </span>
+
+            <span
+              className="text-[8px] font-extrabold px-2 py-[3px] rounded-full uppercase"
+              style={{
+                color: s.color,
+                background: `${s.color}18`,
+                border: `1px solid ${s.color}28`,
+              }}
+            >
+              {s.badge}
+            </span>
+          </div>
+
+          <div className="text-[12px] text-purple-300/40 mt-0.5">
+            {s.subtitle}
+          </div>
+        </div>
+
+        <div ref={arrowRef}>
+          <ChevronDown size={17} color={isOpen ? s.color : "rgba(160,100,255,0.35)"} />
         </div>
       </button>
 
-      {/* ── BODY ── */}
-      <div ref={bodyRef} style={{ height: 0, opacity: 0, overflow: "hidden" }}>
-        {/*
-          Mobile: single column stack
-          md+: two-column side-by-side
-        */}
-        <div
-          className="grid grid-cols-1 md:grid-cols-2"
-          style={{ padding: "0 16px 24px", gap: 24 }}
-        >
-          {/* LEFT: description + tags + cta */}
-          <div style={{ display: "flex", flexDirection: "column", gap: 16 }}>
-            <div style={{
-              width: 36, height: 2, borderRadius: 99,
-              background: `linear-gradient(90deg,${s.color},transparent)`,
-            }} />
+      <div ref={bodyRef} className="h-0 opacity-0 overflow-hidden">
+        <div className="grid md:grid-cols-2 gap-6 px-4 pb-6">
 
-            <p style={{
-              fontSize: 13, color: "rgba(220,200,255,0.52)",
-              lineHeight: 1.8, fontWeight: 400,
-              fontFamily: "DM Sans",
-              margin: 0,
-            }}>{s.description}</p>
+          <div className="flex flex-col gap-4">
+            <div
+              className="w-9 h-[2px] rounded-full"
+              style={{ background: `linear-gradient(90deg,${s.color},transparent)` }}
+            />
 
-            {/* tag pills */}
-            <div style={{ display: "flex", gap: 6, flexWrap: "wrap" }}>
-              {s.tags.map((t, i) => (
-                <span key={i} style={{
-                  fontSize: 9, fontWeight: 700, letterSpacing: "0.10em",
-                  textTransform: "uppercase",
-                  padding: "4px 11px", borderRadius: 99,
-                  color: s.color,
-                  background: `${s.color}15`,
-                  border: `1px solid ${s.color}25`,
-                }}>{t}</span>
-              ))}
-            </div>
+            {/* readability FIX */}
+            <p className="text-[14px] text-purple-100/70 leading-[1.9] tracking-[0.2px]">
+              {s.description}
+            </p>
 
-            {/* CTA */}
-            <button
+            <HashLink
+              smooth
+              to="/articles#contact"
+              scroll={
+                (el) => {
+                  setTimeout(() => {
+                     el.scrollIntoView({behaviour:"smooth" , block: "start"})
+                  } , 150)
+                }
+                 
+              }
+            >
+              <button
+              className="inline-flex items-center gap-2 px-5 py-[11px] rounded-[10px] text-[11px] font-bold uppercase"
               style={{
-                display: "inline-flex", alignItems: "center", gap: 7,
-                padding: "11px 20px", borderRadius: 10, border: "none",
-                fontFamily: "DM Sans",
-                fontSize: 11, fontWeight: 700, letterSpacing: "0.10em",
-                textTransform: "uppercase", cursor: "pointer",
-                color: "#0c0020",
                 background: `linear-gradient(135deg,${s.color},${s.color}bb)`,
-                boxShadow: `0 4px 20px ${s.color}35`,
-                alignSelf: "flex-start",
-                transition: "transform 0.2s, box-shadow 0.2s",
-              }}
-              onMouseEnter={e => {
-                (e.currentTarget as HTMLElement).style.transform = "translateY(-1px)";
-                (e.currentTarget as HTMLElement).style.boxShadow = `0 8px 28px ${s.color}50`;
-              }}
-              onMouseLeave={e => {
-                (e.currentTarget as HTMLElement).style.transform = "translateY(0)";
-                (e.currentTarget as HTMLElement).style.boxShadow = `0 4px 20px ${s.color}35`;
+                color: "#0c0020",
               }}
             >
               {s.cta}
-              <ArrowUpRight size={13} strokeWidth={2.5} />
+              <ArrowUpRight size={13} />
             </button>
+            </HashLink>
+            
           </div>
 
-          {/* RIGHT: feature checklist */}
-          <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
+          <div className="flex flex-col gap-2">
             {s.features.map((f, i) => (
-              <div key={i} style={{
-                display: "flex", alignItems: "flex-start", gap: 10,
-                padding: "9px 12px", borderRadius: 9,
-                background: f.hot ? `${s.color}0d` : "rgba(255,255,255,0.02)",
-                border: `1px solid ${f.hot ? s.color + "22" : "rgba(160,100,255,0.07)"}`,
-              }}>
-                <div style={{
-                  width: 17, height: 17, borderRadius: 5, flexShrink: 0,
-                  display: "flex", alignItems: "center", justifyContent: "center",
-                  background: f.hot ? `${s.color}25` : "rgba(160,100,255,0.10)",
-                  border: `1px solid ${f.hot ? s.color + "40" : "rgba(160,100,255,0.15)"}`,
-                  marginTop: 1,
-                }}>
-                  <Check size={9} color={f.hot ? s.color : "rgba(160,100,255,0.4)"} strokeWidth={2.8} />
-                </div>
-                <span style={{
-                  fontSize: 12.5, lineHeight: 1.5,
-                  color: f.hot ? "rgba(235,220,255,0.85)" : "rgba(200,170,255,0.40)",
-                  fontWeight: f.hot ? 600 : 400,
-                  fontFamily: "'DM Sans",
-                }}>{f.text}</span>
+              <div key={i} className="flex gap-2 px-3 py-2 rounded-[9px]">
+                <Check size={12} color={s.color} />
+                <span className="text-[13px] text-purple-200/70">{f.text}</span>
               </div>
             ))}
           </div>
+
         </div>
       </div>
     </div>
   );
 }
 
-/* ══════════════════════════════════════════════════════
-   MAIN EXPORT
-══════════════════════════════════════════════════════ */
+/* MAIN */
 export function Services() {
   const [openIndex, setOpenIndex] = useState<number | null>(0);
-  const toggle = (i: number) => setOpenIndex(prev => prev === i ? null : i);
 
   return (
-    <section
-      className="relative overflow-hidden bg-transparent py-5 px-6 sm:px-0"
-      style={{ fontFamily: "DM Sans" }}
-    >
-      {/* ambient blobs */}
-    
-      {/* top rule — matches testimonials */}
-      <div className="w-full h-px mb-5"
-        style={{ background: "linear-gradient(90deg,transparent,rgba(196,132,252,0.11),transparent)" }} />
+    <section className="py-5 font-[DM_Sans]">
 
-        {/* ── ACCORDION ── */}
-        <div style={{
-          borderRadius: 18,
-          border: "1px solid rgba(160,100,255,0.13)",
-          background: "linear-gradient(160deg,rgba(36,0,72,0.55),rgba(16,0,30,0.60))",
-          overflow: "hidden",
-          backdropFilter: "blur(14px)",
-        }}>
-          {/* shimmer line */}
-          <div style={{
-            height: 1,
-            background: "linear-gradient(90deg,transparent,rgba(200,150,255,0.30),transparent)",
-          }} />
-          {SERVICES.map((s, i) => (
-            <ServiceRow
-              key={s.num}
-              s={s}
-              isOpen={openIndex === i}
-              onToggle={() => toggle(i)}
-              isLast={i === SERVICES.length - 1}
-            />
-          ))}
-        </div>
-      {/* bottom rule — matches Testimonials */}
-      <div className="w-full h-px mt-16"
-        style={{ background: "linear-gradient(90deg,transparent,rgba(196,132,252,0.11),transparent)" }} />
+      {/* FIXED BACKGROUND PANEL */}
+      <div className="
+        rounded-[18px]
+        border border-purple-400/20
+        bg-[linear-gradient(160deg,rgba(36,0,72,0.55),rgba(16,0,30,0.60))]
+        backdrop-blur-[14px]
+        overflow-hidden
+      ">
+        <div className="h-px bg-gradient-to-r from-transparent via-purple-300/30 to-transparent" />
+
+        {SERVICES.map((s, i) => (
+          <ServiceRow
+            key={i}
+            s={s}
+            isOpen={openIndex === i}
+            onToggle={() => setOpenIndex(openIndex === i ? null : i)}
+            isLast={i === SERVICES.length - 1}
+          />
+        ))}
+      </div>
+
     </section>
   );
 }

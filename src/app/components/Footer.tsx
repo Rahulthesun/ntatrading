@@ -1,42 +1,45 @@
 import { Link } from "react-router";
 import { motion } from "motion/react";
-import { Mail, Phone, MapPin, ArrowUpRight, Youtube, Instagram, Twitter, MessageCircle } from "lucide-react";
+import { Mail, Phone, MapPin, Globe } from "lucide-react";
+import { HashLink } from "react-router-hash-link";
 
 /* ══════════════════════════════════════════════════════════════
-   DATA (cleaned)
+   DATA
 ══════════════════════════════════════════════════════════════ */
 const NAV_COLS = [
   {
-    heading: "Learn",
+    heading: "Explore",
     links: [
-      { label: "Education Course",     to: "/programs/education" },
-      { label: "Live Market Sessions", to: "/programs/live" },
-      { label: "Mentorship & Support", to: "/programs/mentorship" },
+      { label: "Home",        to: "/#hero" },
+      { label: "About Us",    to: "/about#hero" },
+      { label: "Programs",    to: "/programs#hero" },
+      { label: "Articles",    to: "/articles#hero" },
+      { label: "Founder Story", to: "/about#founder-story" },
+      { label: "Testimonials",  to: "/articles#testimonials" },
+      { label: "Contact",       to: "/articles#contact" },
     ],
   },
   {
-    heading: "Company",
+    heading: "Programs",
     links: [
-      { label: "About Us", to: "/about" },
-      { label: "Why NTA",  to: "/why-us" },
-      { label: "Contact",  to: "/contact" },
-    ],
-  },
-  {
-    heading: "Legal",
-    links: [
-      { label: "Privacy Policy", to: "/privacy" },
-      { label: "Terms of Use",   to: "/terms" },
-      { label: "Risk Disclosure", to: "/risk" },
+      { label: "Equity Trading",        to: "/programs#equity" },
+      { label: "Options Trading",       to: "/programs#options" },
+      { label: "Commodity & Futures",   to: "/programs#commodities" },
     ],
   },
 ];
 
 const SOCIALS = [
-  { Icon: Youtube, label: "YouTube", href: "#" },
-  { Icon: Instagram, label: "Instagram", href: "#" },
-  { Icon: Twitter, label: "Twitter", href: "#" },
-  { Icon: MessageCircle, label: "Telegram", href: "#" },
+  {
+    Icon: MapPin,
+    label: "Our Location",
+    href: "https://maps.app.goo.gl/tJcXQcQEcvr3PF3k9",
+  },
+  {
+    Icon: Globe,
+    label: "Google Reviews",
+    href: "https://share.google/5tfrah4c1nE1DtnhM",
+  },
 ];
 
 /* ══════════════════════════════════════════════════════════════
@@ -46,49 +49,21 @@ export function Footer() {
   return (
     <footer className="relative bg-transparent border-t border-purple-500/[0.08] overflow-hidden font-sans">
 
-      {/* CTA */}
-      <div className="relative border-b border-purple-500/[0.08]">
-        <div className="max-w-5xl mx-auto px-6 py-10 flex flex-col md:flex-row items-center justify-between gap-6">
-          <div>
-            <p className="text-[10px] tracking-[0.20em] uppercase text-purple-200/70 mb-2">
-              — Limited Seats Available
-            </p>
-            <h3 className="font-serif text-purple-50 leading-tight"
-              style={{ fontSize: "clamp(20px,2.5vw,28px)" }}>
-              Ready to start trading{" "}
-              <span className="italic text-transparent bg-clip-text"
-                style={{ backgroundImage: "linear-gradient(135deg,#d8b4fe,#a855f7)" }}>
-                smarter?
-              </span>
-            </h3>
-          </div>
-
-          <motion.div whileHover={{ scale: 1.03 }} whileTap={{ scale: 0.97 }}>
-            <Link
-              to="/contact"
-              className="flex items-center gap-2 px-7 py-3.5 rounded-full text-white text-sm font-semibold shadow-lg"
-              style={{ background: "linear-gradient(135deg,#3b82f6,#7c3aed,#9333ea)" }}
-            >
-              Book a Free Demo
-              <ArrowUpRight className="w-4 h-4" />
-            </Link>
-          </motion.div>
-        </div>
-      </div>
-
       {/* MAIN */}
-      <div className="max-w-5xl mx-auto px-6 pt-14 pb-10">
+      <div className="max-w-7xl mx-auto px-6 pt-14 pb-10">
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-6 gap-10 mb-12">
 
           {/* Brand */}
           <div className="lg:col-span-2 flex flex-col gap-5">
             <Link to="/" className="flex items-center gap-3">
-              <img src="assets/logo.png" className="w-16 h-16 rounded-xl" />
+              <div className="rounded-2xl overflow-hidden w-12 h-12 bg-white border border-violet-500/40">
+                <img src="assets/logo.png" alt="NTA" className="w-full h-full object-cover block" />
+              </div>
               <div>
-                <p className="text-white text-lg">NTA</p>
-                <p className="text-purple-200/70 text-xs tracking-widest uppercase">
-                  Trading Academy
+                <p className="text-white text-lg">Namma Trading Academy</p>
+                <p className="text-purple-200/70 text-[8px] tracking-[0.30em] uppercase">
+                  United in learning, United in growth
                 </p>
               </div>
             </Link>
@@ -107,12 +82,18 @@ export function Footer() {
               <ul className="space-y-2">
                 {col.links.map(link => (
                   <li key={link.to}>
-                    <Link
+                    <HashLink
+                      smooth
                       to={link.to}
+                      scroll={(el) => {
+                        setTimeout(() => {
+                          el.scrollIntoView({ behavior: "smooth", block: "start" });
+                        }, 150);
+                      }}
                       className="text-purple-100/80 hover:text-white text-sm transition"
                     >
                       {link.label}
-                    </Link>
+                    </HashLink>
                   </li>
                 ))}
               </ul>
@@ -140,7 +121,7 @@ export function Footer() {
             {/* Socials */}
             <div className="flex gap-3 mt-5">
               {SOCIALS.map(({ Icon, href }) => (
-                <a key={href} href={href} className="text-purple-200/70 hover:text-white">
+                <a key={href} href={href} target="_blank" rel="noopener noreferrer" className="text-purple-200/70 hover:text-white">
                   <Icon size={16} />
                 </a>
               ))}
@@ -153,15 +134,46 @@ export function Footer() {
         <div className="text-center text-purple-100/70 text-xs leading-relaxed mb-8">
           <span className="text-rose-400 font-semibold">Risk Disclaimer: </span>
           Trading involves risk. This is educational content only. Read our{" "}
-          <Link to="/risk" className="underline text-purple-200 hover:text-white">
+          <HashLink
+            smooth
+            to="/risk#top"
+            scroll={(el) => {
+              setTimeout(() => {
+                el.scrollIntoView({ behavior: "smooth", block: "start" });
+              }, 150);
+            }}
+            className="underline text-purple-200 hover:text-white"
+          >
             Risk Disclosure
-          </Link>.
+          </HashLink>.
         </div>
 
-        {/* BOTTOM */}
-        <div className="flex flex-col sm:flex-row justify-between items-center text-purple-200/60 text-xs border-t border-purple-500/10 pt-6">
-          <p>© 2026 NTA Trading Academy</p>
-          <p>Made in Chennai 🇮🇳</p>
+        {/* 🔥 BOTTOM WITH BUILDIFY */}
+        <div className="flex flex-col md:flex-row justify-between items-center gap-4 text-purple-200/60 text-xs border-t border-purple-500/10 pt-6">
+
+         <div className="flex items-center gap-0 text-purple-200/60">
+            <span className="uppercase tracking-[0.16em] text-[12px]">
+              Designed & Developed by
+            </span>
+
+            <a
+              href="https://buildify-web.com"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="flex items-center gap-0 hover:text-white transition"
+            >
+              <img
+                src="/assets/buildify-logo.png"
+                alt="Buildify"
+                className="h-6 w-auto opacity-90"
+              />
+            </a>
+          </div>
+          {/* RIGHT */}
+          <div className="text-purple-200/40 text-[11px] tracking-wide">
+            © 2026 NTA Trading Academy. All rights reserved.
+          </div>
+
         </div>
 
       </div>

@@ -19,6 +19,7 @@
 
 
 import { MarketCarousel } from "./MarketCarousel"
+import { HashLink } from "react-router-hash-link"
 
 
 
@@ -45,8 +46,7 @@ export default function Hero({
         @keyframes fadeUp { from{opacity:0;transform:translateY(24px)} to{opacity:1;transform:translateY(0)} }
       `}</style>
 
-      <section
-        id="hero"
+      <section id="hero"
         className="relative text-purple-50 min-h-screen overflow-x-hidden font-sans"
         style={{ background: "transparent" }}
       >
@@ -117,31 +117,52 @@ export default function Hero({
                 className="flex flex-col sm:flex-row justify-center items-center gap-3 mb-10 sm:mb-12"
                 style={{ animation: "fadeUp .9s cubic-bezier(.16,1,.3,1) .62s both" }}
               >
-                <button
-                  className="relative overflow-hidden w-full sm:w-auto text-white font-serif text-[15px] tracking-[0.02em] px-10 py-3.5 rounded-xl hover:brightness-110 hover:-translate-y-px transition-all duration-200 cursor-pointer border-0"
-                  style={{
-                    background: "linear-gradient(135deg, #9333ea, #7c3aed, #6d28d9)",
-                    boxShadow: "0 4px 32px rgba(147,51,234,0.55), inset 0 1px 0 rgba(255,255,255,0.15)",
-                  }}
-                >
-                  <span className="absolute inset-x-0 top-0 h-px" style={{ background: "linear-gradient(90deg,transparent,rgba(255,255,255,0.25),transparent)" }} />
-                  Join the Community
-                </button>
-
-                <button
-                  className="w-full sm:w-auto font-serif text-[15px] tracking-[0.02em] px-10 py-3.5 rounded-xl transition-all duration-200 bg-transparent cursor-pointer"
-                  style={{ color: "rgba(216,180,254,0.6)", border: "1px solid rgba(160,80,255,0.25)" }}
-                  onMouseEnter={(e) => {
-                    (e.currentTarget as HTMLButtonElement).style.borderColor = "rgba(160,80,255,0.55)"
-                    ;(e.currentTarget as HTMLButtonElement).style.color = "rgba(233,213,255,0.9)"
-                  }}
-                  onMouseLeave={(e) => {
-                    (e.currentTarget as HTMLButtonElement).style.borderColor = "rgba(160,80,255,0.25)"
-                    ;(e.currentTarget as HTMLButtonElement).style.color = "rgba(216,180,254,0.6)"
-                  }}
-                >
-                  Our Programs
-                </button>
+                <HashLink smooth to="/articles#contact"
+                    scroll= {
+                      (el) => {
+                        setTimeout(() => {
+                          el?.scrollIntoView({ behavior: "smooth", block: "center" })
+                        }, 150)
+                      }
+                    }
+                    >
+                    <button
+                      className="relative overflow-hidden w-full sm:w-auto text-white font-serif text-[15px] tracking-[0.02em] px-10 py-3.5 rounded-xl hover:brightness-110 hover:-translate-y-px transition-all duration-200 cursor-pointer border-0"
+                      style={{
+                        background: "linear-gradient(135deg, #9333ea, #7c3aed, #6d28d9)",
+                        boxShadow: "0 4px 32px rgba(147,51,234,0.55), inset 0 1px 0 rgba(255,255,255,0.15)",
+                      }}
+                    >
+                      <span className="absolute inset-x-0 top-0 h-px" style={{ background: "linear-gradient(90deg,transparent,rgba(255,255,255,0.25),transparent)" }} />
+                      Join the Community
+                    </button>
+                </HashLink>
+                
+                <HashLink smooth to="/programs#hero"
+                    scroll= {
+                      (el) => {
+                        setTimeout(() => {
+                          el?.scrollIntoView({ behavior: "smooth", block: "center" })
+                        }, 150)
+                      }
+                    }
+                    >
+                      <button
+                        className="w-full sm:w-auto font-serif text-[15px] tracking-[0.02em] px-10 py-3.5 rounded-xl transition-all duration-200 bg-transparent cursor-pointer"
+                        style={{ color: "rgba(216,180,254,0.6)", border: "1px solid rgba(160,80,255,0.25)" }}
+                        onMouseEnter={(e) => {
+                          (e.currentTarget as HTMLButtonElement).style.borderColor = "rgba(160,80,255,0.55)"
+                          ;(e.currentTarget as HTMLButtonElement).style.color = "rgba(233,213,255,0.9)"
+                        }}
+                        onMouseLeave={(e) => {
+                          (e.currentTarget as HTMLButtonElement).style.borderColor = "rgba(160,80,255,0.25)"
+                          ;(e.currentTarget as HTMLButtonElement).style.color = "rgba(216,180,254,0.6)"
+                        }}
+                      >
+                        Our Programs
+                      </button>
+                </HashLink>
+                
               </div>
 
               {/* Divider */}

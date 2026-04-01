@@ -130,7 +130,7 @@ export function CTASection() {
           >
             {/* WhatsApp — primary */}
             <motion.a
-              href="https://wa.me/919999999999?text=Hi!%20I'd%20like%20to%20know%20more%20about%20your%20trading%20programs."
+              href="https://wa.me/919176001402?text=Hi!%20I%20came%20across%20Namma%20Trading%20Academy%20and%20I%E2%80%99m%20interested%20in%20learning%20more%20about%20your%20trading%20programs.%20I%E2%80%99d%20like%20to%20understand%20which%20course%20would%20be%20the%20best%20fit%20for%20me,%20how%20the%20live%20sessions%20work,%20and%20what%20kind%20of%20support%20and%20mentorship%20is%20included.%20Looking%20forward%20to%20your%20guidance."
               target="_blank"
               rel="noopener noreferrer"
               whileHover={{ scale: 1.03, y: -1 }}

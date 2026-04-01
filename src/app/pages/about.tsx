@@ -10,6 +10,7 @@ import { FounderMessage } from "../components/FounderMessage";
 import Reviews from "../components/Reviews";
 import { Footer } from "../components/Footer";
 import Hero from "../components/Hero"
+import { HashLink } from "react-router-hash-link";
 
 /* ══════════════════════════════════════════════════════════════
    SHARED PRIMITIVES
@@ -299,19 +300,31 @@ function Contact() {
           </FadeUp>
 
           <FadeUp delay={0.12}>
-            <div className="relative rounded-3xl overflow-hidden border border-purple-500/[0.11]"
-              style={{ height: 320 }}>
-              <iframe src="https://www.google.com/maps?q=NTA+Academy+Chennai&output=embed"
-                width="100%" height="100%" className="absolute inset-0 border-0 grayscale opacity-75"
-                allowFullScreen loading="lazy" referrerPolicy="no-referrer-when-downgrade" />
+            <div
+              className="relative rounded-3xl overflow-hidden border border-purple-500/[0.11]"
+              style={{ height: 320 }}
+            >
+              <iframe
+                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3886.5777947264146!2d80.17235437538311!3d13.062524912877699!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3a52614273a06bc1%3A0x306ff7d176fb8ee0!2sNAMMA%20TRADING%20ACADEMY!5e0!3m2!1sen!2sin!4v1775053370361!5m2!1sen!2sin"
+                className="absolute inset-0 w-full h-full border-0 grayscale opacity-75"
+                loading="lazy"
+                referrerPolicy="no-referrer-when-downgrade"
+                allowFullScreen
+              />
+
               <div className="absolute inset-0 pointer-events-none [background:linear-gradient(to_top,rgba(6,1,15,0.45)_0%,transparent_60%)]" />
+
               <div className="absolute bottom-4 left-4 flex items-center gap-3 bg-[#0D0520]/92 border border-purple-500/18 backdrop-blur-xl px-3.5 py-2.5 rounded-2xl pointer-events-none">
                 <div className="w-7 h-7 rounded-full bg-gradient-to-br from-violet-700 to-purple-500 flex items-center justify-center shrink-0">
                   <MapPin className="w-3 h-3 text-white" />
                 </div>
                 <div>
-                  <p className="font-sans text-[12px] font-semibold text-white/88">NTA Academy</p>
-                  <p className="font-sans text-[9.5px] text-purple-300/38">Chennai, Tamil Nadu</p>
+                  <p className="font-sans text-[12px] font-semibold text-white/88">
+                    Namma Trading Academy
+                  </p>
+                  <p className="font-sans text-[9.5px] text-purple-300/38">
+                    Chennai, Tamil Nadu
+                  </p>
                 </div>
               </div>
             </div>
@@ -341,13 +354,46 @@ function BottomCTA() {
             Just come and watch how we actually trade.
           </p>
           <div className="flex flex-col sm:flex-row justify-center gap-3 px-4 sm:px-0">
+
+
+           <HashLink
+                smooth
+                to="/articles#contact"
+                scroll={
+                  (el) => {
+                    setTimeout(() => {
+                        el.scrollIntoView({behaviour:"smooth" , block: "start"})
+                      } , 150)
+                  }
+                             
+                }
+              >             
             <motion.button whileHover={{ scale: 1.03 }} whileTap={{ scale: 0.97 }}
               className="w-full sm:w-auto bg-gradient-to-r from-violet-700 to-purple-500 text-white font-sans text-[13px] font-semibold tracking-[0.04em] px-8 py-3.5 rounded-full border-0 cursor-pointer shadow-[0_4px_24px_rgba(139,92,246,0.38)] transition-shadow duration-300 flex items-center justify-center gap-2">
               Book Free Demo <ArrowRight className="w-4 h-4" />
             </motion.button>
-            <button className="w-full sm:w-auto font-sans text-[13px] font-normal tracking-[0.04em] text-purple-200/50 px-8 py-3.5 rounded-full border border-purple-400/[0.14] hover:border-purple-400/30 transition-all duration-200 bg-transparent cursor-pointer">
-              View Programs
-            </button>
+            
+
+            </HashLink>
+
+            <HashLink
+                smooth
+                to="/programs#hero"
+                scroll={
+                  (el) => {
+                    setTimeout(() => {
+                        el.scrollIntoView({behaviour:"smooth" , block: "start"})
+                      } , 150)
+                  }
+                             
+                }
+                >
+                <button className="w-full sm:w-auto font-sans text-[13px] font-normal tracking-[0.04em] text-purple-200/50 px-8 py-3.5 rounded-full border border-purple-400/[0.14] hover:border-purple-400/30 transition-all duration-200 bg-transparent cursor-pointer">
+                  View Programs
+                </button>
+            </HashLink>
+            
+            
           </div>
         </FadeUp>
       </div>
@@ -369,14 +415,17 @@ export default function AboutPage() {
 from-[#1d4ed8]
 via-[#0f172a]
 to-[#000000] text-purple-50 overflow-x-hidden font-sans min-h-screen">
-        <div className="fixed inset-0 pointer-events-none z-0" />
+        <div className="fixed inset-0 pointer-events-none z-0" >
+        </div>
 
-        <Navbar />
-        <Hero  
+          <Hero  
         headline="South India's most
 live trading academy"
         hasMarketTicker={false}
         />
+        
+        <Navbar />
+        
         <Stats />
         <FounderMessage />
         <WhyNTA />

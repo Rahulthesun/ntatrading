@@ -196,34 +196,38 @@ const TAG_COLORS: Record<string, string> = {
 
 
 
-/* ══════════════════════════════════════════════════════════════
-   2 · FEATURED CAROUSEL
-══════════════════════════════════════════════════════════════ */
 function FeaturedCarousel() {
   const [current, setCurrent] = useState(0);
   const total = FEATURED.length;
+
   const prev = () => setCurrent(i => (i - 1 + total) % total);
   const next = () => setCurrent(i => (i + 1) % total);
+
   const article = FEATURED[current];
   const Icon = article.tagIcon;
 
   return (
-    <section className="relative z-[5] py-8 px-6">
+    <section className="relative z-[5] py-8 px-4 sm:px-6">
       <div className="max-w-6xl mx-auto">
+
+        {/* HEADER */}
         <FadeUp>
           <div className="flex items-center justify-between mb-8">
             <div>
               <Eyebrow>Featured Articles</Eyebrow>
               <H2>Editor's <Italic>picks.</Italic></H2>
             </div>
+
             <div className="flex items-center gap-3">
               <span className="font-sans text-[11px] text-purple-300/65 tracking-[0.08em]">
                 {String(current + 1).padStart(2, "0")} / {String(total).padStart(2, "0")}
               </span>
+
               <button onClick={prev}
                 className="w-9 h-9 rounded-full border border-purple-500/20 bg-purple-500/[0.06] flex items-center justify-center text-purple-300/75 hover:text-purple-300 hover:border-purple-400/35 transition-all duration-200 cursor-pointer">
                 <ChevronLeft className="w-4 h-4" />
               </button>
+
               <button onClick={next}
                 className="w-9 h-9 rounded-full border border-purple-500/20 bg-purple-500/[0.06] flex items-center justify-center text-purple-300/75 hover:text-purple-300 hover:border-purple-400/35 transition-all duration-200 cursor-pointer">
                 <ChevronRight className="w-4 h-4" />
@@ -232,6 +236,7 @@ function FeaturedCarousel() {
           </div>
         </FadeUp>
 
+        {/* CARD */}
         <AnimatePresence mode="wait">
           <motion.div
             key={current}
@@ -241,68 +246,93 @@ function FeaturedCarousel() {
             transition={{ duration: 0.45, ease: [0.22, 1, 0.36, 1] }}
           >
             <div className={`relative bg-[#0C0420]/65 border ${article.border} backdrop-blur-xl rounded-3xl overflow-hidden`}>
+
               {/* shimmer */}
               <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-purple-400/20 to-transparent" />
+
               {/* blob */}
               <div className={`absolute -top-16 -right-16 w-72 h-72 rounded-full bg-gradient-to-br ${article.accent} blur-3xl pointer-events-none`} />
 
-              <div className="relative grid lg:grid-cols-[1fr_360px] gap-0 divide-y lg:divide-y-0 lg:divide-x divide-purple-500/[0.08]">
+              {/* GRID */}
+              <div className="relative grid lg:grid-cols-[1fr_360px] divide-y lg:divide-y-0 lg:divide-x divide-purple-500/[0.08]">
 
-                {/* Left: article content */}
-                <div className="p-8 lg:p-12 flex flex-col">
-                  <div className="flex items-center gap-3 mb-7">
+                {/* LEFT */}
+                <div className="p-5 sm:p-6 lg:p-12 flex flex-col">
+
+                  <div className="flex items-center flex-wrap gap-2 mb-5">
                     <span className={`inline-flex items-center gap-1.5 font-sans text-[9px] font-bold tracking-[0.14em] uppercase px-2.5 py-1 rounded-full border ${TAG_COLORS[article.tag] ?? "bg-purple-400/10 text-purple-300 border-purple-400/20"}`}>
                       <Icon className="w-3 h-3" /> {article.tag}
                     </span>
+
                     <span className="font-sans text-[11px] text-purple-300/65 flex items-center gap-1.5">
                       <Clock className="w-3 h-3" /> {article.readTime}
                     </span>
+
                     <span className="font-sans text-[11px] text-purple-300/65 flex items-center gap-1.5">
                       <Calendar className="w-3 h-3" /> {article.date}
                     </span>
                   </div>
 
-                  <h3 className="font-serif text-purple-50 leading-[1.15] tracking-[-0.015em] mb-5"
-                    style={{ fontSize: "clamp(22px,2.8vw,34px)" }}>
+                  <h3
+                    className="font-serif text-purple-50 leading-[1.2] tracking-[-0.015em] mb-4"
+                    style={{ fontSize: "clamp(20px,5vw,34px)" }}
+                  >
                     {article.title}
                   </h3>
-                  <p className="font-sans text-[13.5px] font-normal text-white/85 leading-[1.8] flex-1 mb-10">
+
+                  {/* readability fix */}
+                  <p className="font-sans text-[14px] text-white/85 leading-[1.85] flex-1 mb-8">
                     {article.excerpt}
                   </p>
 
-                  <div className="flex items-center gap-3">
+                  <div className="flex flex-wrap gap-2">
                     <motion.button
-                      whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.97 }}
-                      className="relative overflow-hidden inline-flex items-center gap-2 py-3 px-7 rounded-full bg-gradient-to-r from-violet-700 to-purple-500 font-sans font-semibold text-[13px] tracking-[0.04em] text-white border-0 cursor-pointer shadow-[0_4px_24px_rgba(109,40,217,0.38)] hover:shadow-[0_6px_32px_rgba(139,92,246,0.52)] transition-shadow duration-300">
-                      <span className="absolute inset-x-0 top-0 h-px bg-white/18" />
+                      whileHover={{ scale: 1.02 }}
+                      whileTap={{ scale: 0.97 }}
+                      className="flex-1 sm:flex-none justify-center inline-flex items-center gap-2 py-3 px-5 rounded-full bg-gradient-to-r from-violet-700 to-purple-500 font-sans font-semibold text-[13px] text-white border-0 cursor-pointer"
+                    >
                       Read Article <ArrowRight className="w-3.5 h-3.5" />
                     </motion.button>
-                    <button className="inline-flex items-center gap-2 py-3 px-7 rounded-full font-sans font-normal text-[13px] tracking-[0.04em] text-purple-100/75 border border-purple-400/[0.14] hover:border-purple-400/30 hover:text-purple-100/75 transition-all duration-200 bg-transparent cursor-pointer">
-                      Save for Later
-                    </button>
+
                   </div>
                 </div>
 
-                {/* Right: navigation + progress */}
-                <div className="p-8 lg:p-10 flex flex-col">
-                  <p className="font-sans text-[10px] tracking-[0.18em] uppercase text-purple-300/65 mb-5">All Featured</p>
-                  <div className="flex flex-col gap-2 flex-1">
+                {/* RIGHT — FIXED */}
+                <div className="p-5 sm:p-6 lg:p-10 flex flex-col">
+
+                  <p className="font-sans text-[10px] tracking-[0.18em] uppercase text-purple-300/65 mb-4">
+                    All Featured
+                  </p>
+
+                  {/* ✅ FIXED: vertical list (no overflow bug) */}
+                  <div className="flex flex-col gap-2">
                     {FEATURED.map((a, i) => {
                       const AI = a.tagIcon;
                       return (
-                        <button key={a.id} onClick={() => setCurrent(i)}
-                          className={`w-full text-left p-3.5 rounded-xl border transition-all duration-200 cursor-pointer group ${
-                            i === current
-                              ? "bg-purple-500/[0.10] border-purple-400/22"
-                              : "bg-transparent border-transparent hover:border-purple-500/[0.10] hover:bg-purple-500/[0.05]"
-                          }`}>
-                          <div className="flex items-center gap-2 mb-1.5">
+                        <button
+                          key={a.id}
+                          onClick={() => setCurrent(i)}
+                          className={`
+                            w-full text-left p-3 rounded-xl border transition-all duration-200
+                            ${
+                              i === current
+                                ? "bg-purple-500/[0.10] border-purple-400/22"
+                                : "bg-transparent border-transparent hover:border-purple-500/[0.10]"
+                            }
+                          `}
+                        >
+                          <div className="flex items-center gap-2 mb-1">
                             <AI className={`w-3 h-3 ${i === current ? "text-purple-400" : "text-purple-300/65"}`} />
-                            <span className={`font-sans text-[9px] tracking-[0.12em] uppercase ${i === current ? "text-purple-200/90" : "text-purple-300/55"}`}>
+                            <span className={`font-sans text-[9px] tracking-[0.12em] uppercase ${
+                              i === current ? "text-purple-200/90" : "text-purple-300/55"
+                            }`}>
                               {a.tag}
                             </span>
                           </div>
-                          <p className={`font-sans text-[12px] leading-[1.4] line-clamp-2 ${i === current ? "text-white/85" : "text-purple-200/70 group-hover:text-purple-100/75"} transition-colors duration-200`}>
+
+                          <p className={`font-sans text-[12px] leading-[1.4] line-clamp-2 ${
+                            i === current ? "text-white/85" : "text-purple-200/70"
+                          }`}>
                             {a.title}
                           </p>
                         </button>
@@ -310,25 +340,30 @@ function FeaturedCarousel() {
                     })}
                   </div>
 
-                  {/* dot indicators */}
-                  <div className="flex items-center gap-1.5 mt-6">
+                  {/* dots */}
+                  <div className="flex items-center gap-1.5 mt-4">
                     {FEATURED.map((_, i) => (
-                      <button key={i} onClick={() => setCurrent(i)}
-                        className={`rounded-full transition-all duration-300 cursor-pointer border-0 ${
+                      <button
+                        key={i}
+                        onClick={() => setCurrent(i)}
+                        className={`rounded-full transition-all ${
                           i === current ? "w-5 h-1.5 bg-purple-400" : "w-1.5 h-1.5 bg-purple-500/25"
-                        }`} />
+                        }`}
+                      />
                     ))}
                   </div>
+
                 </div>
+
               </div>
             </div>
           </motion.div>
         </AnimatePresence>
+
       </div>
     </section>
   );
 }
-
 /* ══════════════════════════════════════════════════════════════
    3 · ALL ARTICLES GRID
 ══════════════════════════════════════════════════════════════ */
@@ -396,7 +431,7 @@ function Reviews() {
   const visible = REVIEWS.slice(page * perPage, page * perPage + perPage);
 
   return (
-    <section className="relative z-[5] py-8 px-6">
+    <section id="testimonials" className="relative z-[5] py-8 px-6">
       <div className="max-w-6xl mx-auto">
         <FadeUp className="text-center mb-14">
           <Eyebrow>Student Reviews</Eyebrow>
@@ -530,8 +565,8 @@ export default function Articles() {
         <FeaturedCarousel />
         <ArticlesGrid />
         <Reviews />
-        <BottomCTA />
         <ContactSection/>
+        <BottomCTA />
         <Footer />
 
         <div className="relative z-[5] text-center py-8 border-t border-purple-500/[0.06] font-sans text-[10px] tracking-[0.08em] text-purple-400/18">

@@ -46,7 +46,7 @@ export function FounderMessage() {
         @import url('https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;1,9..40,300&display=swap');
       `}</style>
 
-      <section id="founder-story" className="relative bg-transparent py-28 px-6 overflow-hidden font-sans">
+      <section id="founder-story" className="relative bg-transparent py-2 sm:py-28 px-6 overflow-hidden font-sans">
 
         {/* ambient glow */}
         <div className="absolute inset-0 pointer-events-none">
@@ -57,12 +57,12 @@ export function FounderMessage() {
         <div className="w-full h-px bg-gradient-to-r from-transparent via-purple-500/[0.11] to-transparent mb-28" />
 
         <div className="max-w-5xl mx-auto relative z-10">
-          <div className="grid lg:grid-cols-[1fr_400px] gap-20 items-center">
+          <div className="grid lg:grid-cols-[1fr_400px] grid-cols-reverse gap-20 items-center">
 
             {/* ════════════════════════
                 LEFT — text
             ════════════════════════ */}
-            <FadeFrom from="left" className="flex flex-col">
+            <FadeFrom from="left" className="flex flex-col order-2 lg:order-1">
 
               {/* eyebrow */}
               <div className="inline-flex items-center gap-2.5 mb-7">
@@ -101,7 +101,7 @@ export function FounderMessage() {
               </div>
 
               {/* one supporting paragraph */}
-              <p className="font-sans text-[13.5px] font-light text-purple-200/42 leading-[1.82] mb-12 max-w-[400px]">
+              <p className="font-sans text-[13.5px] font-light text-white/72 leading-[1.82] mb-12 max-w-[400px]">
                 Before NTA, I searched years for a mentor who'd show me their actual
                 trades — not slides, not hypotheticals. I couldn't find one.
                 So I became one.
@@ -114,7 +114,7 @@ export function FounderMessage() {
                     <p className="font-serif text-[17px] text-purple-50/90 leading-none mb-1.5">
                       Sulakshana Trivedi
                     </p>
-                    <p className="font-sans text-[10px] tracking-[0.12em] uppercase text-purple-400/38">
+                    <p className="font-sans text-[10px] tracking-[0.12em] uppercase text-purple-400/70">
                       Founder & Head Mentor · Namma Trading Academy
                     </p>
                   </div>
@@ -131,7 +131,7 @@ export function FounderMessage() {
             {/* ════════════════════════
                 RIGHT — single photo
             ════════════════════════ */}
-            <FadeFrom from="right" delay={0.14}>
+            <FadeFrom from="right" delay={0.14} className="order-1 lg:order-2">
               <div className="relative">
 
                 {/* outer glow behind frame */}

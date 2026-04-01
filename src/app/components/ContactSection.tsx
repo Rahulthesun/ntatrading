@@ -12,7 +12,7 @@ const COURSES = [
 
 const CONTACT_ITEMS = [
   { icon: Phone, label: "+91 91760 01402" },
-  { icon: Mail,  label: "hello@ntatrading.in" },
+  { icon: Mail,  label: "contact@ntatrading.in" },
   { icon: MapPin, label: "Chennai, Tamil Nadu" },
 ];
 
@@ -77,7 +77,7 @@ Course: ${course}
   const normalBorder = "border-purple-500/20";
 
   return (
-    <section id="contact" className="relative bg-transparent py-24 px-5 sm:px-8 overflow-hidden">
+    <section id="contact" className="relative bg-transparent py-5 sm:py-14 px-5 sm:px-8 overflow-hidden">
 
       {/* Top divider */}
       <div className="w-full h-px mb-16 bg-gradient-to-r from-transparent via-purple-500/[0.12] to-transparent" />

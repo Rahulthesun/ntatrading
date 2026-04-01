@@ -1,10 +1,11 @@
-import { useRef } from "react";
+import { useRef , useState } from "react";
 import { motion, useInView } from "motion/react";
 import { Link } from "react-router";
 import {
   LineChart, BarChart3, Globe, CheckCircle2,
   Clock, Users, Video, BookOpen, FileText,
   TrendingUp, ArrowRight, ArrowLeft, Zap, ShieldCheck,
+  ChevronDown
 } from "lucide-react";
 import { Navbar } from "../components/Navbar";
 import { Footer } from "../components/Footer";
@@ -130,7 +131,7 @@ const PROGRAMS = [
     ],
   },
   {
-    id: "commodity",
+    id: "commodities",
     Icon: Globe,
     title: "Commodity & Futures",
     subtitle: "MCX, Forex & Global Markets",
@@ -204,112 +205,170 @@ function MiniSpark({ id }: { id: string }) {
 ══════════════════════════════════════════════════════════════ */
 function ProgramCard({ program, index }: { program: typeof PROGRAMS[0]; index: number }) {
   const { Icon } = program;
+  const [open, setOpen] = useState(false);
+
   return (
     <FadeUp delay={index * 0.1}>
-      <div className={`relative bg-[#0C0420]/65 border ${program.border} backdrop-blur-xl rounded-3xl overflow-hidden hover:border-purple-400/28 transition-all duration-400`}>
+      <div id={program.id} className={`relative bg-[#0C0420]/65 border ${program.border} backdrop-blur-xl rounded-3xl overflow-hidden hover:border-purple-400/28 transition-all duration-400`}>
 
-        {/* top shimmer */}
+        {/* shimmer */}
         <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-purple-400/20 to-transparent" />
 
-        {/* background gradient blob */}
+        {/* blob */}
         <div className={`absolute -top-12 -right-12 w-56 h-56 rounded-full bg-gradient-to-br ${program.accent} blur-3xl pointer-events-none`} />
 
-        <div className="relative grid lg:grid-cols-3 gap-0 divide-y lg:divide-y-0 lg:divide-x divide-purple-500/[0.08]">
-
-          {/* ── COL 1: Overview ── */}
-          <div className="p-8 lg:p-10 flex flex-col">
-            {/* icon + tag row */}
-            <div className="flex items-start justify-between mb-7">
-              <div className="w-12 h-12 rounded-2xl bg-purple-500/[0.10] border border-purple-400/[0.12] flex items-center justify-center">
-                <Icon className="w-5 h-5 text-purple-400" />
+        {/* 🔥 MOBILE HEADER */}
+        <button
+          onClick={() => setOpen(!open)}
+          className="lg:hidden w-full text-left p-5 flex flex-col gap-4"
+        >
+          {/* top row */}
+          <div className="flex items-center justify-between">
+            <div className="flex items-center gap-3">
+              <div className="w-10 h-10 rounded-xl bg-purple-500/[0.10] border border-purple-400/[0.12] flex items-center justify-center">
+                <Icon className="w-4 h-4 text-purple-400" />
               </div>
-              <span className={`font-sans text-[9px] font-bold tracking-[0.14em] uppercase px-2.5 py-1 rounded-full border ${program.tagColor}`}>
+
+              <span className={`text-[9px] font-bold tracking-[0.14em] uppercase px-2 py-1 rounded-full border ${program.tagColor}`}>
                 {program.tag}
               </span>
             </div>
 
-            <h3 className="font-serif text-[26px] text-purple-50 leading-tight mb-1">{program.title}</h3>
-            <p className="font-sans text-[11px] tracking-[0.10em] uppercase text-purple-200/90 mb-5">{program.subtitle}</p>
-            <p className="font-sans text-[13px] font-normal text-white/80 leading-[1.75] mb-8 flex-1">{program.desc}</p>
+            <ChevronDown
+              className={`w-4 h-4 text-purple-400 transition-transform duration-300 ${
+                open ? "rotate-180" : ""
+              }`}
+            />
+          </div>
 
-            {/* quick stats */}
-            <div className="flex flex-col gap-3 mb-8">
+          {/* title */}
+          <div>
+            <p className="font-serif text-[18px] text-purple-50 leading-tight">
+              {program.title}
+            </p>
+            <p className="text-[10px] text-purple-300/50 uppercase tracking-[0.1em]">
+              {program.subtitle}
+            </p>
+          </div>
+
+          {/* preview desc */}
+          <p className="text-[13px] text-white/80 leading-[1.6] line-clamp-2">
+            {program.desc}
+          </p>
+
+          {/* mini stats */}
+          <div className="flex items-center gap-4 text-[11px] text-purple-200/70">
+            <span>{program.duration}</span>
+            <span>•</span>
+            <span>{program.sessions}</span>
+          </div>
+        </button>
+
+        {/* GRID */}
+        <div className={`
+          relative grid lg:grid-cols-3 gap-0
+          divide-y lg:divide-y-0 lg:divide-x divide-purple-500/[0.08]
+          ${open ? "block" : "hidden"} lg:grid
+        `}>
+
+          {/* COL 1 */}
+          <div className="p-5 sm:p-6 lg:p-10 flex flex-col">
+
+            <div className="hidden lg:flex items-start justify-between mb-7">
+              <div className="w-12 h-12 rounded-2xl bg-purple-500/[0.10] border border-purple-400/[0.12] flex items-center justify-center">
+                <Icon className="w-5 h-5 text-purple-400" />
+              </div>
+              <span className={`text-[9px] font-bold tracking-[0.14em] uppercase px-2.5 py-1 rounded-full border ${program.tagColor}`}>
+                {program.tag}
+              </span>
+            </div>
+
+            <h3 className="hidden lg:block font-serif text-[26px] text-purple-50 leading-tight mb-1">
+              {program.title}
+            </h3>
+
+            <p className="hidden lg:block text-[11px] tracking-[0.10em] uppercase text-purple-200/90 mb-5">
+              {program.subtitle}
+            </p>
+
+            {/* improved readability */}
+            <p className="text-[14px] text-white/85 leading-[1.85] mb-6 flex-1">
+              {program.desc}
+            </p>
+
+            {/* stats */}
+            <div className="flex flex-col gap-3 mb-6">
               {[
-                { Icon: Clock,   v: program.duration },
-                { Icon: Video,   v: program.sessions  },
-                { Icon: Users,   v: program.seats     },
+                { Icon: Clock, v: program.duration },
+                { Icon: Video, v: program.sessions },
+                { Icon: Users, v: program.seats },
               ].map(({ Icon: I, v }) => (
                 <div key={v} className="flex items-center gap-3">
                   <div className="w-7 h-7 rounded-lg bg-purple-500/[0.08] border border-purple-400/[0.10] flex items-center justify-center shrink-0">
                     <I className="w-3.5 h-3.5 text-purple-400/70" />
                   </div>
-                  <span className="font-sans text-[12.5px] text-white/82">{v}</span>
+                  <span className="text-[12.5px] text-white/82">{v}</span>
                 </div>
               ))}
             </div>
 
-            {/* sparkline */}
             <div className="bg-[#080218]/60 border border-purple-500/[0.07] rounded-xl p-3">
-              <p className="font-sans text-[8.5px] tracking-[0.14em] uppercase text-purple-300/55 mb-2">Performance trend</p>
+              <p className="text-[8.5px] uppercase text-purple-300/55 mb-2">
+                Performance trend
+              </p>
               <MiniSpark id={program.id} />
             </div>
           </div>
 
-          {/* ── COL 2: Curriculum ── */}
-          <div className="p-8 lg:p-10">
-            <div className="flex items-center gap-2.5 mb-7">
-              <div className="w-7 h-7 rounded-lg bg-purple-500/[0.08] border border-purple-400/[0.10] flex items-center justify-center">
-                <BookOpen className="w-3.5 h-3.5 text-purple-400/70" />
-              </div>
-              <span className="font-sans text-[11px] tracking-[0.14em] uppercase text-purple-400/55">Curriculum</span>
+          {/* COL 2 */}
+          <div className="p-5 sm:p-6 lg:p-10">
+            <div className="flex items-center gap-2.5 mb-6">
+              <BookOpen className="w-4 h-4 text-purple-400/70" />
+              <span className="text-[11px] uppercase text-purple-400/55">Curriculum</span>
             </div>
 
             <div className="flex flex-col gap-3">
               {program.curriculum.map((item, i) => (
-                <motion.div key={i}
-                  initial={{ opacity: 0, x: -8 }}
-                  whileInView={{ opacity: 1, x: 0 }}
-                  viewport={{ once: true }}
-                  transition={{ duration: 0.4, delay: i * 0.05 }}
-                  className="flex items-start gap-3">
-                  <CheckCircle2 className="w-4 h-4 text-purple-300/75 shrink-0 mt-0.5" />
-                  <span className="font-sans text-[13px] font-normal text-white/82 leading-[1.55]">{item}</span>
-                </motion.div>
+                <div key={i} className="flex gap-3">
+                  <CheckCircle2 className="w-4 h-4 text-purple-300/75 mt-0.5" />
+                  <span className="text-[13px] text-white/82 leading-[1.55]">{item}</span>
+                </div>
               ))}
             </div>
           </div>
 
-          {/* ── COL 3: Includes + CTA ── */}
-          <div className="p-8 lg:p-10 flex flex-col">
-            <div className="flex items-center gap-2.5 mb-7">
-              <div className="w-7 h-7 rounded-lg bg-purple-500/[0.08] border border-purple-400/[0.10] flex items-center justify-center">
-                <FileText className="w-3.5 h-3.5 text-purple-400/70" />
-              </div>
-              <span className="font-sans text-[11px] tracking-[0.14em] uppercase text-purple-400/55">What's Included</span>
+          {/* COL 3 */}
+          <div className="p-5 sm:p-6 lg:p-10 flex flex-col">
+
+            <div className="flex items-center gap-2.5 mb-6">
+              <FileText className="w-4 h-4 text-purple-400/70" />
+              <span className="text-[11px] uppercase text-purple-400/55">What's Included</span>
             </div>
 
             <div className="flex flex-col gap-3 mb-auto">
               {program.includes.map((item, i) => (
-                <div key={i} className="flex items-start gap-3">
-                  <div className={`w-1.5 h-1.5 rounded-full ${program.dot} shrink-0 mt-[5px]`} />
-                  <span className="font-sans text-[13px] font-normal text-white/82 leading-[1.55]">{item}</span>
+                <div key={i} className="flex gap-3">
+                  <div className={`w-1.5 h-1.5 rounded-full ${program.dot} mt-[5px]`} />
+                  <span className="text-[13px] text-white/82 leading-[1.55]">{item}</span>
                 </div>
               ))}
             </div>
 
-            {/* CTAs */}
-            <div className="flex flex-col gap-3 mt-10">
-              <motion.button
-                whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.97 }}
-                className="relative overflow-hidden w-full py-3.5 rounded-full bg-gradient-to-r from-violet-700 to-purple-500 font-sans font-semibold text-[13px] tracking-[0.04em] text-white border-0 cursor-pointer shadow-[0_4px_24px_rgba(109,40,217,0.38)] hover:shadow-[0_6px_32px_rgba(139,92,246,0.52)] transition-shadow duration-300 flex items-center justify-center gap-2">
-                <span className="absolute inset-x-0 top-0 h-px bg-white/18" />
-                Enroll Now <ArrowRight className="w-3.5 h-3.5" />
-              </motion.button>
-              <button className="w-full py-3.5 rounded-full font-sans font-normal text-[13px] tracking-[0.04em] text-white/75 border border-purple-400/[0.14] hover:border-purple-400/30 hover:text-purple-100/75 transition-all duration-200 bg-transparent cursor-pointer">
-                Book Free Demo
-              </button>
+            {/* ✅ ONLY CTA */}
+            <div className="mt-8">
+              <Link to="/articles#contact">
+                <motion.button
+                  whileHover={{ scale: 1.02 }}
+                  whileTap={{ scale: 0.97 }}
+                  className="w-full py-3.5 rounded-full bg-gradient-to-r from-violet-700 to-purple-500 text-white text-[13px] font-semibold flex items-center justify-center gap-2"
+                >
+                  Enroll Now <ArrowRight className="w-3.5 h-3.5" />
+                </motion.button>
+              </Link>
             </div>
+
           </div>
+
         </div>
       </div>
     </FadeUp>
@@ -318,8 +377,8 @@ function ProgramCard({ program, index }: { program: typeof PROGRAMS[0]; index: n
 
 function ProgramCards() {
   return (
-    <section className="relative z-[5] py-8 px-6">
-      <div className="max-w-6xl mx-auto flex flex-col gap-8">
+    <section className="relative z-[5] py-4 sm:py-8 px-6">
+      <div className="max-w-7xl mx-auto flex flex-col gap-8">
         {PROGRAMS.map((p, i) => <ProgramCard key={p.id} program={p} index={i} />)}
       </div>
     </section>
@@ -386,17 +445,20 @@ function BottomCTA() {
             and recommend exactly what fits your level and schedule.
           </p>
           <div className="flex justify-center gap-3 flex-wrap">
-            <motion.button whileHover={{ scale: 1.03 }} whileTap={{ scale: 0.97 }}
-              className="relative overflow-hidden bg-gradient-to-r from-violet-700 to-purple-500 text-white font-sans text-[13px] font-semibold tracking-[0.04em] px-8 py-3.5 rounded-full border-0 cursor-pointer shadow-[0_4px_24px_rgba(139,92,246,0.38)] hover:shadow-[0_6px_32px_rgba(139,92,246,0.52)] transition-shadow duration-300 flex items-center gap-2">
-              <span className="absolute inset-x-0 top-0 h-px bg-white/18" />
-              <span className="relative">Schedule Free Consultation</span>
-              <ArrowRight className="w-4 h-4 relative" />
-            </motion.button>
-            <Link to="/about">
+            <Link to="/articles#contact">
+                <motion.button whileHover={{ scale: 1.03 }} whileTap={{ scale: 0.97 }}
+                  className="relative overflow-hidden bg-gradient-to-r from-violet-700 to-purple-500 text-white font-sans text-[13px] font-semibold tracking-[0.04em] px-8 py-3.5 rounded-full border-0 cursor-pointer shadow-[0_4px_24px_rgba(139,92,246,0.38)] hover:shadow-[0_6px_32px_rgba(139,92,246,0.52)] transition-shadow duration-300 flex items-center gap-2">
+                  <span className="absolute inset-x-0 top-0 h-px bg-white/18" />
+                  <span className="relative">Schedule Free Consultation</span>
+                  <ArrowRight className="w-4 h-4 relative" />
+                </motion.button>
+            </Link>
+            
+            <a href="/about#top">
               <button className="font-sans text-[13px] font-normal tracking-[0.04em] text-white/75 px-8 py-3.5 rounded-full border border-purple-400/[0.14] hover:border-purple-400/30 hover:text-purple-100/75 transition-all duration-200 bg-transparent cursor-pointer">
                 Learn About Us
               </button>
-            </Link>
+            </a>
           </div>
         </FadeUp>
       </div>

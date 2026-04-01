@@ -3,6 +3,8 @@ import { Home } from "./pages/Home";
 import { Programs } from "./pages/Programs";
 import About  from "./pages/about";
 import Articles from "./pages/Articles";
+import RiskDisclosure from "./pages/Risk";
+
 export const router = createBrowserRouter([
   {
     path: "/",
@@ -21,5 +23,9 @@ export const router = createBrowserRouter([
     path: "/articles",
     Component: Articles,
 
+  },
+  {
+    path: "/risk",
+    Component: RiskDisclosure,
   }
 ]);
