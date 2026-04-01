@@ -211,10 +211,10 @@ export function Navbar() {
           </motion.div>
 
           <div className="leading-none">
-            <p className="text-black text-[15px] sm:text-[17px] font-bold tracking-tight leading-none">
+            <p className="text-black/90 text-[15px] sm:text-[17px] font-bold tracking-tight leading-none">
               Namma Trading Academy
             </p>
-            <p className="text-black/40 text-[7.5px] sm:text-[8px] tracking-[0.28em] sm:tracking-[0.30em] uppercase mt-[5px]">
+            <p className="text-black text-[7.5px] sm:text-[8px] tracking-[0.28em] sm:tracking-[0.30em] uppercase mt-[5px]">
               United in learning, United in growth
             </p>
           </div>
