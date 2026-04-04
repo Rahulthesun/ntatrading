@@ -11,8 +11,8 @@ const COURSES = [
 ];
 
 const CONTACT_ITEMS = [
-  { icon: Phone, label: "+91 91760 01402" },
-  { icon: Mail,  label: "contact@ntatrading.in" },
+  { icon: Phone, label: "+91 7338994283" },
+  { icon: Mail,  label: "contact@ntaacademy.in" },
   { icon: MapPin, label: "Chennai, Tamil Nadu" },
 ];
 
@@ -58,7 +58,7 @@ Course: ${course}
   const encodedMessage = encodeURIComponent(message);
 
   // 👉 Replace with your WhatsApp number
-  const phoneNumber = "919176001402";
+  const phoneNumber = "917338994283";
 
   const whatsappUrl = `https://wa.me/${phoneNumber}?text=${encodedMessage}`;
 

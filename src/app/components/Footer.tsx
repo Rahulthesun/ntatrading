@@ -107,11 +107,11 @@ export function Footer() {
             </h4>
 
             <div className="space-y-3 text-purple-100/80 text-sm">
-              <a href="mailto:contact@ntatrading.in" className="flex gap-2 items-center hover:text-white">
-                <Mail size={14} /> contact@ntatrading.in
+              <a href="mailto:contact@ntaacademy.in" className="flex gap-2 items-center hover:text-white">
+                <Mail size={14} /> contact@ntaacademy.in
               </a>
-              <a href="tel:919176001402" className="flex gap-2 items-center hover:text-white">
-                <Phone size={14} /> +91 9176001402
+              <a href="tel:917338994283" className="flex gap-2 items-center hover:text-white">
+                <Phone size={14} /> +91 7338994283
               </a>
               <div className="flex gap-2 items-center">
                 <MapPin size={14} /> Chennai, India

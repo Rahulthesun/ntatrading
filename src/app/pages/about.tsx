@@ -277,7 +277,7 @@ function Contact() {
           <FadeUp className="flex flex-col gap-2.5 sm:gap-3">
             {[
               { Icon: MapPin, label: "Address", value: "NTA Academy, Chennai\nTamil Nadu, India" },
-              { Icon: Phone,  label: "Phone",   value: "+91 9176001402"                         },
+              { Icon: Phone,  label: "Phone",   value: "+91 7338994283"                         },
               { Icon: Mail,   label: "Email",   value: "contact@ntaacademy.in"                      },
             ].map(({ Icon, label, value }) => (
               <div key={label} className="flex gap-3.5 p-4 sm:p-5 rounded-2xl bg-[#0C0420]/65 border border-purple-500/[0.08] backdrop-blur-xl hover:border-purple-400/18 transition-colors duration-300">

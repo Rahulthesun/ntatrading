@@ -16,7 +16,7 @@ const BULLETS = [
 
 const STATS = ["30 Days", "94% Completion", "500+ Graduates"];
 
-const WHATSAPP_NUMBER = "919176001402";
+const WHATSAPP_NUMBER = "917338994283";
 
 export default function StarCourseSection() {
   const [name, setName]           = useState("");
