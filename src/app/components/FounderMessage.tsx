@@ -1,6 +1,6 @@
 import { useRef } from "react";
 import { motion, useInView } from "motion/react";
-import { Quote } from "lucide-react";
+import { Quote, GraduationCap, Briefcase, Users, TrendingUp } from "lucide-react";
 
 /* ── animation helpers ── */
 function FadeFrom({ children, from = "left", delay = 0, className = "" }: {
@@ -39,6 +39,33 @@ function FadeUp({ children, delay = 0, className = "" }: {
 /* ── swap this URL when ready ── */
 const FOUNDER_PHOTO = "assets/founder.jpeg";
 
+const CREDENTIALS = [
+  {
+    Icon: GraduationCap,
+    label: "Education",
+    value: "B.Sc. Computer Science",
+    sub: "Sri Kanyakaparameswari Arts & Science College for Women",
+  },
+  {
+    Icon: Briefcase,
+    label: "Experience",
+    value: "10+ Years",
+    sub: "7 years dedicated to the financial sector",
+  },
+  {
+    Icon: Users,
+    label: "Students Coached",
+    value: "10,000+",
+    sub: "Across India — and counting",
+  },
+  {
+    Icon: TrendingUp,
+    label: "Specialisation",
+    value: "Stock Market Training",
+    sub: "Equity, Options & Practical Investing",
+  },
+];
+
 export function FounderMessage() {
   return (
     <>
@@ -46,7 +73,7 @@ export function FounderMessage() {
         @import url('https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;1,9..40,300&display=swap');
       `}</style>
 
-      <section id="founder-story" className="relative bg-transparent py-2 sm:py-28 px-6 overflow-hidden font-sans">
+      <section id="founder-story" className="relative bg-transparent py-16 sm:py-28 px-6 overflow-hidden font-sans">
 
         {/* ambient glow */}
         <div className="absolute inset-0 pointer-events-none">
@@ -54,10 +81,14 @@ export function FounderMessage() {
         </div>
 
         {/* top rule */}
-        <div className="w-full h-px bg-gradient-to-r from-transparent via-purple-500/[0.11] to-transparent mb-28" />
+        <div className="w-full h-px bg-gradient-to-r from-transparent via-purple-500/[0.11] to-transparent mb-16 sm:mb-28" />
 
         <div className="max-w-5xl mx-auto relative z-10">
-          <div className="grid lg:grid-cols-[1fr_400px] grid-cols-reverse gap-20 items-center">
+
+          {/* ══════════════════════════════
+              MAIN GRID — text + photo
+          ══════════════════════════════ */}
+          <div className="grid lg:grid-cols-[1fr_380px] gap-12 lg:gap-20 items-start">
 
             {/* ════════════════════════
                 LEFT — text
@@ -77,42 +108,89 @@ export function FounderMessage() {
                 className="font-serif font-normal leading-[1.06] tracking-[-0.02em] text-purple-50 mb-10"
                 style={{ fontSize: "clamp(30px,3.8vw,52px)" }}
               >
-                Why I trade{" "}
+                A decade of markets,{" "}
                 <span
                   className="font-serif italic text-transparent bg-clip-text pr-1"
                   style={{ backgroundImage: "linear-gradient(110deg,#d8b4fe 0%,#a855f7 55%,#c084fc 100%)" }}
                 >
-                  live
+                  one mission.
                 </span>
-                <br />in front of every student.
               </h2>
 
               {/* pull quote */}
-              <div className="relative mb-8">
-                <Quote className="absolute -top-2 -left-1 w-9 h-9 text-purple-500/[0.10] pointer-events-none" />
+              <div className="relative mb-10 pl-5 border-l-2 border-purple-500/30">
+                <Quote className="absolute -top-1 -left-1 w-7 h-7 text-purple-500/[0.18] pointer-events-none" />
                 <blockquote
-                  className="font-serif italic text-purple-50/72 leading-[1.72] pl-6"
-                  style={{ fontSize: "clamp(14px,1.5vw,17px)" }}
+                  className="font-serif italic text-purple-100/90 leading-[1.75]"
+                  style={{ fontSize: "clamp(15px,1.6vw,18px)" }}
                 >
-                  "I started NTA because every course I took taught theory while the
-                  real market was moving outside. Every session here begins with my
-                  terminal open — you learn by watching, then doing."
+                  "I personally experienced the stock market's highs and lows — and
+                  I've seen how people get misled by poor advice or fall prey to scams
+                  due to a lack of real knowledge. That's what drove me to build a
+                  space for authentic, transparent learning that gives every student
+                  genuine clarity and confidence."
                 </blockquote>
               </div>
 
-              {/* one supporting paragraph */}
-              <p className="font-sans text-[13.5px] font-light text-white/72 leading-[1.82] mb-12 max-w-[400px]">
-                Before NTA, I searched years for a mentor who'd show me their actual
-                trades — not slides, not hypotheticals. I couldn't find one.
-                So I became one.
-              </p>
+              {/* paragraph blocks */}
+              <div className="flex flex-col gap-8 mb-12">
+
+                {/* block 1 — background */}
+                <div className="pl-5 border-l border-purple-500/[0.18]">
+                  <p className="font-sans text-[9.5px] tracking-[0.18em] uppercase text-purple-400/55 mb-2">
+                    Background
+                  </p>
+                  <p className="font-sans text-[15px] font-normal text-purple-100/85 leading-[1.9]">
+                    Sulakshana Trivedi N is a Chennai-based finance professional and
+                    trainer passionate about empowering people through financial
+                    education. She began her professional life in IT — earning a B.Sc.
+                    in Computer Science from Sri Kanyakaparameswari Arts and Science
+                    College for Women — before the stock market's complexity and
+                    opportunity pulled her into an entirely different direction.
+                  </p>
+                </div>
+
+                {/* block 2 — journey */}
+                <div className="pl-5 border-l border-purple-500/[0.18]">
+                  <p className="font-sans text-[9.5px] tracking-[0.18em] uppercase text-purple-400/55 mb-2">
+                    The Journey
+                  </p>
+                  <p className="font-sans text-[15px] font-normal text-purple-100/85 leading-[1.9]">
+                    With over ten years of professional experience — seven of them in
+                    the financial sector — she has navigated the full spectrum of market
+                    conditions. She has personally felt the highs of well-timed trades
+                    and the lows that come from trusting the wrong advice. Her background
+                    also spans sales and marketing, where she developed strong business
+                    acumen and built lasting client relationships. These experiences
+                    didn't just shape her trading approach — they shaped her entire
+                    teaching philosophy.
+                  </p>
+                </div>
+
+                {/* block 3 — mission */}
+                <div className="pl-5 border-l border-purple-500/[0.18]">
+                  <p className="font-sans text-[9.5px] tracking-[0.18em] uppercase text-purple-400/55 mb-2">
+                    The Mission
+                  </p>
+                  <p className="font-sans text-[15px] font-normal text-purple-100/85 leading-[1.9]">
+                    Today, having coached over 10,000 people, Sulakshana is known for a
+                    teaching style that is practical, results-oriented, and deeply
+                    honest. She emphasises real-time market understanding over theory,
+                    and clarity and discipline over short-term speculation. Her purpose
+                    is straightforward: give every student the kind of guidance she once
+                    searched for — a live terminal, real positions, and every decision
+                    explained as it happens.
+                  </p>
+                </div>
+
+              </div>
 
               {/* byline */}
               <FadeUp delay={0.35}>
                 <div className="flex items-center gap-4 pt-6 border-t border-purple-500/[0.08]">
                   <div>
                     <p className="font-serif text-[17px] text-purple-50/90 leading-none mb-1.5">
-                      Sulakshana Trivedi
+                      Sulakshana Trivedi N
                     </p>
                     <p className="font-sans text-[10px] tracking-[0.12em] uppercase text-purple-400/70">
                       Founder & Head Mentor · Namma Trading Academy
@@ -129,18 +207,16 @@ export function FounderMessage() {
             </FadeFrom>
 
             {/* ════════════════════════
-                RIGHT — single photo
+                RIGHT — photo + credential pills
             ════════════════════════ */}
-            <FadeFrom from="right" delay={0.14} className="order-1 lg:order-2">
-              <div className="relative">
+            <FadeFrom from="right" delay={0.14} className="order-1 lg:order-2 flex flex-col gap-6">
 
-                {/* outer glow behind frame */}
+              {/* photo frame */}
+              <div className="relative">
                 <div
                   className="absolute -inset-6 rounded-3xl pointer-events-none"
                   style={{ background: "radial-gradient(ellipse at 50% 50%, rgba(139,92,246,0.18) 0%, transparent 65%)" }}
                 />
-
-                {/* photo frame */}
                 <motion.div
                   whileHover={{ scale: 1.015 }}
                   transition={{ type: "spring", stiffness: 200, damping: 22 }}
@@ -149,23 +225,73 @@ export function FounderMessage() {
                 >
                   <img
                     src={FOUNDER_PHOTO}
-                    alt="Priyadharshini — Founder, NTA Academy"
+                    alt="Sulakshana Trivedi N — Founder, Namma Trading Academy"
                     className="w-full h-full object-cover object-top"
                   />
-                  {/* bottom fade */}
                   <div className="absolute inset-0 [background:linear-gradient(to_top,rgba(6,1,15,0.60)_0%,transparent_50%)]" />
+
+                  {/* floating name card at photo bottom */}
+                  <div className="absolute bottom-4 left-4 right-4 bg-[#0D0520]/90 border border-purple-500/[0.18] backdrop-blur-xl px-4 py-3 rounded-2xl">
+                    <p className="font-serif text-[15px] text-white/90 leading-none mb-1">Sulakshana Trivedi N</p>
+                    <p className="font-sans text-[9.5px] tracking-[0.12em] uppercase text-purple-300/55">
+                      Founder & Head Mentor
+                    </p>
+                  </div>
                 </motion.div>
-
-               
-
               </div>
+
+              {/* quick-fact pills stacked below photo */}
+              <div className="flex flex-col gap-2.5">
+                {[
+                  { label: "10+ Years", sub: "Professional experience" },
+                  { label: "10,000+ Students", sub: "Coached across India" },
+                  { label: "7 Years in Finance", sub: "Stock market specialist" },
+                ].map(({ label, sub }) => (
+                  <div
+                    key={label}
+                    className="flex items-center justify-between px-4 py-3 rounded-xl bg-[#0C0420]/65 border border-purple-500/[0.09] backdrop-blur-xl"
+                  >
+                    <span className="font-serif text-[14px] text-purple-50/88">{label}</span>
+                    <span className="font-sans text-[10px] text-purple-300/45">{sub}</span>
+                  </div>
+                ))}
+              </div>
+
             </FadeFrom>
 
           </div>
+
+          {/* ══════════════════════════════
+              CREDENTIALS STRIP — below grid
+          ══════════════════════════════ */}
+          <FadeUp delay={0.2} className="mt-16 sm:mt-20">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
+              {CREDENTIALS.map(({ Icon, label, value, sub }, i) => (
+                <motion.div
+                  key={label}
+                  initial={{ opacity: 0, y: 16 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ duration: 0.55, delay: i * 0.07, ease: [0.22, 1, 0.36, 1] }}
+                  className="bg-[#0C0420]/65 border border-purple-500/[0.09] backdrop-blur-xl rounded-2xl p-5 flex flex-col gap-3"
+                >
+                  <div className="w-9 h-9 rounded-xl bg-purple-500/[0.09] border border-purple-400/[0.11] flex items-center justify-center shrink-0">
+                    <Icon className="text-purple-400" size={16} />
+                  </div>
+                  <div>
+                    <p className="font-sans text-[9px] tracking-[0.16em] uppercase text-purple-400/45 mb-1">{label}</p>
+                    <p className="font-serif text-[16px] text-purple-50/90 leading-snug mb-1">{value}</p>
+                    <p className="font-sans text-[11px] font-light text-purple-200/40 leading-[1.55]">{sub}</p>
+                  </div>
+                </motion.div>
+              ))}
+            </div>
+          </FadeUp>
+
         </div>
 
         {/* bottom rule */}
-        <div className="w-full h-px bg-gradient-to-r from-transparent via-purple-500/[0.11] to-transparent mt-28" />
+        <div className="w-full h-px bg-gradient-to-r from-transparent via-purple-500/[0.11] to-transparent mt-16 sm:mt-28" />
       </section>
     </>
   );

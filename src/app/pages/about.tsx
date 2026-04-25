@@ -3,6 +3,7 @@ import { motion, useInView } from "motion/react";
 import {
   MapPin, Phone, Mail, ArrowRight, ChevronDown,
   MonitorPlay, Users, ShieldCheck, TrendingUp,
+  CalendarDays, Wifi, Building2, Target,
 } from "lucide-react";
 import { Navbar } from "../components/Navbar";
 import LightRays from "../../components/LightRays";
@@ -130,7 +131,125 @@ function Stats() {
 }
 
 /* ══════════════════════════════════════════════════════════════
-   3 · WHY NTA
+   3 · ABOUT COMPANY
+══════════════════════════════════════════════════════════════ */
+const MILESTONES = [
+  {
+    Icon: CalendarDays,
+    year: "2019",
+    title: "Academy Founded",
+    desc: "NAMMA TRADING ACADEMY launched in Chennai with a singular focus: practical financial education grounded in real market experience.",
+  },
+  {
+    Icon: Wifi,
+    title: "Online Growth",
+    year: "2019–2024",
+    desc: "Built a strong foundation through online sessions and collaborations with other institutes — training and guiding thousands of learners to approach markets with clarity.",
+  },
+  {
+    Icon: Building2,
+    title: "Going Offline",
+    year: "Now",
+    desc: "Expanding as an independent institution with offline training programs that enable more personalised guidance, direct mentorship, and deeper learning.",
+  },
+  {
+    Icon: Target,
+    title: "The Mission",
+    year: "Always",
+    desc: "Create confident, autonomous traders and investors through transparent, results-oriented education — built on real-world application, not theory.",
+  },
+];
+
+function AboutCompany() {
+  return (
+    <section className="relative z-[5] py-16 sm:py-20 px-5 sm:px-6">
+      <Rule />
+      <div className="max-w-5xl mx-auto pt-16 sm:pt-20">
+
+        {/* ── header ── */}
+        <div className="grid md:grid-cols-2 gap-10 sm:gap-14 items-start mb-14 sm:mb-16">
+          <FadeUp>
+            <Eyebrow>About The Academy</Eyebrow>
+            <H2>
+              Built from experience,{" "}
+              <Italic>not just curriculum.</Italic>
+            </H2>
+          </FadeUp>
+          <FadeUp delay={0.1}>
+            <p className="font-sans text-[13.5px] font-light text-purple-200/55 leading-[1.85]">
+              NAMMA TRADING ACADEMY is a stock market training institute in Chennai,
+              launched in 2019 with the goal of providing individuals with practical
+              financial knowledge and real-time market skills. What started as online
+              sessions and collaborations has grown into an independent academy — one
+              that places real-world application firmly above theoretical instruction.
+            </p>
+            <p className="font-sans text-[13.5px] font-light text-purple-200/55 leading-[1.85] mt-4">
+              Every program at NTA is designed to be transparent, results-oriented,
+              and built for the long term — producing traders and investors who act
+              with confidence because they genuinely understand how the market works.
+            </p>
+          </FadeUp>
+        </div>
+
+        {/* ── milestones ── */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4">
+          {MILESTONES.map(({ Icon, year, title, desc }, i) => (
+            <FadeUp key={title} delay={i * 0.08}>
+              <motion.div
+                whileHover={{ y: -3 }}
+                transition={{ type: "spring", stiffness: 300, damping: 24 }}
+                className="group h-full bg-[#0C0420]/65 border border-purple-500/[0.09] backdrop-blur-xl rounded-2xl p-6 cursor-default hover:border-purple-400/20 transition-colors duration-300"
+              >
+                <div className="flex items-start justify-between mb-5">
+                  <div className="w-10 h-10 rounded-xl bg-purple-500/[0.09] border border-purple-400/[0.11] flex items-center justify-center shrink-0 group-hover:bg-purple-500/[0.15] transition-colors duration-300">
+                    <Icon className="text-purple-400" size={17} />
+                  </div>
+                  <span className="font-sans text-[9px] tracking-[0.14em] uppercase text-purple-400/38 mt-1">
+                    {year}
+                  </span>
+                </div>
+                <p className="font-serif text-[17px] text-purple-50 mb-2 leading-snug">{title}</p>
+                <p className="font-sans text-[12.5px] font-light text-purple-200/42 leading-[1.75]">{desc}</p>
+              </motion.div>
+            </FadeUp>
+          ))}
+        </div>
+
+        {/* ── full-width mission statement ── */}
+        <FadeUp delay={0.15} className="mt-4">
+          <div className="relative bg-[#0C0420]/65 border border-purple-500/[0.09] backdrop-blur-xl rounded-2xl p-7 sm:p-10 overflow-hidden">
+            <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-purple-400/25 to-transparent" />
+            <div
+              className="absolute -top-20 -right-20 w-[300px] h-[300px] rounded-full pointer-events-none"
+              style={{ background: "radial-gradient(ellipse, rgba(139,92,246,0.09) 0%, transparent 65%)" }}
+            />
+            <div className="relative z-10 max-w-2xl">
+              <p className="font-sans text-[9px] tracking-[0.22em] uppercase text-purple-400/45 mb-4">Our Commitment</p>
+              <p
+                className="font-serif font-normal text-purple-50/85 leading-[1.65]"
+                style={{ fontSize: "clamp(17px,2.2vw,24px)" }}
+              >
+                "To provide every student with authentic, transparent, and long-term
+                learning — so they build wealth with confidence by knowing the market
+                correctly, not by guessing it."
+              </p>
+              <div className="flex items-center gap-2.5 mt-6">
+                <div className="h-px w-6 bg-purple-500/40" />
+                <span className="font-sans text-[10px] tracking-[0.18em] uppercase text-purple-400/55">
+                  Sulakshana Trivedi N · Founder, NTA
+                </span>
+              </div>
+            </div>
+          </div>
+        </FadeUp>
+
+      </div>
+    </section>
+  );
+}
+
+/* ══════════════════════════════════════════════════════════════
+   4 · WHY NTA
 ══════════════════════════════════════════════════════════════ */
 const DIFF = [
   {
@@ -171,9 +290,12 @@ function WhyNTA() {
               <Italic>actually</Italic> different.
             </H2>
             <p className="font-sans text-[13px] font-light text-purple-200/40 leading-[1.8] max-w-[360px]">
-              There are hundreds of trading courses in India. Most teach theory.
-              NTA was built around one idea: the only way to learn trading is
-              to do it — with someone who does it too.
+              NAMMA TRADING ACADEMY was launched in 2019 with one goal: to give
+              individuals practical financial knowledge and real-time market skills.
+              Starting with online sessions, we have trained and guided thousands of
+              learners to approach the stock market with clarity and confidence. We
+              are now expanding to offline training — delivering more personalised,
+              in-depth learning experiences to every student.
             </p>
           </FadeUp>
 
@@ -428,6 +550,7 @@ live trading academy"
         
         <Stats />
         <FounderMessage />
+        <AboutCompany />
         <WhyNTA />
         <Contact />
         <BottomCTA />
