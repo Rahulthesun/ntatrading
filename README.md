@@ -8,4 +8,9 @@
   Run `npm i` to install the dependencies.
 
   Run `npm run dev` to start the development server.
+
+  ## Notes
+
+  - Updated components and page layout for improved user experience.
+  - Redeploy trigger: v1.1.0
   
