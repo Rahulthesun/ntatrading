@@ -109,10 +109,7 @@ export function FounderMessage() {
                 style={{ fontSize: "clamp(30px,3.8vw,52px)" }}
               >
                 A decade of markets,{" "}
-                <span
-                  className="font-serif italic text-transparent bg-clip-text pr-1"
-                  style={{ backgroundImage: "linear-gradient(110deg,#d8b4fe 0%,#a855f7 55%,#c084fc 100%)" }}
-                >
+                <span className="text-purple-50">
                   one mission.
                 </span>
               </h2>

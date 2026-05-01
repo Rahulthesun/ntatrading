@@ -99,7 +99,7 @@ Course: ${course}
           <div>
             <h2 className="font-serif text-[clamp(32px,5vw,52px)] leading-tight text-purple-50 mb-4">
               Let's get you{" "}
-              <span className="italic text-transparent bg-clip-text bg-gradient-to-r from-purple-300 via-purple-400 to-purple-500">
+              <span className="text-purple-50">
                 started.
               </span>
             </h2>

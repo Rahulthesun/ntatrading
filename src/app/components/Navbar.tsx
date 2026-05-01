@@ -12,7 +12,7 @@ const NAV_LINKS = [
 ];
 
 const MORE_LINKS = [
-  { label: 'Founder Story', to: '/about#founder-story' },
+  { label: 'Founder Story', to: '/founder#founder-story' },
   { label: 'Testimonials',  to: '/articles#testimonials'  },
 ];
 

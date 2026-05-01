@@ -4,6 +4,7 @@ import { Programs } from "./pages/Programs";
 import About  from "./pages/about";
 import Articles from "./pages/Articles";
 import RiskDisclosure from "./pages/Risk";
+import FounderPage from "./pages/Founder";
 
 export const router = createBrowserRouter([
   {
@@ -18,11 +19,13 @@ export const router = createBrowserRouter([
     path: "/about",
     Component: About,
   },
-
+  {
+    path: "/founder",
+    Component: FounderPage,
+  },
   {
     path: "/articles",
     Component: Articles,
-
   },
   {
     path: "/risk",

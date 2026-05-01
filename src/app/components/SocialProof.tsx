@@ -182,10 +182,7 @@ export function SocialProof() {
             style={{ fontSize: "clamp(28px,3.6vw,48px)" }}
           >
             Honest words from{" "}
-            <span
-              className="font-serif italic text-transparent bg-clip-text inline-block px-1"
-              style={{ backgroundImage: "linear-gradient(115deg,#d8b4fe 0%,#a855f7 60%,#c084fc 100%)" }}
-            >
+            <span className="text-purple-50">
               real students.
             </span>
           </h2>

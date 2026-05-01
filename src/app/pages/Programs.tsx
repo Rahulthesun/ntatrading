@@ -49,8 +49,7 @@ function H2({ children, className = "" }: { children: React.ReactNode; className
 
 function Italic({ children }: { children: React.ReactNode }) {
   return (
-    <span className="font-serif italic text-transparent bg-clip-text"
-      style={{ backgroundImage: "linear-gradient(135deg,#d8b4fe 0%,#a855f7 55%,#c084fc 100%)" }}>
+    <span className="text-purple-50">
       {children}
     </span>
   );

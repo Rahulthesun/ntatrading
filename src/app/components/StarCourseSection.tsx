@@ -68,7 +68,7 @@ Looking forward to your response. Thank you!`
 
           <h2 className="font-serif text-purple-50 leading-tight text-[42px]">
             Go from zero to{" "}
-            <span className="italic text-transparent bg-clip-text bg-gradient-to-r from-purple-200 via-purple-400 to-purple-500">
+            <span className="text-purple-50">
               consistently profitable.
             </span>
           </h2>
@@ -94,7 +94,7 @@ Looking forward to your response. Thank you!`
             <div className="flex items-center gap-4 flex-wrap">
               <span className="text-6xl italic text-purple-200/40">Zero</span>
               <span className="text-purple-400/60">→</span>
-              <span className="text-6xl italic text-transparent bg-clip-text bg-gradient-to-r from-purple-200 via-purple-400 to-purple-600">
+              <span className="text-6xl text-purple-50">
                 Hero.
               </span>
             </div>

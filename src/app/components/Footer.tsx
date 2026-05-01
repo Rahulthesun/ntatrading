@@ -14,7 +14,7 @@ const NAV_COLS = [
       { label: "About Us",    to: "/about#hero" },
       { label: "Programs",    to: "/programs#hero" },
       { label: "Articles",    to: "/articles#hero" },
-      { label: "Founder Story", to: "/about#founder-story" },
+      { label: "Founder Story", to: "/founder#founder-story" },
       { label: "Testimonials",  to: "/articles#testimonials" },
       { label: "Contact",       to: "/articles#contact" },
     ],

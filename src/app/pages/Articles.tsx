@@ -49,8 +49,7 @@ function H2({ children, className = "" }: { children: React.ReactNode; className
 
 function Italic({ children }: { children: React.ReactNode }) {
   return (
-    <span className="font-serif italic text-transparent bg-clip-text"
-      style={{ backgroundImage: "linear-gradient(135deg,#d8b4fe 0%,#a855f7 55%,#c084fc 100%)" }}>
+    <span className="text-purple-50">
       {children}
     </span>
   );
@@ -140,46 +139,46 @@ const ALL_ARTICLES = [
 
 const REVIEWS = [
   {
-    name: "Arjun Krishnamurthy",
+    name: "Praveen Kumar",
     location: "Chennai",
-    program: "Equity Trading",
+    program: "IPO & Equity Trading",
     stars: 5,
-    text: "I'd tried three other courses before NTA. The difference is that here, you're watching live trades being placed with real money. That context changes everything about how you learn to read the market.",
+    text: "The staff who teaches from the heart — Sulakshana ma'am explained trading and the stock market to me with so much patience. No matter how many doubts I asked, she would calmly explain everything. Thanks to her guidance, I applied for an IPO for the first time and got the allotment on the very first try. Not only that — I even got a 50% return from it. The way ma'am teaches is far more valuable than any course I've seen. Seriously, joining here is more than worth it.",
   },
   {
-    name: "Priya Nandakumar",
-    location: "Coimbatore",
-    program: "Options Trading",
-    stars: 5,
-    text: "The options curriculum is genuinely institutional-grade. I was sceptical about the IV crush content — turns out it's the most consistently profitable setup I've found. The batch size keeps it personal.",
-  },
-  {
-    name: "Rahul Venkatesh",
-    location: "Bangalore",
-    program: "Commodity & Futures",
-    stars: 5,
-    text: "Gold and crude setups that actually work on MCX — not rehashed US market theory. The macro framework they teach completely changed how I research entries. ROI was within six weeks.",
-  },
-  {
-    name: "Divya Sundaram",
-    location: "Hyderabad",
-    program: "Equity Trading",
-    stars: 5,
-    text: "What got me was the honesty about timelines. They told me upfront it takes 3–6 months to get consistent. That realistic framing meant I didn't blow up chasing quick gains while learning.",
-  },
-  {
-    name: "Karthik Balaji",
-    location: "Mumbai",
-    program: "Options Trading",
-    stars: 5,
-    text: "I work a full-time job and was worried about keeping pace. The replay library and structured curriculum made it work. The community is also surprisingly high-quality — no noise, serious traders.",
-  },
-  {
-    name: "Meena Raghunathan",
+    name: "Divya",
     location: "Chennai",
-    program: "Equity Trading",
+    program: "IPO, Equity & Futures",
     stars: 5,
-    text: "Six months post-program, I'm trading a proprietary account. The discipline framework from the psychology module is what really made the difference — more than any technical setup.",
+    text: "I felt very happy and blessed that I joined the best trading classes. I joined here after seeing previous reviews, and I'm glad I did. Sana ma'am taught IPO, equity, futures and everything related to trading. She clears doubts on the spot and shows live trading experience, which gave us real confidence to invest. Ma'am taught all the strategies with live examples. Thank you so much, Sana ma'am.",
+  },
+  {
+    name: "Vijay",
+    location: "Chennai",
+    program: "Stock Market Basics",
+    stars: 5,
+    text: "I had zero knowledge about trading before joining. But after 45 days of classes, I now know how to take trades and understand their types. Sana ma'am always respected every doubt and kept explaining until we understood. She shows live trading experience which gave us real confidence. She even supports students after course completion. I'm completely satisfied — this is one of the best stock market training institutes in Chennai, with an amazing course structure at minimum fees.",
+  },
+  {
+    name: "Kishore",
+    location: "Chennai",
+    program: "Stock Market & IPO",
+    stars: 5,
+    text: "Sana ma'am has in-depth knowledge about the stock market. Her tactics and advice helped me learn about the market and earn significant profits. Thank you for your expert guidance on IPO investments!",
+  },
+  {
+    name: "Raja",
+    location: "Chennai",
+    program: "Equity & Scalp Trading",
+    stars: 5,
+    text: "Ms. Sana, I wanted to express my sincere gratitude for your outstanding experience and teaching on the share market. Your dedication and enthusiasm are truly inspiring. Your ability guided me on how to select an IPO, where to buy equity, how to check if it's over or under valued, and your strategy helps me do scalp trading on BankNifty and Nifty. Thank you for your time and positive attitude in making such a meaningful difference in my stock market journey.",
+  },
+  {
+    name: "Murali",
+    location: "Chennai",
+    program: "Intraday Trading",
+    stars: 5,
+    text: "During my vacation in Chennai, I had the wonderful opportunity to attend a stock market class conducted by Ms. Sana. Her expertise was nothing short of exceptional — she articulated complex concepts in an easily digestible manner. What stood out was her willingness to tailor the course to my specific interests in intraday trading. She went above and beyond to ensure I grasped the intricacies of intraday strategies, which has immensely contributed to my confidence in navigating the market. Her patience and dedication are commendable — a must-attend for anyone looking to deepen their knowledge.",
   },
 ];
 
