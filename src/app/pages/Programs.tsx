@@ -403,7 +403,7 @@ function WhyNTA() {
       <div className="max-w-6xl mx-auto py-28">
         <FadeUp className="text-center mb-16">
           <Eyebrow>Why NTA</Eyebrow>
-          <H2>What makes our programs <Italic>different.</Italic></H2>
+          <H2>What Makes Our Programs Different.</H2>
         </FadeUp>
 
         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-4">
