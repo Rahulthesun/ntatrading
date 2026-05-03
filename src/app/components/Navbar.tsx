@@ -9,11 +9,12 @@ const NAV_LINKS = [
   { label: 'About Us', to: '/about'    },
   { label: 'Programs', to: '/programs' },
   { label: 'Articles', to: '/articles' },
+  { label: 'Testimonials',  to: '/testimonials'  },
 ];
 
 const MORE_LINKS = [
-  { label: 'Founder Story', to: '/founder#founder-story' },
-  { label: 'Testimonials',  to: '/articles#testimonials'  },
+  { label: 'Founder Story', to: '/founder' },
+  { label: 'Gallery',       to: '/gallery'               },
 ];
 
 /* ── More Dropdown ── */

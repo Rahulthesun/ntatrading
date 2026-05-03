@@ -98,9 +98,9 @@ Course: ${course}
           {/* LEFT — heading + contact info */}
           <div>
             <h2 className="font-serif text-[clamp(32px,5vw,52px)] leading-tight text-purple-50 mb-4">
-              Let's get you{" "}
+              Let's Get You{" "}
               <span className="text-purple-50">
-                started.
+                Started.
               </span>
             </h2>
 

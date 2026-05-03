@@ -67,9 +67,9 @@ Looking forward to your response. Thank you!`
           </div>
 
           <h2 className="font-serif text-purple-50 leading-tight text-[42px]">
-            Go from zero to{" "}
+            Go from Zero to{" "}
             <span className="text-purple-50">
-              consistently profitable.
+              Consistently Profitable.
             </span>
           </h2>
 
@@ -92,9 +92,9 @@ Looking forward to your response. Thank you!`
           {/* Top hero strip */}
           <div className="px-8 py-8 border-b border-purple-500/10">
             <div className="flex items-center gap-4 flex-wrap">
-              <span className="text-6xl italic text-purple-200/40">Zero</span>
+              <span className="text-6xl font-light text-purple-200/40">Zero</span>
               <span className="text-purple-400/60">→</span>
-              <span className="text-6xl text-purple-50">
+              <span className="text-6xl text-purple-50 font-semibold">
                 Hero.
               </span>
             </div>

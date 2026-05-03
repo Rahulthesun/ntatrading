@@ -214,7 +214,7 @@ function FeaturedCarousel() {
           <div className="flex items-center justify-between mb-8">
             <div>
               <Eyebrow>Featured Articles</Eyebrow>
-              <H2>Editor's <Italic>picks.</Italic></H2>
+              <H2>Editor's <Italic>Picks.</Italic></H2>
             </div>
 
             <div className="flex items-center gap-3">
@@ -373,7 +373,7 @@ function ArticlesGrid() {
       <div className="max-w-6xl mx-auto py-20">
         <FadeUp className="mb-12">
           <Eyebrow>All Articles</Eyebrow>
-          <H2>Every insight, <Italic>indexed.</Italic></H2>
+          <H2>Every Insight, <Italic>Indexed.</Italic></H2>
         </FadeUp>
 
         <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
@@ -423,7 +423,7 @@ function ArticlesGrid() {
 /* ══════════════════════════════════════════════════════════════
    4 · REVIEWS
 ══════════════════════════════════════════════════════════════ */
-function Reviews() {
+export function Reviews() {
   const [page, setPage] = useState(0);
   const perPage = 3;
   const pages = Math.ceil(REVIEWS.length / perPage);
@@ -434,7 +434,7 @@ function Reviews() {
       <div className="max-w-6xl mx-auto">
         <FadeUp className="text-center mb-14">
           <Eyebrow>Student Reviews</Eyebrow>
-          <H2>Words from traders who <Italic>made the leap.</Italic></H2>
+          <H2>Words from Traders Who <Italic>Made the Leap.</Italic></H2>
         </FadeUp>
 
         <AnimatePresence mode="wait">
@@ -515,7 +515,7 @@ function BottomCTA() {
         <FadeUp>
           <Eyebrow>Ready to Learn Live</Eyebrow>
           <H2 className="mb-5">
-            Articles are just the start.<br /><Italic>Join a program.</Italic>
+            Articles are Just the Start.<br /><Italic>Join a Program.</Italic>
           </H2>
           <p className="font-sans text-[14px] font-normal text-white/75 max-w-[400px] mx-auto leading-[1.8] mb-10">
             Book a free 20-minute call — we'll match you to the right program for your level and schedule.
@@ -563,7 +563,6 @@ export default function Articles() {
 
         <FeaturedCarousel />
         <ArticlesGrid />
-        <Reviews />
         <ContactSection/>
         <BottomCTA />
         <Footer />

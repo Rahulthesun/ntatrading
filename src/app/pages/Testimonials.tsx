@@ -6,6 +6,9 @@ import { Footer } from "../components/Footer";
 import { FounderMessage } from "../components/FounderMessage";
 import Hero from "../components/Hero";
 import { HashLink } from "react-router-hash-link";
+import { Testimonials } from "../components/testimonials";
+import TestimonialsSection from "../components/Reviews";
+import { Reviews } from "./Articles";
 
 function FadeUp({ children, delay = 0, className = "" }: {
   children: React.ReactNode; delay?: number; className?: string;
@@ -41,7 +44,7 @@ function BottomCTA() {
             className="font-serif font-normal leading-[1.08] tracking-[-0.02em] text-purple-50 mb-4"
             style={{ fontSize: "clamp(26px,3.6vw,46px)" }}
           >
-            Learn Directly From<br />Sulakshana Trivedi N.
+            Learn Together with<br />Namma Trading Academy.
           </h2>
           <p className="font-sans text-[13.5px] font-light text-purple-200/38 max-w-[380px] mx-auto leading-[1.8] mb-8">
             Attend a free live demo class and experience her teaching
@@ -70,7 +73,7 @@ function BottomCTA() {
   );
 }
 
-export default function FounderPage() {
+export default function TestimonialsPage() {
   return (
     <>
       <style>{`
@@ -79,12 +82,11 @@ export default function FounderPage() {
 
       <div className="relative bg-gradient-to-br from-[#1d4ed8] via-[#0f172a] to-[#000000] text-purple-50 overflow-x-hidden font-sans min-h-screen">
         <Hero
-          headline="The One Behind
-the Academy."
+          headline="Community That Grows Together"
           hasMarketTicker={false}
         />
+        <Reviews/>
         <Navbar />
-        <FounderMessage />
         <BottomCTA />
         <Footer />
       </div>

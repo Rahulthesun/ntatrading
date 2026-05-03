@@ -80,8 +80,8 @@ export function CTASection() {
             className="font-serif font-normal leading-[1.06] tracking-[-0.02em] text-purple-50 mb-5"
             style={{ fontSize: "clamp(32px,5vw,62px)" }}
           >
-            Get into the market <br className="hidden sm:block" />
-            with confidence.
+            Get Into the Market <br className="hidden sm:block" />
+            with Confidence.
           </motion.h2>
 
           {/* subtext */}

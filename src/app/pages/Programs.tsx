@@ -437,7 +437,7 @@ function BottomCTA() {
         <FadeUp>
           <Eyebrow>Not Sure Where to Start</Eyebrow>
           <H2 className="mb-5">
-            Let's find the right<br /><Italic>program for you.</Italic>
+            Let's Find the Right<br /><Italic>Program For You.</Italic>
           </H2>
           <p className="font-sans text-[14px] font-normal text-white/75 max-w-[400px] mx-auto leading-[1.8] mb-10">
             Book a free 20-minute consultation call — we'll understand your goals
@@ -484,8 +484,8 @@ export function Programs() {
 
         <Navbar />
         <Hero 
-        headline="Choose your path to
-market mastery."
+        headline="Choose Your Path to
+Market Mastery."
         hasMarketTicker={false}
         />
         <ProgramCards />

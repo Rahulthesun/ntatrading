@@ -118,9 +118,9 @@ function BottomCTA() {
             className="font-serif font-normal leading-[1.08] tracking-[-0.02em] text-purple-50 mb-4"
             style={{ fontSize: "clamp(26px,3.6vw,46px)" }}
           >
-            Your market journey<br />begins with one session.
+            Your Market Journey<br />Begins with One Session.
           </h2>
-          <p className="font-sans text-[13.5px] font-light text-purple-200/38 max-w-[380px] mx-auto leading-[1.8] mb-8">
+          <p className="font-sans text-[13.5px] font-light text-white-9/10 max-w-[380px] mx-auto leading-[1.8] mb-8">
             Attend a free live demo class — no commitment, no sales pitch.
             Just come and watch how we actually trade.
           </p>
@@ -159,8 +159,8 @@ export default function AboutPage() {
 
       <div className="relative bg-gradient-to-br from-[#1d4ed8] via-[#0f172a] to-[#000000] text-purple-50 overflow-x-hidden font-sans min-h-screen">
         <Hero
-          headline="South India's most
-live trading academy"
+          headline="South India's Most
+Live Trading Academy"
           hasMarketTicker={false}
         />
         <Navbar />
