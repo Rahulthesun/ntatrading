@@ -12,9 +12,11 @@ interface Package {
   tagline: string;
   description: string;
   features: string[];
+  includesBase?: boolean;
   icon: React.ReactNode;
   badge?: string;
-  /** Tailwind color token shared across icon/badge/dot/hover — e.g. "violet" | "purple" | "fuchsia" | "pink" */
+  price: string;
+  duration: string;
   color: "violet" | "purple" | "fuchsia" | "pink";
 }
 
@@ -23,83 +25,127 @@ interface PackagesSectionProps {
   packages?: Package[];
 }
 
-/* Per-color Tailwind class maps — avoids dynamic class purging */
 const colorMap = {
   violet: {
-    dot:         "bg-violet-400 shadow-[0_0_8px_rgba(167,139,250,0.8)]",
-    iconBg:      "bg-violet-400/10 text-violet-400",
-    iconGlow:    "group-hover:shadow-[0_0_18px_rgba(167,139,250,0.35)]",
-    badge:       "bg-violet-400/10 text-violet-400 border border-violet-400/25",
-    name:        "text-violet-400",
-    topLine:     "via-violet-400",
-    featureDot:  "bg-violet-400 shadow-[0_0_5px_rgba(167,139,250,0.7)]",
-    btnHover:    "hover:border-violet-400/40 hover:text-white hover:bg-violet-400/10",
+    dot:        "bg-violet-400 shadow-[0_0_8px_rgba(167,139,250,0.8)]",
+    iconBg:     "bg-violet-400/10 text-violet-400",
+    iconGlow:   "group-hover:shadow-[0_0_18px_rgba(167,139,250,0.35)]",
+    badge:      "bg-violet-400/10 text-violet-400 border border-violet-400/25",
+    topLine:    "via-violet-400",
+    featureDot: "bg-violet-400 shadow-[0_0_5px_rgba(167,139,250,0.7)]",
+    btnHover:   "hover:border-violet-400/40 hover:text-white hover:bg-violet-400/10",
+    duration:   "text-violet-300/60",
+    baseTag:    "text-violet-300/60 border-violet-400/20",
   },
   purple: {
-    dot:         "bg-purple-400 shadow-[0_0_8px_rgba(192,132,252,0.8)]",
-    iconBg:      "bg-purple-400/10 text-purple-400",
-    iconGlow:    "group-hover:shadow-[0_0_18px_rgba(192,132,252,0.35)]",
-    badge:       "bg-purple-400/10 text-purple-400 border border-purple-400/25",
-    name:        "text-purple-400",
-    topLine:     "via-purple-400",
-    featureDot:  "bg-purple-400 shadow-[0_0_5px_rgba(192,132,252,0.7)]",
-    btnHover:    "hover:border-purple-400/40 hover:text-white hover:bg-purple-400/10",
+    dot:        "bg-purple-400 shadow-[0_0_8px_rgba(192,132,252,0.8)]",
+    iconBg:     "bg-purple-400/10 text-purple-400",
+    iconGlow:   "group-hover:shadow-[0_0_18px_rgba(192,132,252,0.35)]",
+    badge:      "bg-purple-400/10 text-purple-400 border border-purple-400/25",
+    topLine:    "via-purple-400",
+    featureDot: "bg-purple-400 shadow-[0_0_5px_rgba(192,132,252,0.7)]",
+    btnHover:   "hover:border-purple-400/40 hover:text-white hover:bg-purple-400/10",
+    duration:   "text-purple-300/60",
+    baseTag:    "text-purple-300/60 border-purple-400/20",
   },
   fuchsia: {
-    dot:         "bg-fuchsia-400 shadow-[0_0_8px_rgba(232,121,249,0.8)]",
-    iconBg:      "bg-fuchsia-400/10 text-fuchsia-400",
-    iconGlow:    "group-hover:shadow-[0_0_18px_rgba(232,121,249,0.35)]",
-    badge:       "bg-fuchsia-400/10 text-fuchsia-400 border border-fuchsia-400/25",
-    name:        "text-fuchsia-400",
-    topLine:     "via-fuchsia-400",
-    featureDot:  "bg-fuchsia-400 shadow-[0_0_5px_rgba(232,121,249,0.7)]",
-    btnHover:    "hover:border-fuchsia-400/40 hover:text-white hover:bg-fuchsia-400/10",
+    dot:        "bg-fuchsia-400 shadow-[0_0_8px_rgba(232,121,249,0.8)]",
+    iconBg:     "bg-fuchsia-400/10 text-fuchsia-400",
+    iconGlow:   "group-hover:shadow-[0_0_18px_rgba(232,121,249,0.35)]",
+    badge:      "bg-fuchsia-400/10 text-fuchsia-400 border border-fuchsia-400/25",
+    topLine:    "via-fuchsia-400",
+    featureDot: "bg-fuchsia-400 shadow-[0_0_5px_rgba(232,121,249,0.7)]",
+    btnHover:   "hover:border-fuchsia-400/40 hover:text-white hover:bg-fuchsia-400/10",
+    duration:   "text-fuchsia-300/60",
+    baseTag:    "text-fuchsia-300/60 border-fuchsia-400/20",
   },
   pink: {
-    dot:         "bg-pink-400 shadow-[0_0_8px_rgba(244,114,182,0.8)]",
-    iconBg:      "bg-pink-400/10 text-pink-400",
-    iconGlow:    "group-hover:shadow-[0_0_18px_rgba(244,114,182,0.35)]",
-    badge:       "bg-pink-400/10 text-pink-400 border border-pink-400/25",
-    name:        "text-pink-400",
-    topLine:     "via-pink-400",
-    featureDot:  "bg-pink-400 shadow-[0_0_5px_rgba(244,114,182,0.7)]",
-    btnHover:    "hover:border-pink-400/40 hover:text-white hover:bg-pink-400/10",
+    dot:        "bg-pink-400 shadow-[0_0_8px_rgba(244,114,182,0.8)]",
+    iconBg:     "bg-pink-400/10 text-pink-400",
+    iconGlow:   "group-hover:shadow-[0_0_18px_rgba(244,114,182,0.35)]",
+    badge:      "bg-pink-400/10 text-pink-400 border border-pink-400/25",
+    topLine:    "via-pink-400",
+    featureDot: "bg-pink-400 shadow-[0_0_5px_rgba(244,114,182,0.7)]",
+    btnHover:   "hover:border-pink-400/40 hover:text-white hover:bg-pink-400/10",
+    duration:   "text-pink-300/60",
+    baseTag:    "text-pink-300/60 border-pink-400/20",
   },
 } as const;
 
 const defaultPackages: Package[] = [
   {
-    name: "Starter",
+    name: "Basic",
     tagline: "Begin your trading journey",
     description: "Everything you need to understand the markets and place your first confident trades.",
-    features: ["Live sessions", "Community access", "Recorded replays"],
+    features: [
+      "Market basics",
+      "Trading terminology",
+      "Candlestick analysis",
+      "Basic technical analysis",
+      "Risk management foundation",
+      "Trading platform guidance",
+    ],
     icon: <Zap className="w-4 h-4" />,
+    price: "₹6,500 – ₹8,500",
+    duration: "30 to 45 days",
     color: "violet",
   },
   {
-    name: "Growth",
+    name: "Pro",
     tagline: "Accelerate with strategy",
     description: "Go deeper into technicals, derivatives, and real trade setups with daily mentorship.",
-    features: ["Daily live sessions", "Options & futures", "Trade alerts"],
+    features: [
+      "Advanced technical analysis",
+      "Price action strategies",
+      "Intraday trading concepts",
+      "Swing trading setups",
+      "Multi-timeframe analysis",
+      "Live market observation",
+    ],
+    includesBase: true,
     icon: <Flame className="w-4 h-4" />,
     badge: "Popular",
+    price: "₹10,000 – ₹12,000",
+    duration: "3 to 6 months",
     color: "purple",
   },
   {
-    name: "Pro",
+    name: "Elite",
     tagline: "Full mentorship program",
-    description: "Institutional-grade strategies with weekly one-on-one coaching and live trade room access.",
-    features: ["1-on-1 coaching", "Live trade room", "Portfolio review"],
+    description: "Institutional-grade strategies with personalized mentorship and live market discussions.",
+    features: [
+      "Advanced market structure",
+      "Options trading concepts",
+      "Trading psychology",
+      "Personalized mentorship",
+      "Daily market discussion",
+      "Strategy refinement",
+    ],
+    includesBase: true,
     icon: <Shield className="w-4 h-4" />,
+    badge: "Best Value",
+    price: "₹15,000 – ₹20,000",
+    duration: "Long term",
     color: "fuchsia",
   },
   {
-    name: "Elite",
+    name: "VIP",
     tagline: "White-glove mentorship",
-    description: "A dedicated mentor, exclusive masterclasses, and prop firm preparation — the complete package.",
-    features: ["Dedicated mentor", "Prop firm prep", "Lifetime access"],
+    description: "A dedicated mentor, direct trainer access, and live trade execution — the complete package.",
+    features: [
+      "One-to-one mentorship",
+      "Direct trainer interaction",
+      "Personalized trading plans",
+      "Portfolio review guidance",
+      "Advanced risk management",
+      "Priority doubt clarification",
+      "Live trade execution sessions",
+      "Performance tracking support",
+      "Premium community access",
+    ],
     icon: <Crown className="w-4 h-4" />,
-    badge: "Best Value",
+    price: "₹30,000 – ₹40,000",
+    duration: "Long term",
     color: "pink",
   },
 ];
@@ -115,8 +161,6 @@ export default function PackagesSection({ className, packages = defaultPackages 
 
         {/* ── Section header ── */}
         <div className="relative z-10 text-center mb-16 px-4">
-
-          {/* Eyebrow */}
           <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full mb-6 bg-violet-400/10 border border-violet-400/20">
             <span className="w-[5px] h-[5px] rounded-full bg-purple-400 shadow-[0_0_8px_rgba(192,132,252,0.9)] shrink-0" />
             <span
@@ -127,20 +171,16 @@ export default function PackagesSection({ className, packages = defaultPackages 
             </span>
           </div>
 
-          <h2
-            className="text-[clamp(26px,4vw,48px)] tracking-tight leading-[1.1] text-[#f0eeff] mb-4"
-          >
+          <h2 className="text-[clamp(26px,4vw,48px)] tracking-tight leading-[1.1] text-white mb-4">
             Choose Your Own Path
           </h2>
 
-          <p
-            className="text-[13px] font-light max-w-[380px] mx-auto leading-[1.85] text-purple-200/40"
-          >
+          <p className="text-[13px] font-light max-w-[380px] mx-auto leading-[1.85] text-purple-200/60">
             From first trade to full-time — every level has a program built for it.
           </p>
         </div>
 
-        {/* ── Cards grid — unified panel with dividers ── */}
+        {/* ── Cards grid ── */}
         <div className="relative z-10 container mx-auto px-4 sm:px-8">
           <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 divide-y xl:divide-y-0 xl:divide-x divide-white/[0.06] rounded-2xl border border-white/[0.06] overflow-hidden">
             {packages.map((pkg) => {
@@ -170,47 +210,56 @@ export default function PackagesSection({ className, packages = defaultPackages 
                         <span className={cn(
                           "text-[8.5px] font-semibold tracking-[0.14em] uppercase px-2.5 py-1 rounded-full",
                           c.badge
-                        )}
-                        >
+                        )}>
                           {pkg.badge}
                         </span>
                       )}
                     </div>
 
-                    {/* Plan name */}
-                    <p className={cn(
-                      "text-[10px] font-semibold tracking-[0.2em] uppercase mb-2",
-                      c.name
-                    )}
-                    >
+                    {/* Plan name — prominent white heading */}
+                    <h3 className="text-[clamp(22px,2.5vw,28px)] font-bold tracking-tight leading-[1.15] mb-1 text-white">
                       {pkg.name}
-                    </p>
+                    </h3>
 
                     {/* Tagline */}
-                    <p
-                      className="text-[clamp(16px,2vw,19px)] font-semibold tracking-tight leading-[1.25] text-[#e8e0ff] mb-3"
-                    >
+                    <p className="text-[13px] font-light leading-[1.6] text-purple-200/70 mb-3">
                       {pkg.tagline}
                     </p>
 
+                    {/* Price — white bold */}
+                    <p className="text-[15px] font-bold tracking-tight mb-1 text-white">
+                      {pkg.price}
+                    </p>
+
+                    {/* Duration */}
+                    <p className={cn("text-[11px] tracking-[0.05em] mb-4", c.duration)}>
+                      Duration: {pkg.duration}
+                    </p>
+
                     {/* Description */}
-                    <p
-                      className="text-[12.5px] font-light leading-[1.8] text-purple-200/38 mb-6"
-                    >
+                    <p className="text-[13px] font-light leading-[1.8] text-purple-200/65 mb-6">
                       {pkg.description}
                     </p>
 
                     {/* Divider */}
-                    <div className="h-px bg-white/[0.06] mb-5" />
+                    <div className="h-px bg-white/[0.08] mb-5" />
+
+                    {/* Includes basic note */}
+                    {pkg.includesBase && (
+                      <p className={cn(
+                        "text-[10.5px] tracking-[0.08em] uppercase font-semibold mb-3 pb-3 border-b",
+                        c.baseTag
+                      )}>
+                        + Includes Basic topics
+                      </p>
+                    )}
 
                     {/* Features */}
-                    <ul className="flex flex-col gap-2.5 flex-1">
+                    <ul className="flex flex-col gap-3 flex-1">
                       {pkg.features.map((f) => (
                         <li key={f} className="flex items-center gap-2.5">
-                          <span className={cn("w-1 h-1 rounded-full shrink-0", c.featureDot)} />
-                          <span
-                            className="text-[12.5px] font-normal text-purple-200/55"
-                          >
+                          <span className={cn("w-1.5 h-1.5 rounded-full shrink-0", c.featureDot)} />
+                          <span className="text-[13px] font-normal text-purple-100/80">
                             {f}
                           </span>
                         </li>
@@ -218,27 +267,26 @@ export default function PackagesSection({ className, packages = defaultPackages 
                     </ul>
 
                     {/* CTA */}
-                    <HashLink 
-                     smooth
-                     to="/articles#contact"
-                     scroll = {(el) => {
-                      setTimeout(()=> {
-                        el.scrollIntoView({ behavior: "smooth" , block: "start" });
-                      }, 150)
-                     }}
-                     >
-                      <button
-                      className={cn(
-                        "w-full mt-8 py-3 rounded-xl border border-white/10 bg-transparent",
-                        "text-[12px] font-semibold tracking-[0.08em] text-purple-200/60",
-                        "transition-all duration-200 cursor-pointer",
-                        c.btnHover
-                      )}
+                    <HashLink
+                      smooth
+                      to="/articles#contact"
+                      scroll={(el) => {
+                        setTimeout(() => {
+                          el.scrollIntoView({ behavior: "smooth", block: "start" });
+                        }, 150);
+                      }}
                     >
-                      Enquire Now
-                    </button>
+                      <button
+                        className={cn(
+                          "w-full mt-8 py-3 rounded-xl border border-white/15 bg-transparent",
+                          "text-[12px] font-semibold tracking-[0.08em] text-white/70",
+                          "transition-all duration-200 cursor-pointer",
+                          c.btnHover
+                        )}
+                      >
+                        Enquire Now
+                      </button>
                     </HashLink>
-                    
 
                   </div>
                 </div>
@@ -249,7 +297,7 @@ export default function PackagesSection({ className, packages = defaultPackages 
 
         {/* Bottom note */}
         <p
-          className="relative z-10 text-center mt-10 text-[11px] tracking-[0.08em] text-violet-400/28"
+          className="relative z-10 text-center mt-10 text-[11px] tracking-[0.08em] text-purple-200/45"
           style={{ fontFamily: "'Sora', sans-serif" }}
         >
           Reach out to learn more about what's included in each plan.

@@ -102,7 +102,7 @@ function Lightbox({
           animate={{ opacity: 1, scale: 1 }}
           exit={{ opacity: 0, scale: 0.96 }}
           transition={{ duration: 0.22, ease: [0.22, 1, 0.36, 1] }}
-          className="max-w-[90vw] max-h-[85vh] rounded-2xl overflow-hidden shadow-[0_32px_80px_rgba(0,0,0,0.7)]"
+          className="max-w-[90vw] max-h-[90vh] rounded-2xl overflow-hidden shadow-[0_32px_80px_rgba(0,0,0,0.7)]"
           onClick={(e) => e.stopPropagation()}
         >
           {item.type === "video" ? (
@@ -165,7 +165,7 @@ function GridItem({
       transition={{ duration: 0.55, delay: (index % 3) * 0.07, ease: [0.22, 1, 0.36, 1] }}
       onClick={onClick}
       className="group relative overflow-hidden rounded-2xl cursor-pointer bg-[#0C0420]/65 border border-purple-500/[0.09]"
-      style={{ aspectRatio: "4/3" }}
+      style={{ aspectRatio: "4/5" }}
     >
       {/* shimmer top */}
       <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-purple-400/18 to-transparent z-10" />
