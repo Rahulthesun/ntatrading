@@ -8,12 +8,13 @@ const NAV_LINKS = [
   { label: 'Home',     to: '/'         },
   { label: 'About Us', to: '/about'    },
   { label: 'Programs', to: '/programs' },
-  { label: 'Articles', to: '/articles' },
+  { label: 'Founder Story', to: '/founder' },
+ 
   { label: 'Testimonials',  to: '/testimonials'  },
 ];
 
 const MORE_LINKS = [
-  { label: 'Founder Story', to: '/founder' },
+   { label: 'Articles', to: '/articles' },
   { label: 'Gallery',       to: '/gallery'               },
 ];
 

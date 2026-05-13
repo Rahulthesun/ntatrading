@@ -108,7 +108,7 @@ export function FounderMessage() {
                 className="font-serif font-normal leading-[1.06] tracking-[-0.02em] text-purple-50 mb-10"
                 style={{ fontSize: "clamp(30px,3.8vw,52px)" }}
               >
-                Decade of Markets,{" "}
+                 Decade of Markets,{" "}
                 <span className="text-purple-50">
                   One Mission.
                 </span>
