@@ -5,6 +5,7 @@ import { Navbar } from "../components/Navbar";
 import { Footer } from "../components/Footer";
 import Hero from "../components/Hero";
 import { HashLink } from "react-router-hash-link";
+import { WhyChooseUs } from "../components/WhyChooseUs";
 
 function FadeUp({ children, delay = 0, className = "" }: {
   children: React.ReactNode; delay?: number; className?: string;
@@ -165,6 +166,7 @@ Live Trading Academy"
         />
         <Navbar />
         <CompanyIntro />
+        <WhyChooseUs FadeUp={FadeUp} Rule={Rule} />
         <BottomCTA />
         <Footer />
       </div>
