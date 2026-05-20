@@ -241,35 +241,12 @@ export default function PackagesSection({ className, packages = defaultPackages 
                       {pkg.description}
                     </p>
 
-                    {/* Divider */}
-                    <div className="h-px bg-white/[0.08] mb-5" />
-
-                    {/* Includes basic note */}
-                    {pkg.includesBase && (
-                      <p className={cn(
-                        "text-[10.5px] tracking-[0.08em] uppercase font-semibold mb-3 pb-3 border-b",
-                        c.baseTag
-                      )}>
-                        + Includes Basic topics
-                      </p>
-                    )}
-
-                    {/* Features */}
-                    <ul className="flex flex-col gap-3 flex-1">
-                      {pkg.features.map((f) => (
-                        <li key={f} className="flex items-center gap-2.5">
-                          <span className={cn("w-1.5 h-1.5 rounded-full shrink-0", c.featureDot)} />
-                          <span className="text-[13px] font-normal text-purple-100/80">
-                            {f}
-                          </span>
-                        </li>
-                      ))}
-                    </ul>
+                    
 
                     {/* CTA */}
                     <HashLink
                       smooth
-                      to="/articles#contact"
+                      to="/programs"
                       scroll={(el) => {
                         setTimeout(() => {
                           el.scrollIntoView({ behavior: "smooth", block: "start" });
@@ -284,7 +261,7 @@ export default function PackagesSection({ className, packages = defaultPackages 
                           c.btnHover
                         )}
                       >
-                        Enquire Now
+                        Read More Details 
                       </button>
                     </HashLink>
 

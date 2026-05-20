@@ -5,16 +5,17 @@ import {
   LineChart, BarChart3, Globe, CheckCircle2,
   Clock, Users, Video, BookOpen, FileText,
   TrendingUp, ArrowRight, ArrowLeft, Zap, ShieldCheck,
-  ChevronDown
+  ChevronDown , Crown
 } from "lucide-react";
 import { Navbar } from "../components/Navbar";
 import { Footer } from "../components/Footer";
 import Hero from "../components/Hero"
+import ProgramModules from "../components/ProgramModules";
 
 /* ══════════════════════════════════════════════════════════════
    SHARED PRIMITIVES
 ══════════════════════════════════════════════════════════════ */
-function FadeUp({ children, delay = 0, className = "" }: {
+export function FadeUp({ children, delay = 0, className = "" }: {
   children: React.ReactNode; delay?: number; className?: string;
 }) {
   const ref = useRef(null);
@@ -29,7 +30,7 @@ function FadeUp({ children, delay = 0, className = "" }: {
   );
 }
 
-function Eyebrow({ children }: { children: React.ReactNode }) {
+export function Eyebrow({ children }: { children: React.ReactNode }) {
   return (
     <div className="inline-flex items-center gap-2.5 mb-5">
       <div className="h-px w-6 bg-purple-500/40" />
@@ -38,9 +39,9 @@ function Eyebrow({ children }: { children: React.ReactNode }) {
   );
 }
 
-function H2({ children, className = "" }: { children: React.ReactNode; className?: string }) {
+export function H2({ children, className = "" }: { children: React.ReactNode; className?: string }) {
   return (
-    <h2 className={`font-serif font-normal leading-[1.08] tracking-[-0.02em] text-purple-50 ${className}`}
+    <h2 className={`font-normal leading-[1.08] tracking-[-0.02em] text-purple-50 ${className}`}
       style={{ fontSize: "clamp(28px,3.6vw,48px)" }}>
       {children}
     </h2>
@@ -64,106 +65,145 @@ function Rule() {
 ══════════════════════════════════════════════════════════════ */
 const PROGRAMS = [
   {
-    id: "equity",
+    id: "basic",
     Icon: LineChart,
-    title: "Equity Trading",
-    subtitle: "Master Stock Market Analysis",
-    desc: "Comprehensive training in equity markets — from price action and chart patterns to institutional order flow. Learn to identify high-probability setups and manage positions like a professional.",
+    title: "Basic",
+    subtitle: "Begin your trading journey",
+    desc: "Everything you need to understand the markets and place your first confident trades.",
     accent: "from-violet-500/20 to-purple-400/5",
     border: "border-violet-500/20",
     dot: "bg-violet-400",
-    tag: "Most Popular",
+    tag: "Beginner Friendly",
     tagColor: "bg-violet-400/12 text-violet-300 border-violet-400/22",
-    duration: "12 Weeks",
-    sessions: "36 Live Sessions",
-    seats: "Max 15 Students",
+    price: "₹6,500 – ₹8,500",
+    duration: "30 to 45 days",
+    sessions: "Foundation Program",
+    seats: "Open Enrollment",
     curriculum: [
-      "Market Structure & Institutional Flow",
-      "Technical Analysis & Chart Patterns",
-      "Volume Profile & Order Flow",
-      "Support & Resistance Dynamics",
-      "Momentum & Trend Analysis",
-      "Position Sizing & Risk Management",
-      "Entry & Exit Strategies",
-      "Trade Psychology & Discipline",
+      "Market basics",
+      "Trading terminology",
+      "Candlestick analysis",
+      "Basic technical analysis",
+      "Risk management foundation",
+      "Trading platform guidance",
     ],
     includes: [
-      "Live Trading Room Access",
-      "Recorded Session Library",
-      "Trading Workbook & Templates",
-      "1-on-1 Mentorship Sessions",
-      "Private Community Access",
-      "Lifetime Material Updates",
+      "Complete beginner market foundation",
+      "Practical market understanding",
+      "Step-by-step learning support",
+      "Trading platform guidance",
+      "Foundational risk management",
+      "Structured beginner curriculum",
     ],
   },
+
   {
-    id: "options",
+    id: "pro",
     Icon: BarChart3,
-    title: "Options Trading",
-    subtitle: "Advanced Derivatives Strategies",
-    desc: "Deep dive into options trading, Greeks, volatility analysis and professional strategies used by market makers. Build systematic edge in the derivatives market.",
+    title: "Pro",
+    subtitle: "Accelerate with strategy",
+    desc: "Go deeper into technicals, derivatives, and real trade setups with daily mentorship.",
     accent: "from-purple-500/18 to-fuchsia-400/5",
     border: "border-purple-500/18",
     dot: "bg-purple-400",
-    tag: "Advanced",
+    tag: "Popular",
     tagColor: "bg-rose-400/10 text-rose-400 border-rose-400/20",
-    duration: "16 Weeks",
-    sessions: "48 Live Sessions",
-    seats: "Max 12 Students",
+    price: "₹10,000 – ₹12,000",
+    duration: "3 to 6 months",
+    sessions: "Advanced Training",
+    seats: "Limited Seats",
     curriculum: [
-      "Options Fundamentals & Greeks",
-      "Implied Volatility Analysis",
-      "Directional Strategies (Calls & Puts)",
-      "Spread Strategies (Verticals, Butterflies)",
-      "Income Strategies (Iron Condors, Credit Spreads)",
-      "Volatility Trading (Straddles & Strangles)",
-      "Risk Management & Position Hedging",
-      "Options Chain Analysis",
+      "Includes all Basic topics",
+      "Advanced technical analysis",
+      "Price action strategies",
+      "Intraday trading concepts",
+      "Swing trading setups",
+      "Multi-timeframe analysis",
+      "Live market observation",
     ],
     includes: [
-      "Live Trading Room Access",
-      "Options Scanner Tools",
-      "Strategy Backtesting Templates",
-      "Weekly Strategy Sessions",
-      "Private Community Access",
-      "Lifetime Material Updates",
+      "Everything included in Basic package",
+      "Advanced market learning",
+      "Live market observation sessions",
+      "Trading strategy enhancement",
+      "Practical chart analysis exposure",
+      "Intermediate-level market concepts",
     ],
   },
+
   {
-    id: "commodities",
+    id: "elite",
     Icon: Globe,
-    title: "Commodity & Futures",
-    subtitle: "MCX, Forex & Global Markets",
-    desc: "Navigate Gold, Silver, Crude Oil and currency pairs with institutional-grade analysis. Learn leverage management, macro-economic drivers and multi-asset correlation.",
+    title: "Elite",
+    subtitle: "Full mentorship program",
+    desc: "Institutional-grade strategies with personalized mentorship and live market discussions.",
     accent: "from-fuchsia-500/15 to-purple-400/5",
     border: "border-fuchsia-500/16",
     dot: "bg-fuchsia-400",
-    tag: "Intermediate",
+    tag: "Best Value",
     tagColor: "bg-amber-400/10 text-amber-400 border-amber-400/20",
-    duration: "14 Weeks",
-    sessions: "42 Live Sessions",
-    seats: "Max 15 Students",
+    price: "₹15,000 – ₹20,000",
+    duration: "Long term",
+    sessions: "Mentorship Program",
+    seats: "Limited Enrollment",
     curriculum: [
-      "Forex Market Structure & Sessions",
-      "Currency Pair Dynamics",
-      "Multi-Timeframe Analysis",
-      "Futures Contracts & Specifications",
-      "Macro-Economic Analysis",
-      "Leverage & Margin Management",
-      "Risk-Reward Optimisation",
-      "Correlation & Portfolio Management",
+      "Includes all Basic topics",
+      "Advanced market structure",
+      "Options trading concepts",
+      "Trading psychology",
+      "Personalized mentorship",
+      "Daily market discussion",
+      "Strategy refinement",
     ],
     includes: [
-      "Live Trading Room Access",
-      "Economic Calendar Tools",
-      "Multi-Asset Analysis Framework",
-      "Risk Calculator Templates",
-      "Private Community Access",
-      "Lifetime Material Updates",
+      "Everything included in Basic package",
+      "Advanced market structure guidance",
+      "Options trading concepts",
+      "Daily market discussion sessions",
+      "Personalized mentorship support",
+      "Long-term strategy refinement",
+    ],
+  },
+
+  {
+    id: "vip",
+    Icon: Crown,
+    title: "VIP",
+    subtitle: "White-glove mentorship",
+    desc: "A dedicated mentor, direct trainer access, and live trade execution — the complete package.",
+    accent: "from-pink-500/20 to-rose-400/5",
+    border: "border-pink-500/20",
+    dot: "bg-pink-400",
+    tag: "Premium",
+    tagColor: "bg-pink-400/10 text-pink-300 border-pink-400/20",
+    price: "₹30,000 – ₹40,000",
+    duration: "Long term",
+    sessions: "Premium Mentorship",
+    seats: "Exclusive Access",
+    curriculum: [
+      "One-to-one mentorship",
+      "Direct trainer interaction",
+      "Personalized trading plans",
+      "Portfolio review guidance",
+      "Advanced risk management",
+      "Priority doubt clarification",
+      "Live trade execution sessions",
+      "Performance tracking support",
+      "Premium community access",
+    ],
+    includes: [
+      "Dedicated one-to-one mentorship",
+      "Direct trainer access",
+      "Customized trading plans",
+      "Portfolio review guidance",
+      "Advanced risk management support",
+      "Priority doubt clarification",
+      "Live trade execution support",
+      "Performance tracking assistance",
+      "Premium community access",
     ],
   },
 ];
-
 /* ══════════════════════════════════════════════════════════════
    MINI ANIMATED SPARKLINE (SVG, no lib needed)
 ══════════════════════════════════════════════════════════════ */
@@ -202,19 +242,29 @@ function MiniSpark({ id }: { id: string }) {
 /* ══════════════════════════════════════════════════════════════
    2 · PROGRAM CARDS
 ══════════════════════════════════════════════════════════════ */
-function ProgramCard({ program, index }: { program: typeof PROGRAMS[0]; index: number }) {
+function ProgramCard({
+  program,
+  index,
+}: {
+  program: typeof PROGRAMS[0];
+  index: number;
+}) {
   const { Icon } = program;
   const [open, setOpen] = useState(false);
 
   return (
     <FadeUp delay={index * 0.1}>
-      <div id={program.id} className={`relative bg-[#0C0420]/65 border ${program.border} backdrop-blur-xl rounded-3xl overflow-hidden hover:border-purple-400/28 transition-all duration-400`}>
-
+      <div
+        id={program.id}
+        className={`relative bg-[#0C0420]/65 border ${program.border} backdrop-blur-xl rounded-3xl overflow-hidden hover:border-purple-400/28 transition-all duration-400`}
+      >
         {/* shimmer */}
         <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-purple-400/20 to-transparent" />
 
         {/* blob */}
-        <div className={`absolute -top-12 -right-12 w-56 h-56 rounded-full bg-gradient-to-br ${program.accent} blur-3xl pointer-events-none`} />
+        <div
+          className={`absolute -top-12 -right-12 w-56 h-56 rounded-full bg-gradient-to-br ${program.accent} blur-3xl pointer-events-none`}
+        />
 
         {/* 🔥 MOBILE HEADER */}
         <button
@@ -228,7 +278,9 @@ function ProgramCard({ program, index }: { program: typeof PROGRAMS[0]; index: n
                 <Icon className="w-4 h-4 text-purple-400" />
               </div>
 
-              <span className={`text-[9px] font-bold tracking-[0.14em] uppercase px-2 py-1 rounded-full border ${program.tagColor}`}>
+              <span
+                className={`text-[9px] font-bold tracking-[0.14em] uppercase px-2 py-1 rounded-full border ${program.tagColor}`}
+              >
                 {program.tag}
               </span>
             </div>
@@ -242,11 +294,16 @@ function ProgramCard({ program, index }: { program: typeof PROGRAMS[0]; index: n
 
           {/* title */}
           <div>
-            <p className="font-serif text-[18px] text-purple-50 leading-tight">
+            <p className="text-[18px] text-purple-50 leading-tight">
               {program.title}
             </p>
+
             <p className="text-[10px] text-purple-300/50 uppercase tracking-[0.1em]">
               {program.subtitle}
+            </p>
+
+            <p className="text-[20px] font-bold text-white mt-2">
+              {program.price}
             </p>
           </div>
 
@@ -264,36 +321,46 @@ function ProgramCard({ program, index }: { program: typeof PROGRAMS[0]; index: n
         </button>
 
         {/* GRID */}
-        <div className={`
-          relative grid lg:grid-cols-3 gap-0
-          divide-y lg:divide-y-0 lg:divide-x divide-purple-500/[0.08]
-          ${open ? "block" : "hidden"} lg:grid
-        `}>
-
+        <div
+          className={`
+            relative grid lg:grid-cols-3 gap-0
+            divide-y lg:divide-y-0 lg:divide-x divide-purple-500/[0.08]
+            ${open ? "block" : "hidden"} lg:grid
+          `}
+        >
           {/* COL 1 */}
           <div className="p-5 sm:p-6 lg:p-10 flex flex-col">
-
+            {/* DESKTOP TOP */}
             <div className="hidden lg:flex items-start justify-between mb-7">
               <div className="w-12 h-12 rounded-2xl bg-purple-500/[0.10] border border-purple-400/[0.12] flex items-center justify-center">
                 <Icon className="w-5 h-5 text-purple-400" />
               </div>
-              <span className={`text-[9px] font-bold tracking-[0.14em] uppercase px-2.5 py-1 rounded-full border ${program.tagColor}`}>
+
+              <span
+                className={`text-[9px] font-bold tracking-[0.14em] uppercase px-2.5 py-1 rounded-full border ${program.tagColor}`}
+              >
                 {program.tag}
               </span>
             </div>
 
-            <h3 className="hidden lg:block font-serif text-[26px] text-purple-50 leading-tight mb-1">
-              {program.title}
-            </h3>
+            {/* ✅ DESKTOP HEADER FIX */}
+            <div className="hidden lg:block mb-8">
+              <h3 className="text-[28px] font-semibold text-purple-50 leading-tight">
+                {program.title}
+              </h3>
 
-            <p className="hidden lg:block text-[11px] tracking-[0.10em] uppercase text-purple-200/90 mb-5">
-              {program.subtitle}
-            </p>
+              <p className="text-[11px] text-purple-300/50 uppercase tracking-[0.14em] mt-1">
+                {program.subtitle}
+              </p>
 
-            {/* improved readability */}
-            <p className="text-[14px] text-white/85 leading-[1.85] mb-6 flex-1">
-              {program.desc}
-            </p>
+              <p className="text-[30px] font-bold text-white mt-4">
+                {program.price}
+              </p>
+
+              <p className="text-[14px] text-white/75 leading-[1.7] mt-4">
+                {program.desc}
+              </p>
+            </div>
 
             {/* stats */}
             <div className="flex flex-col gap-3 mb-6">
@@ -306,7 +373,10 @@ function ProgramCard({ program, index }: { program: typeof PROGRAMS[0]; index: n
                   <div className="w-7 h-7 rounded-lg bg-purple-500/[0.08] border border-purple-400/[0.10] flex items-center justify-center shrink-0">
                     <I className="w-3.5 h-3.5 text-purple-400/70" />
                   </div>
-                  <span className="text-[12.5px] text-white/82">{v}</span>
+
+                  <span className="text-[12.5px] text-white/82">
+                    {v}
+                  </span>
                 </div>
               ))}
             </div>
@@ -315,6 +385,7 @@ function ProgramCard({ program, index }: { program: typeof PROGRAMS[0]; index: n
               <p className="text-[8.5px] uppercase text-purple-300/55 mb-2">
                 Performance trend
               </p>
+
               <MiniSpark id={program.id} />
             </div>
           </div>
@@ -323,14 +394,20 @@ function ProgramCard({ program, index }: { program: typeof PROGRAMS[0]; index: n
           <div className="p-5 sm:p-6 lg:p-10">
             <div className="flex items-center gap-2.5 mb-6">
               <BookOpen className="w-4 h-4 text-purple-400/70" />
-              <span className="text-[11px] uppercase text-purple-400/55">Curriculum</span>
+
+              <span className="text-[11px] uppercase text-purple-400/55">
+                Curriculum
+              </span>
             </div>
 
             <div className="flex flex-col gap-3">
               {program.curriculum.map((item, i) => (
                 <div key={i} className="flex gap-3">
                   <CheckCircle2 className="w-4 h-4 text-purple-300/75 mt-0.5" />
-                  <span className="text-[13px] text-white/82 leading-[1.55]">{item}</span>
+
+                  <span className="text-[13px] text-white/82 leading-[1.55]">
+                    {item}
+                  </span>
                 </div>
               ))}
             </div>
@@ -338,22 +415,29 @@ function ProgramCard({ program, index }: { program: typeof PROGRAMS[0]; index: n
 
           {/* COL 3 */}
           <div className="p-5 sm:p-6 lg:p-10 flex flex-col">
-
             <div className="flex items-center gap-2.5 mb-6">
               <FileText className="w-4 h-4 text-purple-400/70" />
-              <span className="text-[11px] uppercase text-purple-400/55">What's Included</span>
+
+              <span className="text-[11px] uppercase text-purple-400/55">
+                What's Included
+              </span>
             </div>
 
             <div className="flex flex-col gap-3 mb-auto">
               {program.includes.map((item, i) => (
                 <div key={i} className="flex gap-3">
-                  <div className={`w-1.5 h-1.5 rounded-full ${program.dot} mt-[5px]`} />
-                  <span className="text-[13px] text-white/82 leading-[1.55]">{item}</span>
+                  <div
+                    className={`w-1.5 h-1.5 rounded-full ${program.dot} mt-[5px]`}
+                  />
+
+                  <span className="text-[13px] text-white/82 leading-[1.55]">
+                    {item}
+                  </span>
                 </div>
               ))}
             </div>
 
-            {/* ✅ ONLY CTA */}
+            {/* CTA */}
             <div className="mt-8">
               <Link to="/articles#contact">
                 <motion.button
@@ -361,13 +445,12 @@ function ProgramCard({ program, index }: { program: typeof PROGRAMS[0]; index: n
                   whileTap={{ scale: 0.97 }}
                   className="w-full py-3.5 rounded-full bg-gradient-to-r from-violet-700 to-purple-500 text-white text-[13px] font-semibold flex items-center justify-center gap-2"
                 >
-                  Enroll Now <ArrowRight className="w-3.5 h-3.5" />
+                  Enroll Now
+                  <ArrowRight className="w-3.5 h-3.5" />
                 </motion.button>
               </Link>
             </div>
-
           </div>
-
         </div>
       </div>
     </FadeUp>
@@ -414,7 +497,7 @@ function WhyNTA() {
                 <div className="w-10 h-10 rounded-xl bg-purple-500/[0.09] border border-purple-400/[0.10] flex items-center justify-center mb-4 group-hover:bg-purple-500/[0.15] transition-colors duration-300">
                   <I className="text-purple-400" size={17} />
                 </div>
-                <p className="font-serif text-[17px] text-purple-50 mb-2">{title}</p>
+                <p className="text-[17px] text-purple-50 mb-2">{title}</p>
                 <p className="font-sans text-[12.5px] font-normal text-white/75 leading-[1.72]">{desc}</p>
               </motion.div>
             </FadeUp>
@@ -489,6 +572,7 @@ Market Mastery."
         hasMarketTicker={false}
         />
         <ProgramCards />
+        <ProgramModules/>
         <WhyNTA />
         <BottomCTA />
         <Footer />

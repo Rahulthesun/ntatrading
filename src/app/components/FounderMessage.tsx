@@ -108,7 +108,7 @@ export function FounderMessage() {
                 className="font-serif font-normal leading-[1.06] tracking-[-0.02em] text-purple-50 mb-10"
                 style={{ fontSize: "clamp(30px,3.8vw,52px)" }}
               >
-                 Decade of Markets,{" "}
+                 Decade of Markets, <br></br>
                 <span className="text-purple-50">
                   One Mission.
                 </span>
@@ -118,7 +118,7 @@ export function FounderMessage() {
               <div className="relative mb-10 pl-5 border-l-2 border-purple-500/30">
                 <Quote className="absolute -top-1 -left-1 w-7 h-7 text-purple-500/[0.18] pointer-events-none" />
                 <blockquote
-                  className="font-serif italic text-purple-100/90 leading-[1.75]"
+                  className="font-semibold text-purple-100/90 leading-[1.75]"
                   style={{ fontSize: "clamp(15px,1.6vw,18px)" }}
                 >
                   "I personally experienced the stock market's highs and lows — and
@@ -186,7 +186,7 @@ export function FounderMessage() {
               <FadeUp delay={0.35}>
                 <div className="flex items-center gap-4 pt-6 border-t border-purple-500/[0.08]">
                   <div>
-                    <p className="font-serif text-[17px] text-purple-50/90 leading-none mb-1.5">
+                    <p className="text-[17px] text-purple-50/90 leading-none mb-1.5">
                       Sulakshana Trivedi N
                     </p>
                     <p className="font-sans text-[10px] tracking-[0.12em] uppercase text-purple-400/70">
@@ -229,7 +229,7 @@ export function FounderMessage() {
 
                   {/* floating name card at photo bottom */}
                   <div className="absolute bottom-4 left-4 right-4 bg-[#0D0520]/90 border border-purple-500/[0.18] backdrop-blur-xl px-4 py-3 rounded-2xl">
-                    <p className="font-serif text-[15px] text-white/90 leading-none mb-1">Sulakshana Trivedi N</p>
+                    <p className=" text-[15px] text-white/90 leading-none mb-1">Sulakshana Trivedi N</p>
                     <p className="font-sans text-[9.5px] tracking-[0.12em] uppercase text-purple-300/55">
                       Founder & Head Mentor
                     </p>
@@ -248,7 +248,7 @@ export function FounderMessage() {
                     key={label}
                     className="flex items-center justify-between px-4 py-3 rounded-xl bg-[#0C0420]/65 border border-purple-500/[0.09] backdrop-blur-xl"
                   >
-                    <span className="font-serif text-[14px] text-purple-50/88">{label}</span>
+                    <span className=" text-[14px] text-purple-50/88">{label}</span>
                     <span className="font-sans text-[10px] text-purple-300/45">{sub}</span>
                   </div>
                 ))}
@@ -277,7 +277,7 @@ export function FounderMessage() {
                   </div>
                   <div>
                     <p className="font-sans text-[9px] tracking-[0.16em] uppercase text-purple-400/45 mb-1">{label}</p>
-                    <p className="font-serif text-[16px] text-purple-50/90 leading-snug mb-1">{value}</p>
+                    <p className="text-[16px] text-purple-50/90 leading-snug mb-1">{value}</p>
                     <p className="font-sans text-[11px] font-light text-purple-200/40 leading-[1.55]">{sub}</p>
                   </div>
                 </motion.div>
