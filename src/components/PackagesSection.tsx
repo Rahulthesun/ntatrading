@@ -217,19 +217,20 @@ export default function PackagesSection({ className, packages = defaultPackages 
                     </div>
 
                     {/* Plan name — prominent white heading */}
-                    <h3 className="text-[clamp(22px,2.5vw,28px)] font-bold tracking-tight leading-[1.15] mb-1 text-white">
+                    <h3 className="text-[clamp(22px,2.5vw,24px)] font-normal tracking-tight leading-[1.15] mb-2 text-white">
                       {pkg.name}
                     </h3>
 
-                    {/* Tagline */}
-                    <p className="text-[13px] font-light leading-[1.6] text-purple-200/70 mb-3">
-                      {pkg.tagline}
-                    </p>
 
                     {/* Price — white bold */}
-                    <p className="text-[15px] font-bold tracking-tight mb-1 text-white">
-                      {pkg.price}
-                    </p>
+                    <div className="mb-3">
+                      <p className="text-[28px] sm:text-[24px] font-semibold tracking-tight leading-none text-white">
+                        {pkg.price}
+                      </p>
+                      <p className="text-[10px] uppercase tracking-[0.14em] text-white/40 mt-1">
+                        Course Fee
+                      </p>
+                    </div>
 
                     {/* Duration */}
                     <p className={cn("text-[11px] tracking-[0.05em] mb-4", c.duration)}>
@@ -237,11 +238,29 @@ export default function PackagesSection({ className, packages = defaultPackages 
                     </p>
 
                     {/* Description */}
-                    <p className="text-[13px] font-light leading-[1.8] text-purple-200/65 mb-6">
-                      {pkg.description}
-                    </p>
 
-                    
+                    {/* Features */}
+                    <div className="mt-2 space-y-3 min-h-[120px]">
+                      {pkg.features.slice(0, 3).map((feature) => (
+                        <div key={feature} className="flex items-start gap-3">
+                          <span
+                            className={cn(
+                              "w-1.5 h-1.5 rounded-full mt-[7px] shrink-0",
+                              c.featureDot
+                            )}
+                          />
+                          <p className="text-[12px] leading-[1.6] text-white/70">
+                            {feature}
+                          </p>
+                        </div>
+                      ))}
+
+                      {pkg.features.length > 3 && (
+                        <p className="text-[11px] text-white/35 pl-[18px]">
+                          +{pkg.features.length - 3} more features
+                        </p>
+                      )}
+                    </div>
 
                     {/* CTA */}
                     <HashLink
@@ -255,7 +274,7 @@ export default function PackagesSection({ className, packages = defaultPackages 
                     >
                       <button
                         className={cn(
-                          "w-full mt-8 py-3 rounded-xl border border-white/15 bg-transparent",
+                          "w-full mt-6 py-3 rounded-xl border border-white/15 bg-transparent",
                           "text-[12px] font-semibold tracking-[0.08em] text-white/70",
                           "transition-all duration-200 cursor-pointer",
                           c.btnHover

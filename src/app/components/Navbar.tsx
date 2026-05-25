@@ -14,7 +14,7 @@ const NAV_LINKS = [
 ];
 
 const MORE_LINKS = [
-   { label: 'Articles', to: '/articles' },
+   { label: 'Articles', to: '/articles' }, 
   { label: 'Gallery',       to: '/gallery'               },
 ];
 
