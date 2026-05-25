@@ -296,7 +296,7 @@ function ProgramCard({
           className="lg:hidden w-full text-left p-5 flex flex-col gap-4"
         >
           {/* top row */}
-          <div className="flex items-center justify-between">
+          <div className="flex items-center justify-between gap-3 min-w-0">
             <div className="flex items-center gap-3">
               <div className="w-10 h-10 rounded-xl bg-purple-500/[0.10] border border-purple-400/[0.12] flex items-center justify-center">
                 <Icon className="w-4 h-4 text-purple-400" />
