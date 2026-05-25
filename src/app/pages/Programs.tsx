@@ -461,7 +461,11 @@ function ProgramCards() {
   return (
     <section className="relative z-[5] py-4 sm:py-8 px-6">
       <div className="max-w-7xl mx-auto flex flex-col gap-8">
-        {PROGRAMS.map((p, i) => <ProgramCard key={p.id} program={p} index={i} />)}
+        {PROGRAMS.map((p, i) => (
+          <section id={`/programs#${p.title.toLowerCase()}`} key={p.id}>
+            <ProgramCard program={p} index={i} />
+          </section>
+        ))}
       </div>
     </section>
   );

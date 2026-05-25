@@ -265,7 +265,7 @@ export default function PackagesSection({ className, packages = defaultPackages 
                     {/* CTA */}
                     <HashLink
                       smooth
-                      to="/programs"
+                      to={`/programs#${pkg.name.toLowerCase()}`}
                       scroll={(el) => {
                         setTimeout(() => {
                           el.scrollIntoView({ behavior: "smooth", block: "start" });
