@@ -1,4 +1,4 @@
-import { useRef , useState } from "react";
+import { useRef, useState, useEffect } from "react";
 import { motion, useInView } from "motion/react";
 import { Link } from "react-router";
 import {
@@ -251,12 +251,36 @@ function ProgramCard({
 }) {
   const { Icon } = program;
   const [open, setOpen] = useState(false);
+  useEffect(() => {
+    const currentHash = window.location.hash.replace("#", "");
+
+    if (currentHash === program.id) {
+      setOpen(true);
+
+      setTimeout(() => {
+        const el = document.getElementById(program.id);
+        if (el) {
+          const yOffset = -140;
+          const y = el.getBoundingClientRect().top + window.scrollY + yOffset;
+
+          window.scrollTo({
+            top: y,
+            behavior: "smooth",
+          });
+        }
+      }, 250);
+    }
+  }, [program.id]);
 
   return (
     <FadeUp delay={index * 0.1}>
       <div
         id={program.id}
-        className={`relative bg-[#0C0420]/65 border ${program.border} backdrop-blur-xl rounded-3xl overflow-hidden hover:border-purple-400/28 transition-all duration-400`}
+        className={`scroll-mt-44 lg:scroll-mt-36 relative bg-[#0C0420]/65 border ${program.border} backdrop-blur-xl rounded-3xl overflow-hidden transition-all duration-400 ${
+          open
+            ? "border-purple-400/40 shadow-[0_0_40px_rgba(168,85,247,0.15)]"
+            : "hover:border-purple-400/28"
+        }`}
       >
         {/* shimmer */}
         <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-purple-400/20 to-transparent" />
@@ -293,7 +317,7 @@ function ProgramCard({
           </div>
 
           {/* title */}
-          <div>
+          <div id={`/programs#${program.title.toLowerCase()}`}>
             <p className="text-[18px] text-purple-50 leading-tight">
               {program.title}
             </p>
@@ -344,7 +368,10 @@ function ProgramCard({
             </div>
 
             {/* ✅ DESKTOP HEADER FIX */}
-            <div className="hidden lg:block mb-8">
+            <button
+              onClick={() => setOpen(!open)}
+              className="hidden lg:block mb-8 text-left w-full cursor-pointer"
+            >
               <h3 className="text-[28px] font-semibold text-purple-50 leading-tight">
                 {program.title}
               </h3>
@@ -360,7 +387,7 @@ function ProgramCard({
               <p className="text-[14px] text-white/75 leading-[1.7] mt-4">
                 {program.desc}
               </p>
-            </div>
+            </button>
 
             {/* stats */}
             <div className="flex flex-col gap-3 mb-6">
@@ -391,7 +418,7 @@ function ProgramCard({
           </div>
 
           {/* COL 2 */}
-          <div className="p-5 sm:p-6 lg:p-10">
+          <div className={`${open ? "block" : "hidden"} p-5 sm:p-6 lg:p-10`}>
             <div className="flex items-center gap-2.5 mb-6">
               <BookOpen className="w-4 h-4 text-purple-400/70" />
 
@@ -414,7 +441,7 @@ function ProgramCard({
           </div>
 
           {/* COL 3 */}
-          <div className="p-5 sm:p-6 lg:p-10 flex flex-col">
+          <div className={`${open ? "flex" : "hidden"} p-5 sm:p-6 lg:p-10 flex-col`}>
             <div className="flex items-center gap-2.5 mb-6">
               <FileText className="w-4 h-4 text-purple-400/70" />
 
@@ -462,9 +489,7 @@ function ProgramCards() {
     <section className="relative z-[5] py-4 sm:py-8 px-6">
       <div className="max-w-7xl mx-auto flex flex-col gap-8">
         {PROGRAMS.map((p, i) => (
-          <section id={`/programs#${p.title.toLowerCase()}`} key={p.id}>
             <ProgramCard program={p} index={i} />
-          </section>
         ))}
       </div>
     </section>
