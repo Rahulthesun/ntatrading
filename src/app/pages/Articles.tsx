@@ -67,10 +67,12 @@ const FEATURED = [
     id: 1,
     tag: "Market Analysis",
     tagIcon: TrendingUp,
-    title: "Why Retail Traders Lose to Institutional Order Flow (And How to Trade With It)",
-    excerpt: "Institutions move markets through dark pools, block orders, and algorithmic routing — and once you understand their footprint, everything about price action starts to make sense.",
-    readTime: "9 min read",
-    date: "Mar 18, 2026",
+    title: "Order Flow Trading Explained",
+    excerpt:
+      "Learn how institutional order flow impacts price movement, liquidity, and market structure.",
+    readTime: "12 min read",
+    date: "Updated",
+    link: "https://gocharting.com/docs/orderflow/basics-of-orderflow",
     accent: "from-violet-500/20 to-purple-400/5",
     border: "border-violet-500/18",
     dot: "bg-violet-400",
@@ -79,10 +81,12 @@ const FEATURED = [
     id: 2,
     tag: "Options",
     tagIcon: BarChart3,
-    title: "The Volatility Trap: How Most Traders Misread IV Before Major Events",
-    excerpt: "Implied volatility expansion and crush are the most consistent, overlooked edge in options. Learn the setups professionals trade around earnings, budget days, and RBI announcements.",
-    readTime: "7 min read",
-    date: "Mar 12, 2026",
+    title: "Implied Volatility (IV): What It Means in Options Trading",
+    excerpt:
+      "Understand implied volatility, IV crush, and why options prices change before major market events.",
+    readTime: "9 min read",
+    date: "Updated",
+    link: "https://www.investopedia.com/terms/i/iv.asp",
     accent: "from-purple-500/18 to-fuchsia-400/5",
     border: "border-purple-500/18",
     dot: "bg-purple-400",
@@ -91,10 +95,12 @@ const FEATURED = [
     id: 3,
     tag: "Commodities",
     tagIcon: Globe,
-    title: "Gold in 2026: Macro Drivers, DXY Correlation & Trade Setups on MCX",
-    excerpt: "Gold isn't just a safe haven — it's a macro instrument that responds to real rates, dollar strength, and central bank flows. Here's how to build a structured thesis and time your entries.",
-    readTime: "11 min read",
-    date: "Mar 5, 2026",
+    title: "Gold Trading Guide",
+    excerpt:
+      "Discover how interest rates, inflation, and the US Dollar influence gold prices.",
+    readTime: "10 min read",
+    date: "Updated",
+    link: "https://www.investopedia.com/articles/basics/08/invest-in-gold.asp",
     accent: "from-fuchsia-500/15 to-purple-400/5",
     border: "border-fuchsia-500/16",
     dot: "bg-fuchsia-400",
@@ -103,10 +109,12 @@ const FEATURED = [
     id: 4,
     tag: "Psychology",
     tagIcon: Zap,
-    title: "The Discipline Gap: Why Smart Traders Still Blow Up Their Accounts",
-    excerpt: "IQ has nothing to do with trading success. The real edge is behavioral — and this article breaks down the five cognitive traps that destroy otherwise solid strategies.",
+    title: "The Psychology of Trading",
+    excerpt:
+      "Master emotional discipline and learn why psychology matters more than strategy.",
     readTime: "8 min read",
-    date: "Feb 28, 2026",
+    date: "Updated",
+    link: "https://www.investopedia.com/articles/trading/02/110502.asp",
     accent: "from-rose-500/12 to-purple-400/5",
     border: "border-rose-500/14",
     dot: "bg-rose-400",
@@ -115,10 +123,12 @@ const FEATURED = [
     id: 5,
     tag: "Risk Management",
     tagIcon: BarChart3,
-    title: "Position Sizing Isn't Glamorous — But It's the Only Thing That Keeps You in the Game",
-    excerpt: "Every professional trader's edge ultimately comes down to how they size positions. Fixed fractional, Kelly criterion, ATR-based stops — we break down each method with real examples.",
-    readTime: "10 min read",
-    date: "Feb 20, 2026",
+    title: "Position Sizing: Why It Matters",
+    excerpt:
+      "Explore proven position sizing techniques that help professional traders survive long-term.",
+    readTime: "9 min read",
+    date: "Updated",
+    link: "https://www.investopedia.com/articles/trading/09/determine-position-size.asp",
     accent: "from-amber-500/12 to-purple-400/5",
     border: "border-amber-500/14",
     dot: "bg-amber-400",
@@ -126,17 +136,79 @@ const FEATURED = [
 ];
 
 const ALL_ARTICLES = [
-  { id: 6,  tag: "Equity",       title: "Support & Resistance: Why Most Traders Draw Them Wrong",          readTime: "6 min", date: "Mar 22, 2026" },
-  { id: 7,  tag: "Options",      title: "Iron Condors Explained: When They Work and When They Don't",       readTime: "8 min", date: "Mar 15, 2026" },
-  { id: 8,  tag: "Psychology",   title: "Journaling Your Trades: The Underrated Compounding Edge",          readTime: "5 min", date: "Mar 8, 2026"  },
-  { id: 9,  tag: "Market",       title: "How to Read a Level 2 Order Book in Fast Markets",                 readTime: "7 min", date: "Mar 1, 2026"  },
-  { id: 10, tag: "Commodities",  title: "Crude Oil Trading: Sessions, Drivers & Key Levels for MCX",       readTime: "9 min", date: "Feb 22, 2026" },
-  { id: 11, tag: "Equity",       title: "Volume Spread Analysis: Reading the Story Behind Every Candle",   readTime: "10 min", date: "Feb 14, 2026" },
-  { id: 12, tag: "Risk",         title: "Max Drawdown Planning: Know Your Number Before You Lose It",       readTime: "6 min", date: "Feb 7, 2026"  },
-  { id: 13, tag: "Options",      title: "Delta Hedging Simplified: What It Is and Why It Matters",         readTime: "8 min", date: "Jan 30, 2026" },
-  { id: 14, tag: "Psychology",   title: "Breaking the Revenge Trade Cycle — A Practical Framework",        readTime: "5 min", date: "Jan 24, 2026" },
+  {
+    id: 6,
+    tag: "Equity",
+    title: "Support and Resistance Basics",
+    readTime: "6 min",
+    date: "Updated",
+    link: "https://www.investopedia.com/trading/support-and-resistance-basics/",
+  },
+  {
+    id: 7,
+    tag: "Options",
+    title: "Iron Condor: How This Options Strategy Works",
+    readTime: "8 min",
+    date: "Updated",
+    link: "https://www.investopedia.com/terms/i/ironcondor.asp",
+  },
+  {
+  id: 8,
+  tag: "Psychology",
+  title: "Trading Psychology: Definition, Examples & Importance",
+  readTime: "6 min",
+  date: "Updated",
+  link: "https://www.investopedia.com/terms/t/trading-psychology.asp",
+},
+  {
+    id: 9,
+    tag: "Market",
+    title: "What Is Level II Market Data?",
+    readTime: "7 min",
+    date: "Updated",
+    link: "https://www.investopedia.com/terms/l/level2.asp",
+  },
+ {
+  id: 10,
+  tag: "Commodities",
+  title: "What Is Crude Oil?",
+  readTime: "8 min",
+  date: "Updated",
+  link: "https://www.investopedia.com/terms/c/crude-oil.asp",
+},
+  {
+    id: 11,
+    tag: "Equity",
+    title: "Support and Resistance: A Complete Guide",
+    readTime: "10 min",
+    date: "Updated",
+    link: "https://www.investopedia.com/trading/support-and-resistance-basics/",
+  },
+  {
+    id: 12,
+    tag: "Risk",
+    title: "Maximum Drawdown Explained",
+    readTime: "6 min",
+    date: "Updated",
+    link: "https://www.babypips.com/forexpedia/drawdown",
+  },
+  {
+    id: 13,
+    tag: "Options",
+    title: "Delta Explained",
+    readTime: "8 min",
+    date: "Updated",
+    link: "https://www.investopedia.com/terms/d/delta.asp",
+  },
+  {
+  id: 14,
+  tag: "Psychology",
+  title: "How to Develop a Trading Brain",
+  readTime: "6 min",
+  date: "Updated",
+  link: "https://www.investopedia.com/articles/basics/13/how-to-develop-trading-brain.asp",
+},
 ];
-
 const REVIEWS = [
   {
     name: "Praveen Kumar",
@@ -285,13 +357,16 @@ function FeaturedCarousel() {
                   </p>
 
                   <div className="flex flex-wrap gap-2">
-                    <motion.button
+                    <a href={`${article.link}`} target="_blank" rel="noopener noreferrer" className="flex-1 sm:flex-none w-full">
+                      <motion.button
                       whileHover={{ scale: 1.02 }}
                       whileTap={{ scale: 0.97 }}
                       className="flex-1 sm:flex-none justify-center inline-flex items-center gap-2 py-3 px-5 rounded-full bg-gradient-to-r from-violet-700 to-purple-500 font-sans font-semibold text-[13px] text-white border-0 cursor-pointer"
                     >
                       Read Article <ArrowRight className="w-3.5 h-3.5" />
                     </motion.button>
+                    </a>
+                    
 
                   </div>
                 </div>
@@ -379,6 +454,7 @@ function ArticlesGrid() {
         <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
           {ALL_ARTICLES.map((a, i) => (
             <FadeUp key={a.id} delay={i * 0.05}>
+              <a href={a.link} target="_blank" rel="noopener noreferrer">
               <motion.div whileHover={{ y: -4 }}
                 transition={{ type: "spring", stiffness: 300, damping: 22 }}
                 className="group h-full bg-[#0C0420]/55 border border-purple-500/[0.08] backdrop-blur-xl rounded-2xl p-6 cursor-pointer hover:border-purple-400/20 transition-colors duration-300 flex flex-col">
@@ -405,6 +481,7 @@ function ArticlesGrid() {
                   </span>
                 </div>
               </motion.div>
+            </a>
             </FadeUp>
           ))}
         </div>
