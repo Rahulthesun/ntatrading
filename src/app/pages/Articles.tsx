@@ -170,11 +170,11 @@ const ALL_ARTICLES = [
   },
  {
   id: 10,
-  tag: "Commodities",
-  title: "What Is Crude Oil?",
-  readTime: "8 min",
+  tag: "Market",
+  title: "Volume Analysis: Understanding and Calculating Market Volume",
+  readTime: "10 min",
   date: "Updated",
-  link: "https://www.investopedia.com/terms/c/crude-oil.asp",
+  link: "https://www.investopedia.com/terms/v/volume-analysis.asp",
 },
   {
     id: 11,
