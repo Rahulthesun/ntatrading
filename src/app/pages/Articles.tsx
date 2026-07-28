@@ -65,14 +65,14 @@ function Rule() {
 const FEATURED = [
   {
     id: 1,
-    tag: "Market Analysis",
+    tag: "Trading Psychology",
     tagIcon: TrendingUp,
-    title: "Order Flow Trading Explained",
+    title: "8 Common Mistakes Indian Stock Market Beginners Should Avoid",
     excerpt:
       "Learn how institutional order flow impacts price movement, liquidity, and market structure.",
-    readTime: "12 min read",
+    readTime: "11 min read",
     date: "Updated",
-    link: "https://gocharting.com/docs/orderflow/basics-of-orderflow",
+    link: "https://www.investopedia.com/articles/stocks/07/beat_the_mistakes.asp",
     accent: "from-violet-500/20 to-purple-400/5",
     border: "border-violet-500/18",
     dot: "bg-violet-400",
