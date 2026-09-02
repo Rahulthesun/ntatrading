@@ -42,7 +42,7 @@ const MEDIA: MediaItem[] = [
   { type: "image", src: "/assets/gallery/22.jpeg",  alt: "NTA Training Session" },
   { type: "image", src: "/assets/gallery/23.jpeg",  alt: "NTA Training Session" },
   { type: "image", src: "/assets/gallery/24.jpeg",  alt: "NTA Training Session" },
-  { type: "image", src: "/assets/gallery/25.jpeg",  alt: "NTA Training Session" },
+  //{ type: "image", src: "/assets/gallery/25.jpeg",  alt: "NTA Training Session" },
   { type: "image", src: "/assets/gallery/26.jpeg",  alt: "NTA Training Session" },
   { type: "image", src: "/assets/gallery/27.jpeg",  alt: "NTA Training Session" },
   { type: "image", src: "/assets/gallery/28.jpeg",  alt: "NTA Training Session" },
