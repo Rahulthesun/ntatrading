@@ -199,7 +199,7 @@ export function Navbar() {
 
       <div className="relative w-full px-6 sm:px-10 lg:px-14 h-[76px] flex items-center justify-between">
 
-        {/* ── Logo ── */}
+        {/* ── logo1 ── */}
         <Link to="/" onClick={handleNav} className="flex items-center gap-3.5 shrink-0 group">
           <motion.div
             whileHover={{ scale: 1.08 }}
@@ -208,7 +208,7 @@ export function Navbar() {
           >
             <div className="absolute inset-0 pointer-events-none rounded-2xl shadow-[0_0_0_1px_rgba(139,92,246,0.35),0_0_16px_rgba(139,92,246,0.2)]" />
             <div className="rounded-2xl overflow-hidden w-12 h-12 bg-white border border-violet-500/40">
-              <img src="assets/logo.png" alt="NTA" className="w-full h-full object-cover block" />
+              <img src="assets/logo1.png" alt="NTA" className="w-full h-full object-contain block" />
             </div>
           </motion.div>
 

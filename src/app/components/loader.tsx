@@ -309,7 +309,7 @@ export default function Loader({ onComplete, loop = true, duration = 7200 }) {
         <TrendLine active={trendActive}/>
       </div>
 
-      {/* ── LOGO ── */}
+      {/* ── logo1 ── */}
       <div style={{
         display:"flex", alignItems:"center", gap:12, marginBottom:28,
         opacity:0,

@@ -59,7 +59,7 @@ export function Footer() {
           <div className="lg:col-span-2 flex flex-col gap-5">
             <Link to="/" className="flex items-center gap-3">
               <div className="rounded-2xl overflow-hidden w-12 h-12 bg-white border border-violet-500/40">
-                <img src="assets/logo.png" alt="NTA" className="w-full h-full object-cover block" />
+                <img src="assets/logo1.png" alt="NTA" className="w-full h-full object-contain block" />
               </div>
               <div>
                 <p className="text-white text-lg">Namma Trading Academy</p>
@@ -164,7 +164,7 @@ export function Footer() {
               className="flex items-center gap-0 hover:text-white transition"
             >
               <img
-                src="/assets/buildify-logo.png"
+                src="/assets/buildify-logo1.png"
                 alt="Buildify"
                 className="h-6 w-auto opacity-90"
               />
