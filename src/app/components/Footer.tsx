@@ -58,9 +58,7 @@ export function Footer() {
           {/* Brand */}
           <div className="lg:col-span-2 flex flex-col gap-5">
             <Link to="/" className="flex items-center gap-3">
-              <div className="rounded-2xl overflow-hidden w-12 h-12 bg-white border border-violet-500/40">
-                <img src="assets/logo1.png" alt="NTA" className="w-full h-full object-contain block" />
-              </div>
+              <img src="assets/logo1.png" alt="NTA" className="block w-24 h-auto shrink-0" />
               <div>
                 <p className="text-white text-lg">Namma Trading Academy</p>
                 <p className="text-purple-200/70 text-[8px] tracking-[0.30em] uppercase">

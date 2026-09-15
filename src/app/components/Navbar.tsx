@@ -204,12 +204,9 @@ export function Navbar() {
           <motion.div
             whileHover={{ scale: 1.08 }}
             transition={{ type: 'spring', stiffness: 420, damping: 20 }}
-            className="relative shrink-0"
+            className="relative flex shrink-0 items-center"
           >
-            <div className="absolute inset-0 pointer-events-none rounded-2xl shadow-[0_0_0_1px_rgba(139,92,246,0.35),0_0_16px_rgba(139,92,246,0.2)]" />
-            <div className="rounded-2xl overflow-hidden w-12 h-12 bg-white border border-violet-500/40">
-              <img src="assets/logo1.png" alt="NTA" className="w-full h-full object-contain block" />
-            </div>
+            <img src="assets/logo1.png" alt="NTA" className="block w-[78px] h-auto sm:w-[102px]" />
           </motion.div>
 
           <div className="leading-none">
