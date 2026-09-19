@@ -200,7 +200,7 @@ export function Navbar() {
       <div className="relative w-full px-6 sm:px-10 lg:px-14 h-[76px] flex items-center justify-between">
 
         {/* ── logo1 ── */}
-        <Link to="/" onClick={handleNav} className="flex items-center gap-3.5 shrink-0 group">
+        <Link to="/" onClick={handleNav} className="flex items-center gap-2 shrink-0 group">
           <motion.div
             whileHover={{ scale: 1.08 }}
             transition={{ type: 'spring', stiffness: 420, damping: 20 }}
@@ -209,8 +209,8 @@ export function Navbar() {
             <img src="assets/logo1.png" alt="NTA" className="block w-[78px] h-auto sm:w-[102px]" />
           </motion.div>
 
-          <div className="leading-none">
-            <p className="text-black/90 text-[15px] sm:text-[17px] font-bold tracking-tight leading-none">
+          <div className="flex flex-col justify-center leading-none translate-x-[-18px]">
+            <p className="bg-gradient-to-r from-[#00145E] via-[#942AA7] to-[#4C25B8] to-[#1451FC] bg-clip-text text-transparent text-[15px] sm:text-[17px] font-bold tracking-tight leading-none">
               Namma Trading Academy
             </p>
             <p className="text-black text-[7.5px] sm:text-[8px] tracking-[0.28em] sm:tracking-[0.30em] uppercase mt-[5px]">
