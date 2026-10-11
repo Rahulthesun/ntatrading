@@ -197,26 +197,24 @@ export function Navbar() {
           : 'bg-[linear-gradient(120deg,rgba(245,240,255,0.90),rgba(237,233,254,0.90))] border-b border-violet-200/30'}
       `} />
 
-      <div className="relative w-full px-6 sm:px-10 lg:px-14 h-[76px] flex items-center justify-between">
+      <div className="relative w-full px-6 sm:px-10 lg:px-14 h-[88px] flex items-center justify-between">
 
         {/* ── logo1 ── */}
-        <Link to="/" onClick={handleNav} className="flex items-center gap-2 shrink-0 group">
+        <Link to="/" onClick={handleNav} className="flex items-center shrink-0 group w-[210px] sm:w-[290px]">
           <motion.div
-            whileHover={{ scale: 1.08 }}
+            whileHover={{ scale: 1.03 }}
             transition={{ type: 'spring', stiffness: 420, damping: 20 }}
-            className="relative flex shrink-0 items-center"
+            className="w-full origin-left"
           >
-            <img src="assets/logo1.png" alt="NTA" className="block w-[78px] h-auto sm:w-[102px]" />
+            {/* Crop the PNG's empty padding; multiply blends its white bg into the header */}
+            <div className="w-full aspect-[1600/345] overflow-hidden">
+              <img
+                src="/assets/ntalogowithtagline.png"
+                alt="Namma Trading Academy - United in learning, United in growth"
+                className="block max-w-none w-[75%] h-auto mx-auto ml-[%] mt-[%] mix-blend-multiply"
+              />
+            </div>
           </motion.div>
-
-          <div className="flex flex-col justify-center leading-none translate-x-[-18px]">
-            <p className="bg-gradient-to-r from-[#00145E] via-[#942AA7] to-[#4C25B8] to-[#1451FC] bg-clip-text text-transparent text-[15px] sm:text-[17px] font-bold tracking-tight leading-none">
-              Namma Trading Academy
-            </p>
-            <p className="text-black text-[7.5px] sm:text-[8px] tracking-[0.28em] sm:tracking-[0.30em] uppercase mt-[5px]">
-              United in learning, United in growth
-            </p>
-          </div>
         </Link>
 
         {/* ── Desktop nav ── */}

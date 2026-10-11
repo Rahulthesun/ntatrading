@@ -57,19 +57,16 @@ export function Footer() {
 
           {/* Brand */}
           <div className="lg:col-span-2 flex flex-col gap-5">
-            <Link to="/" className="flex items-center gap-3">
-              <img src="assets/logo1.png" alt="NTA" className="block w-24 h-auto shrink-0" />
-              <div>
-                <p className="text-white text-lg">Namma Trading Academy</p>
-                <p className="text-purple-200/70 text-[8px] tracking-[0.30em] uppercase">
-                  United in learning, United in growth
-                </p>
+            <Link to="/" className="block self-start w-[300px] rounded-2xl isolate bg-white border border-white/30 px-4 py-3 shadow-lg shadow-black/30">
+              {/* Same cropped navbar logo, blended into the white box */}
+              <div className="w-full aspect-[1600/345] overflow-hidden">
+                <img
+                  src="/assets/ntalogowithtagline.png"
+                  alt="Namma Trading Academy - United in learning, United in growth"
+                  className="block max-w-none w-[75%] h-auto mx-auto mix-blend-multiply"
+                />
               </div>
             </Link>
-
-            <p className="text-purple-100/80 text-sm leading-relaxed max-w-[260px]">
-              Namma Trading Academy — built for Indian retail traders serious about consistent profitability.
-            </p>
           </div>
 
           {/* NAV */}

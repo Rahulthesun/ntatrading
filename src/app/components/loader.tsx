@@ -315,20 +315,7 @@ export default function Loader({ onComplete, loop = true, duration = 7200 }) {
         opacity:0,
         animation: ui ? "ae-fade-up .7s .1s ease both" : "none",
       }}>
-        <div style={{
-          width:42, height:42, borderRadius:10,
-          background:"linear-gradient(135deg,#c9a227,#f0c040)",
-          display:"flex", alignItems:"center", justifyContent:"center",
-          fontFamily:"'Cinzel',serif", fontSize:20, fontWeight:900,
-          color:"#020409",
-          boxShadow:"0 0 24px rgba(151, 45, 232, 0.35)",
-        }}>NTA</div>
-        <span style={{
-          fontFamily:"'Cinzel',serif", fontSize:"1.35rem",
-          fontWeight:700, color:"#f0f4ff", letterSpacing:"0.06em",
-        }}>
-          Namma<span style={{ color:"#820cc2" }}>Trading</span>
-        </span>
+        <img src="/assets/ntalogo.png" alt="NTA" style={{ height:64, width:"auto" }} />
       </div>
 
       {/* ── PROGRESS BAR ── */}
